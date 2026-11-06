@@ -12,23 +12,23 @@
   <header class="app-header no-print">
     <div class="header-inner">
       <div class="logo-area">
-        <span class="app-icon">🌱</span>
+        <span class="app-icon" aria-hidden="true">🌱</span>
         <div>
           <h1 class="app-title">LawnQuote</h1>
-          <p class="app-subtitle">Field Quoting for Lawn & Landscaping Crews</p>
+          <p class="app-subtitle">Field Quoting for Lawn &amp; Landscaping Crews</p>
         </div>
       </div>
       <nav class="nav-tabs" role="tablist" aria-label="Main Navigation">
         <button type="button" class="tab-btn" data-target="screen-pricesheet" role="tab" aria-selected="false">
-          <span class="tab-icon">⚙️</span>
+          <span class="tab-icon" aria-hidden="true">⚙️</span>
           <span class="tab-label">Price Sheet</span>
         </button>
         <button type="button" class="tab-btn active" data-target="screen-newquote" role="tab" aria-selected="true">
-          <span class="tab-icon">📝</span>
+          <span class="tab-icon" aria-hidden="true">📝</span>
           <span class="tab-label">New Quote</span>
         </button>
         <button type="button" class="tab-btn" data-target="screen-preview" role="tab" aria-selected="false">
-          <span class="tab-icon">📄</span>
+          <span class="tab-icon" aria-hidden="true">📄</span>
           <span class="tab-label">Quote Preview</span>
         </button>
       </nav>
@@ -40,9 +40,9 @@
     <!-- ========================================== -->
     <!-- SCREEN 1: PRICE SHEET (SETTINGS)           -->
     <!-- ========================================== -->
-    <section id="screen-pricesheet" class="app-screen" style="display: none;">
+    <section id="screen-pricesheet" class="app-screen" style="display: none;" aria-labelledby="heading-pricesheet">
       <div class="screen-header">
-        <h2>Business Price Sheet &amp; Settings</h2>
+        <h2 id="heading-pricesheet">Business Price Sheet &amp; Settings</h2>
         <p class="screen-desc">Set your crew's rates and business details. Everything is saved locally on your phone.</p>
       </div>
 
@@ -51,8 +51,9 @@
         <div class="card">
           <h3 class="card-title">🏢 Business Information</h3>
           <div class="form-group">
-            <label for="setting-business-name">Business Name</label>
+            <label for="setting-business-name">Business Name *</label>
             <input type="text" id="setting-business-name" class="form-control" required placeholder="e.g. GreenThumb Lawn &amp; Landscape">
+            <div id="error-setting-business-name" class="field-error" style="display: none;"></div>
           </div>
           <div class="form-row">
             <div class="form-group col-half">
@@ -71,13 +72,14 @@
           <h3 class="card-title">📋 Minimum Charge &amp; Terms</h3>
           <div class="form-group">
             <label for="setting-min-charge">
-              Minimum Job Charge ($)
-              <span class="hint">No job is billed below this floor</span>
+              Minimum Job Charge ($) *
+              <span class="hint">No job is billed below this baseline floor</span>
             </label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-min-charge" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
             </div>
+            <div id="error-setting-min-charge" class="field-error" style="display: none;"></div>
           </div>
           <div class="form-group">
             <label for="setting-terms">Quote Terms &amp; Conditions</label>
@@ -90,65 +92,90 @@
           <h3 class="card-title">💵 Service Rates</h3>
           
           <div class="form-group">
-            <label for="setting-rate-mowing">Mowing Rate ($ per 1,000 sq ft)</label>
+            <label for="setting-rate-mowing">🌱 Mowing Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-mowing" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
             </div>
+            <div id="error-setting-rate-mowing" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-edging">Edging Rate ($ per 1,000 sq ft)</label>
+            <label for="setting-rate-edging">✂️ Edging Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-edging" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
             </div>
+            <div id="error-setting-rate-edging" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-leaf">Leaf Cleanup Rate ($ per 1,000 sq ft)</label>
+            <label for="setting-rate-leaf">🍂 Leaf Cleanup Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-leaf" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
             </div>
+            <div id="error-setting-rate-leaf" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-mulch">Mulch Rate ($ per cubic yard delivered &amp; spread)</label>
+            <label for="setting-rate-mulch">🪵 Mulch Rate ($ per cubic yard delivered &amp; spread) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-mulch" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
             </div>
+            <div id="error-setting-rate-mulch" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-hedge">Hedge Trimming Rate ($ per crew hour)</label>
+            <label for="setting-rate-hedge">🌿 Hedge Trimming Rate ($ per crew hour) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-hedge" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
             </div>
+            <div id="error-setting-rate-hedge" class="field-error" style="display: none;"></div>
           </div>
         </div>
 
+        <div id="pricesheet-warning" class="banner-warning" style="display: none;" role="alert"></div>
+
         <!-- Action Buttons -->
         <div class="form-actions">
-          <button type="submit" class="btn btn-primary btn-block">💾 Save Settings</button>
+          <button type="submit" id="btn-save-settings" class="btn btn-primary btn-block">💾 Save Settings</button>
+          <div class="backup-actions-row">
+            <button type="button" id="btn-export-backup" class="btn btn-outline col-half">📤 Export Backup</button>
+            <button type="button" id="btn-import-backup" class="btn btn-outline col-half">📥 Import Backup</button>
+            <input type="file" id="backup-file-input" accept=".json,application/json" style="display: none;">
+          </div>
           <button type="button" id="btn-reset-settings" class="btn btn-secondary btn-block">↺ Reset to Realistic Defaults</button>
         </div>
-        <div id="settings-toast" class="toast" role="status" aria-live="polite">Settings saved successfully!</div>
+        <div id="settings-toast" class="toast" role="status" aria-live="polite"></div>
       </form>
     </section>
 
     <!-- ========================================== -->
     <!-- SCREEN 2: NEW QUOTE                        -->
     <!-- ========================================== -->
-    <section id="screen-newquote" class="app-screen">
+    <section id="screen-newquote" class="app-screen" aria-labelledby="heading-newquote">
+      
+      <!-- FIX 1: Active Business Identity Banner -->
+      <div class="active-biz-strip" id="active-biz-banner">
+        <div class="biz-strip-info">
+          <span class="biz-strip-label">Quoting as:</span>
+          <strong id="quote-active-biz-name" class="biz-strip-name">GreenThumb Lawn &amp; Landscape</strong>
+          <span id="biz-strip-sample-badge" class="sample-badge">(Sample Profile)</span>
+        </div>
+        <button type="button" class="btn-link" id="btn-goto-pricesheet" title="Customize business profile and rates">
+          Edit ⚙️
+        </button>
+      </div>
+
       <div class="screen-header flex-between">
         <div>
-          <h2>Create New Quote</h2>
+          <h2 id="heading-newquote">Create New Quote</h2>
           <p class="screen-desc">Price out a job in under a minute right from the curb.</p>
         </div>
-        <button type="button" id="btn-fill-fake" class="btn btn-sm btn-outline" title="Populate with sample fake customer data">
+        <button type="button" id="btn-fill-fake" class="btn btn-outline btn-quick-fill" title="Populate with sample fake customer data">
           ⚡ Fill Fake Sample
         </button>
       </div>
@@ -157,23 +184,29 @@
         <!-- Customer Details Card -->
         <div class="card">
           <h3 class="card-title">👤 Customer Information</h3>
+          
           <div class="form-group">
             <label for="quote-cust-name">Customer Name *</label>
             <input type="text" id="quote-cust-name" class="form-control" placeholder="e.g. Jane Doe (Fake Customer)" required>
+            <div id="error-quote-cust-name" class="field-error" style="display: none;"></div>
           </div>
+
           <div class="form-group">
             <label for="quote-cust-address">Property / Service Address *</label>
-            <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 123 Maple Street, Sampleville, TX 75001" required>
+            <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 742 Evergreen Terrace, Springfield, TX 75001" required>
+            <div id="error-quote-cust-address" class="field-error" style="display: none;"></div>
           </div>
+
           <div class="form-group">
             <label for="quote-yard-size">
               Lawn / Yard Size (sq ft) *
-              <span class="hint">1/4 acre ≈ 10,890 sq ft · Typical yard ≈ 4,000–7,000 sq ft</span>
+              <span class="hint">Area rounded up to next 1,000 sq ft · 4,200 sq ft = 5 units</span>
             </label>
             <div class="input-suffix-wrapper">
-              <input type="number" id="quote-yard-size" class="form-control with-suffix" min="100" step="100" inputmode="numeric" placeholder="e.g. 4200" required>
+              <input type="number" id="quote-yard-size" class="form-control with-suffix" min="1" step="1" inputmode="numeric" placeholder="e.g. 4200" required>
               <span class="input-suffix">sq ft</span>
             </div>
+            <div id="error-quote-yard-size" class="field-error" style="display: none;"></div>
           </div>
         </div>
 
@@ -183,80 +216,91 @@
           <p class="card-subtitle">Select services for this quote. Rates apply automatically from your Price Sheet.</p>
 
           <!-- Mowing -->
-          <label class="service-item">
+          <label class="service-item" for="svc-mowing">
             <div class="service-checkbox-wrap">
               <input type="checkbox" id="svc-mowing" class="svc-toggle" checked>
-              <span class="service-name">Mowing</span>
+              <span class="service-name">🌱 Mowing</span>
             </div>
             <span class="service-rate-badge" id="badge-rate-mowing">$12 / 1k sq ft</span>
           </label>
 
           <!-- Edging -->
-          <label class="service-item">
+          <label class="service-item" for="svc-edging">
             <div class="service-checkbox-wrap">
               <input type="checkbox" id="svc-edging" class="svc-toggle" checked>
-              <span class="service-name">Edging</span>
+              <span class="service-name">✂️ Edging</span>
             </div>
             <span class="service-rate-badge" id="badge-rate-edging">$4 / 1k sq ft</span>
           </label>
 
           <!-- Leaf Cleanup -->
-          <label class="service-item">
+          <label class="service-item" for="svc-leaf">
             <div class="service-checkbox-wrap">
               <input type="checkbox" id="svc-leaf" class="svc-toggle">
-              <span class="service-name">Leaf Cleanup</span>
+              <span class="service-name">🍂 Leaf Cleanup</span>
             </div>
             <span class="service-rate-badge" id="badge-rate-leaf">$8 / 1k sq ft</span>
           </label>
 
-          <!-- Mulch (with quantity input) -->
+          <!-- Mulch (with FIX 5: Steppers) -->
           <div class="service-item-expandable">
-            <label class="service-item">
+            <label class="service-item" for="svc-mulch">
               <div class="service-checkbox-wrap">
                 <input type="checkbox" id="svc-mulch" class="svc-toggle">
-                <span class="service-name">Mulch Delivery &amp; Install</span>
+                <span class="service-name">🪵 Mulch Delivery &amp; Install</span>
               </div>
               <span class="service-rate-badge" id="badge-rate-mulch">$85 / cu yd</span>
             </label>
             <div id="mulch-qty-container" class="service-qty-box" style="display: none;">
-              <label for="qty-mulch">Quantity (Cubic Yards):</label>
-              <div class="input-suffix-wrapper">
-                <input type="number" id="qty-mulch" class="form-control with-suffix" min="0.5" step="0.5" value="2" inputmode="decimal">
-                <span class="input-suffix">cu yds</span>
+              <label for="qty-mulch">Quantity (Cubic Yards) *</label>
+              <div class="stepper-input-wrapper">
+                <button type="button" class="stepper-btn" id="btn-mulch-minus" aria-label="Decrease mulch quantity by 0.5 cubic yards">−</button>
+                <div class="input-suffix-wrapper flex-1">
+                  <input type="number" id="qty-mulch" class="form-control with-suffix text-center" min="0.1" step="0.5" value="2" inputmode="decimal">
+                  <span class="input-suffix">cu yds</span>
+                </div>
+                <button type="button" class="stepper-btn" id="btn-mulch-plus" aria-label="Increase mulch quantity by 0.5 cubic yards">+</button>
               </div>
+              <div id="error-qty-mulch" class="field-error" style="display: none;"></div>
             </div>
           </div>
 
-          <!-- Hedge Trimming (with hours input) -->
+          <!-- Hedge Trimming (with FIX 5: Steppers) -->
           <div class="service-item-expandable">
-            <label class="service-item">
+            <label class="service-item" for="svc-hedge">
               <div class="service-checkbox-wrap">
                 <input type="checkbox" id="svc-hedge" class="svc-toggle">
-                <span class="service-name">Hedge Trimming</span>
+                <span class="service-name">🌿 Hedge Trimming</span>
               </div>
               <span class="service-rate-badge" id="badge-rate-hedge">$55 / hr</span>
             </label>
             <div id="hedge-qty-container" class="service-qty-box" style="display: none;">
-              <label for="qty-hedge">Estimated Crew Labor (Hours):</label>
-              <div class="input-suffix-wrapper">
-                <input type="number" id="qty-hedge" class="form-control with-suffix" min="0.5" step="0.5" value="1.5" inputmode="decimal">
-                <span class="input-suffix">hours</span>
+              <label for="qty-hedge">Estimated Crew Labor (Hours) *</label>
+              <div class="stepper-input-wrapper">
+                <button type="button" class="stepper-btn" id="btn-hedge-minus" aria-label="Decrease hedge hours by 0.5 hours">−</button>
+                <div class="input-suffix-wrapper flex-1">
+                  <input type="number" id="qty-hedge" class="form-control with-suffix text-center" min="0.1" step="0.5" value="1.5" inputmode="decimal">
+                  <span class="input-suffix">hours</span>
+                </div>
+                <button type="button" class="stepper-btn" id="btn-hedge-plus" aria-label="Increase hedge hours by 0.5 hours">+</button>
               </div>
+              <div id="error-qty-hedge" class="field-error" style="display: none;"></div>
             </div>
           </div>
 
-          <div id="svc-error" class="form-error" style="display: none;">Please select at least one service.</div>
+          <div id="svc-error" class="field-error" style="display: none; margin-top: 10px;">Please select at least one service.</div>
         </div>
 
-        <!-- Optional Photo Upload Card -->
+        <!-- Optional Photo Upload Card (FIX 3: Unrestricted Photo Picker) -->
         <div class="card">
           <h3 class="card-title">📸 Job Site Photos (Optional)</h3>
-          <p class="card-subtitle">Take or select photos from your phone. Thumbnails will appear below and can be attached to the quote preview.</p>
+          <p class="card-subtitle">Take new photos or pick from your phone's photo library. Thumbnails are included on the quote.</p>
           
           <div class="file-upload-wrap">
             <label for="photo-input" class="file-upload-btn">
-              <span>📷 Snap Photo or Upload Files</span>
-              <input type="file" id="photo-input" accept="image/*" multiple capture="environment">
+              <span aria-hidden="true">📷</span>
+              <span>Take Photo or Choose Files</span>
+              <input type="file" id="photo-input" accept="image/*" multiple>
             </label>
           </div>
 
@@ -274,25 +318,21 @@
 
     <!-- ========================================== -->
     <!-- SCREEN 3: QUOTE PREVIEW                    -->
+    <!-- Sections follow the exact skill order:     -->
+    <!-- 1. Header/Branding                         -->
+    <!-- 2. Customer Details                        -->
+    <!-- 3. Itemized Table                          -->
+    <!-- 4. Totals Breakdown                        -->
+    <!-- 5. Quote Terms & Conditions                -->
+    <!-- 6. Site Photos                             -->
+    <!-- 7. Actions                                 -->
     <!-- ========================================== -->
-    <section id="screen-preview" class="app-screen" style="display: none;">
-      <!-- Interactive Screen Controls (Hidden when printing) -->
-      <div class="preview-actions no-print">
-        <button type="button" id="btn-print" class="btn btn-primary">
-          🖨️ Print / Save as PDF
-        </button>
-        <button type="button" id="btn-edit-quote" class="btn btn-secondary">
-          ✏️ Edit Quote
-        </button>
-        <button type="button" id="btn-new-quote" class="btn btn-outline">
-          ➕ Start Fresh
-        </button>
-      </div>
-
-      <!-- Printable Quote Paper Card -->
+    <section id="screen-preview" class="app-screen" style="display: none;" aria-labelledby="heading-preview">
+      
+      <!-- Printable Quote Document Card -->
       <article id="quote-card" class="quote-document">
         
-        <!-- Header -->
+        <!-- SECTION 1: Header / Branding -->
         <header class="quote-header">
           <div class="quote-branding">
             <h2 id="view-biz-name" class="quote-biz-name">GreenThumb Lawn &amp; Landscape</h2>
@@ -317,12 +357,12 @@
 
         <hr class="quote-rule">
 
-        <!-- Customer & Property Details -->
-        <div class="quote-party-box">
+        <!-- SECTION 2: Customer Details -->
+        <section class="quote-party-box" aria-label="Customer and Job Details">
           <div class="party-col">
             <span class="party-label">PREPARED FOR:</span>
             <div id="view-cust-name" class="party-name">Jane Doe (Fake Customer)</div>
-            <div id="view-cust-address" class="party-address">123 Maple Street, Sampleville, TX 75001</div>
+            <div id="view-cust-address" class="party-address">742 Evergreen Terrace, Springfield, TX 75001</div>
           </div>
           <div class="party-col right-align">
             <span class="party-label">SERVICE SCOPE:</span>
@@ -330,10 +370,10 @@
               Measured Yard Size: <strong id="view-yard-size">4,200 sq ft</strong>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Line Items Table -->
-        <div class="table-responsive">
+        <!-- SECTION 3: Itemized Table (FIX 4: Responsive on 375px) -->
+        <section class="table-responsive" aria-label="Itemized Services">
           <table class="quote-table">
             <thead>
               <tr>
@@ -347,44 +387,47 @@
               <!-- Dynamically rendered -->
             </tbody>
           </table>
-        </div>
+        </section>
 
-        <!-- Totals Summary Section -->
-        <div class="quote-totals-wrapper">
-          <div class="quote-terms-callout">
-            <h4>Quote Terms &amp; Conditions</h4>
-            <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
-          </div>
+        <!-- SECTION 4: Totals Breakdown -->
+        <section class="quote-totals-section" aria-label="Financial Totals Breakdown">
           <div class="quote-totals-box">
             <div class="total-row">
               <span class="total-label">Subtotal:</span>
-              <span id="view-subtotal" class="total-value">$319.70</span>
+              <span id="view-subtotal" class="total-value">$332.50</span>
             </div>
             <div id="row-min-charge" class="total-row min-charge-applied" style="display: none;">
               <span class="total-label">
                 Minimum Job Charge Adjustment:
-                <small class="min-charge-note">(Floor of $<span id="view-min-charge-floor">50</span> applied)</small>
+                <small class="min-charge-note">(Minimum floor of $<span id="view-min-charge-floor">50</span> applied)</small>
               </span>
               <span id="view-min-charge-adj" class="total-value">+$0.00</span>
             </div>
             <div class="total-row rounding-row">
               <span class="total-label">Nearest $5 Rounding Adjustment:</span>
-              <span id="view-rounding-adj" class="total-value">+$0.30</span>
+              <span id="view-rounding-adj" class="total-value">+$2.50</span>
             </div>
             <div class="total-row grand-total">
               <span class="total-label">Total Quote:</span>
-              <span id="view-final-total" class="total-value grand-total-amount">$320.00</span>
+              <span id="view-final-total" class="total-value grand-total-amount">$335.00</span>
             </div>
           </div>
-        </div>
+          <div id="preview-high-value-warning" class="banner-warning no-print" style="display: none;" role="alert"></div>
+        </section>
 
-        <!-- Site Photos Section (Shows only if photos attached) -->
-        <section id="quote-preview-photos" class="quote-photos-section" style="display: none;">
+        <!-- SECTION 5: Quote Terms & Conditions -->
+        <section class="quote-terms-section" aria-label="Terms and Conditions">
+          <h4 class="terms-title">Quote Terms &amp; Conditions</h4>
+          <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
+        </section>
+
+        <!-- SECTION 6: Site Photos -->
+        <section id="quote-preview-photos" class="quote-photos-section" style="display: none;" aria-label="Job Site Photos">
           <h4 class="photos-title">Job Site Property Photos</h4>
           <div id="quote-photos-gallery" class="preview-photos-grid"></div>
         </section>
 
-        <!-- Quote Footer / Acceptance -->
+        <!-- Acceptance / Sign-off Footer -->
         <footer class="quote-footer">
           <p class="thank-you">Thank you for considering our lawn care &amp; landscaping crew!</p>
           <div class="signature-line-wrap">
@@ -394,6 +437,21 @@
         </footer>
 
       </article>
+
+      <!-- SECTION 7: Actions Toolbar (FIX 2: Sticky Thumb-Reach on Mobile, Hidden on Print) -->
+      <div class="preview-actions no-print">
+        <button type="button" id="btn-print" class="btn btn-primary btn-large btn-print-action">
+          🖨️ Print / Save as PDF
+        </button>
+        <button type="button" id="btn-edit-quote" class="btn btn-secondary">
+          ✏️ Edit Quote
+        </button>
+        <button type="button" id="btn-new-quote" class="btn btn-outline">
+          ➕ Start Fresh
+        </button>
+      </div>
+      <div id="quote-action-toast" class="toast no-print" role="status" aria-live="polite"></div>
+
     </section>
 
   </main>

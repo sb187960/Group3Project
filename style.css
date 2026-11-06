@@ -1,21 +1,22 @@
 /* ==========================================================================
-   LawnQuote Stylesheet - Mobile-First & Print-Ready
+   LawnQuote Stylesheet - Mobile-First (375px+), 44px Touch Targets, Print-Ready
    ========================================================================== */
 
 :root {
-  --primary: #166534;        /* Forest green */
+  --primary: #166534;        /* Deep forest green (AAA accessible contrast) */
   --primary-hover: #14532d;
   --primary-light: #dcfce7;
-  --accent: #ca8a04;         /* Amber accent */
+  --accent: #b45309;         /* Amber tone */
   --bg-page: #f8fafc;
   --bg-card: #ffffff;
   --border: #e2e8f0;
   --border-focus: #166534;
   --text-main: #0f172a;
-  --text-muted: #64748b;
-  --danger: #dc2626;
+  --text-muted: #475569;
+  --danger: #b91c1c;         /* High-contrast accessible red */
+  --danger-light: #fee2e2;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -26,6 +27,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -51,13 +57,13 @@ body {
 .header-inner {
   max-width: 860px;
   margin: 0 auto;
-  padding: 12px 16px 8px;
+  padding: 12px 14px 8px;
 }
 
 .logo-area {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 10px;
 }
 
@@ -74,13 +80,13 @@ body {
 }
 
 .app-subtitle {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
 .nav-tabs {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   background-color: #f1f5f9;
   padding: 4px;
   border-radius: var(--radius-md);
@@ -92,16 +98,17 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 10px 8px;
+  padding: 10px 6px;
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s ease-in-out;
-  min-height: 44px; /* Accessible touch target */
+  min-height: 44px; /* Accessible 44px minimum tap target */
+  min-width: 44px;
 }
 
 .tab-btn:hover {
@@ -120,7 +127,7 @@ body {
 .app-container {
   max-width: 860px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 14px 14px 32px;
 }
 
 .screen-header {
@@ -137,14 +144,74 @@ body {
 .screen-desc {
   font-size: 0.88rem;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .flex-between {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* FIX 1: Active Business Identity Banner */
+.active-biz-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  gap: 8px;
+}
+
+.biz-strip-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #14532d;
+}
+
+.biz-strip-label {
+  color: #166534;
+  font-weight: 500;
+}
+
+.biz-strip-name {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.sample-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background-color: #fef08a;
+  color: #854d0e;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
 }
 
 /* --------------------------------------------------------------------------
@@ -170,7 +237,7 @@ body {
 }
 
 .card-subtitle {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   margin-top: -6px;
   margin-bottom: 14px;
@@ -186,18 +253,18 @@ body {
 
 .form-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #334155;
-  margin-bottom: 5px;
+  color: #1e293b;
+  margin-bottom: 6px;
 }
 
 .hint {
   display: block;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   font-weight: 400;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .form-row {
@@ -209,17 +276,18 @@ body {
   flex: 1;
 }
 
+/* Inputs set to 16px to prevent iOS Safari auto-zoom */
 .form-control {
   width: 100%;
   padding: 10px 12px;
-  font-size: 0.95rem;
+  font-size: 16px !important;
   color: var(--text-main);
   background-color: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  min-height: 44px;
+  min-height: 44px; /* 44px mobile touch target */
 }
 
 .form-control:focus {
@@ -227,8 +295,14 @@ body {
   box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.15);
 }
 
+.form-control.input-invalid {
+  border-color: var(--danger);
+  background-color: #fffaf0;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
 textarea.form-control {
-  min-height: 70px;
+  min-height: 72px;
   resize: vertical;
 }
 
@@ -240,9 +314,18 @@ textarea.form-control {
   align-items: center;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .input-prefix {
   position: absolute;
   left: 12px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-muted);
   pointer-events: none;
@@ -255,14 +338,30 @@ textarea.form-control {
 .input-suffix {
   position: absolute;
   right: 12px;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-muted);
   pointer-events: none;
 }
 
 .with-suffix {
-  padding-right: 54px;
+  padding-right: 58px;
+}
+
+/* Inline Field Errors */
+.field-error {
+  color: var(--danger);
+  font-size: 0.84rem;
+  font-weight: 600;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.field-error::before {
+  content: "⚠️";
+  font-size: 0.82rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -270,7 +369,7 @@ textarea.form-control {
    -------------------------------------------------------------------------- */
 .service-item-expandable {
   border-bottom: 1px solid var(--border);
-  padding: 10px 0;
+  padding: 8px 0;
 }
 
 .service-item-expandable:last-of-type {
@@ -281,12 +380,12 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 6px;
+  padding: 10px 8px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   user-select: none;
   transition: background-color 0.15s;
-  min-height: 44px;
+  min-height: 48px; /* Touch target */
 }
 
 .service-item:hover {
@@ -300,49 +399,82 @@ textarea.form-control {
 }
 
 .svc-toggle {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   accent-color: var(--primary);
   cursor: pointer;
+  min-height: 24px;
+  min-width: 24px;
 }
 
 .service-name {
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 600;
   color: var(--text-main);
 }
 
 .service-rate-badge {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--primary);
   background-color: var(--primary-light);
-  padding: 4px 10px;
+  padding: 5px 10px;
   border-radius: 9999px;
+  white-space: nowrap;
 }
 
 .service-qty-box {
   margin-top: 8px;
-  margin-left: 34px;
-  padding: 10px 14px;
+  margin-left: 36px;
+  padding: 12px 14px;
   background-color: #f8fafc;
   border: 1px dashed var(--border);
   border-radius: var(--radius-sm);
 }
 
 .service-qty-box label {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   font-weight: 600;
-  color: #475569;
-  margin-bottom: 4px;
+  color: #334155;
+  margin-bottom: 6px;
   display: block;
 }
 
-.form-error {
-  color: var(--danger);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-top: 8px;
+/* FIX 5: Stepper Buttons for Quantities */
+.stepper-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stepper-btn:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.stepper-btn:active {
+  background-color: #bbf7d0;
+  transform: scale(0.96);
 }
 
 /* --------------------------------------------------------------------------
@@ -357,12 +489,12 @@ textarea.form-control {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px;
+  padding: 12px 16px;
   border: 2px dashed #cbd5e1;
   border-radius: var(--radius-md);
   background-color: #f8fafc;
   color: #334155;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -381,7 +513,7 @@ textarea.form-control {
 
 .thumbnails-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 10px;
 }
 
@@ -402,22 +534,23 @@ textarea.form-control {
   display: block;
 }
 
+/* 44px tap target for thumbnail removal on mobile */
 .thumb-remove-btn {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  background: rgba(15, 23, 42, 0.75);
-  color: #ffffff;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
   border: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  font-size: 13px;
+  background: rgba(15, 23, 42, 0.7);
+  color: #ffffff;
+  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  border-bottom-left-radius: 8px;
+  transition: background 0.15s;
 }
 
 .thumb-remove-btn:hover {
@@ -438,8 +571,10 @@ textarea.form-control {
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.15s ease;
-  min-height: 44px;
+  min-height: 44px; /* 44px touch target guarantee */
+  min-width: 44px;
   text-decoration: none;
+  text-align: center;
 }
 
 .btn-primary {
@@ -472,10 +607,10 @@ textarea.form-control {
   background-color: var(--primary-light);
 }
 
-.btn-sm {
-  padding: 6px 12px;
-  font-size: 0.82rem;
-  min-height: 34px;
+.btn-quick-fill {
+  min-height: 44px;
+  padding: 8px 14px;
+  font-size: 0.88rem;
 }
 
 .btn-large {
@@ -499,13 +634,42 @@ textarea.form-control {
   display: none;
   background-color: #065f46;
   color: #ffffff;
-  padding: 10px 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 12px;
+  animation: fadeIn 0.2s ease-in;
+}
+
+/* Operational Safeguard: Non-intrusive Inline Warning Banner */
+.banner-warning {
+  display: none;
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
   font-size: 0.88rem;
+  line-height: 1.45;
   font-weight: 500;
-  text-align: center;
-  margin-top: 10px;
+  margin: 12px 0;
   animation: fadeIn 0.2s ease-in;
+}
+
+.backup-actions-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.backup-actions-row .btn {
+  min-height: 44px;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 @keyframes fadeIn {
@@ -515,44 +679,44 @@ textarea.form-control {
 
 /* --------------------------------------------------------------------------
    SCREEN 3: QUOTE PREVIEW (DOCUMENT VIEW)
+   Strictly follows Section 3 order:
+   1. Header / Branding
+   2. Customer Details
+   3. Itemized Table
+   4. Totals Breakdown
+   5. Quote Terms & Conditions
+   6. Site Photos
+   7. Actions Toolbar
    -------------------------------------------------------------------------- */
-.preview-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.preview-actions .btn {
-  flex: 1;
-  min-width: 140px;
-}
-
 .quote-document {
   background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 22px 18px;
   box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
 }
 
+/* 1. Header */
 .quote-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .quote-biz-name {
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--primary);
   line-height: 1.2;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .quote-biz-contact {
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   color: var(--text-muted);
   margin-top: 4px;
   display: flex;
@@ -567,7 +731,7 @@ textarea.form-control {
 
 .quote-meta {
   text-align: right;
-  min-width: 140px;
+  min-width: 130px;
 }
 
 .quote-badge {
@@ -597,9 +761,10 @@ textarea.form-control {
   border: 0;
   height: 1px;
   background-color: var(--border);
-  margin: 16px 0;
+  margin: 14px 0;
 }
 
+/* 2. Customer Details */
 .quote-party-box {
   display: flex;
   justify-content: space-between;
@@ -607,28 +772,39 @@ textarea.form-control {
   background-color: #f8fafc;
   padding: 14px 16px;
   border-radius: var(--radius-md);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   border: 1px solid var(--border);
+}
+
+.party-col {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .party-label {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .party-name {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-main);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .party-address {
   font-size: 0.88rem;
   color: #475569;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .party-meta {
@@ -640,11 +816,11 @@ textarea.form-control {
   text-align: right;
 }
 
-/* Quote Table */
+/* 3. Itemized Table */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .quote-table {
@@ -655,7 +831,7 @@ textarea.form-control {
 
 .quote-table th {
   background-color: #f1f5f9;
-  padding: 10px 12px;
+  padding: 10px 10px;
   font-weight: 700;
   color: #334155;
   border-bottom: 2px solid var(--border);
@@ -665,9 +841,10 @@ textarea.form-control {
 }
 
 .quote-table td {
-  padding: 12px;
+  padding: 10px 10px;
   border-bottom: 1px solid var(--border);
   color: var(--text-main);
+  vertical-align: middle;
 }
 
 .quote-table tbody tr:last-child td {
@@ -682,44 +859,20 @@ textarea.form-control {
 }
 
 .item-service-desc {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
-/* Totals Summary */
-.quote-totals-wrapper {
+/* 4. Totals Breakdown */
+.quote-totals-section {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.quote-terms-callout {
-  flex: 1.2;
-  background-color: #f8fafc;
-  padding: 14px;
-  border-radius: var(--radius-md);
-  border-left: 4px solid var(--accent);
-}
-
-.quote-terms-callout h4 {
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #78350f;
-  margin-bottom: 4px;
-}
-
-.quote-terms-callout p {
-  font-size: 0.82rem;
-  color: #475569;
-  line-height: 1.4;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
 .quote-totals-box {
-  flex: 1;
-  min-width: 250px;
+  width: 100%;
+  max-width: 380px;
 }
 
 .total-row {
@@ -727,8 +880,8 @@ textarea.form-control {
   justify-content: space-between;
   align-items: center;
   padding: 6px 0;
-  font-size: 0.9rem;
-  color: #475569;
+  font-size: 0.92rem;
+  color: #334155;
 }
 
 .total-value {
@@ -750,12 +903,12 @@ textarea.form-control {
 
 .min-charge-note {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: normal;
 }
 
 .rounding-row {
-  font-size: 0.8rem;
+  font-size: 0.84rem;
   color: var(--text-muted);
 }
 
@@ -774,9 +927,33 @@ textarea.form-control {
   color: var(--primary);
 }
 
-/* Quote Photos in Preview */
+/* 5. Terms & Conditions */
+.quote-terms-section {
+  background-color: #f8fafc;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--accent);
+  margin-bottom: 20px;
+}
+
+.terms-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #78350f;
+  margin-bottom: 4px;
+}
+
+.quote-terms-section p {
+  font-size: 0.88rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+/* 6. Site Photos */
 .quote-photos-section {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   border-top: 1px dashed var(--border);
   padding-top: 16px;
 }
@@ -811,10 +988,10 @@ textarea.form-control {
   display: block;
 }
 
-/* Quote Footer */
+/* Footer / Acceptance */
 .quote-footer {
   border-top: 1px solid var(--border);
-  padding-top: 18px;
+  padding-top: 16px;
   text-align: center;
 }
 
@@ -822,31 +999,44 @@ textarea.form-control {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--primary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .signature-line-wrap {
   display: flex;
   justify-content: space-between;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 24px;
+  margin-top: 16px;
 }
 
 .sig-line {
   flex: 1;
   border-top: 1px solid #94a3b8;
   padding-top: 6px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-align: left;
 }
 
+/* 7. Action Toolbar (FIX 2: Sticky thumb-reach on mobile, static on desktop) */
+.preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.preview-actions .btn {
+  flex: 1;
+  min-width: 130px;
+}
+
 /* --------------------------------------------------------------------------
-   Responsive Adjustments for Smaller Screens (< 640px)
+   Responsive Adjustments (Mobile 375px - 480px)
    -------------------------------------------------------------------------- */
 @media (max-width: 640px) {
   .app-container {
-    padding: 12px 10px;
+    padding: 10px 8px 80px; /* Extra bottom padding so content isn't obscured by sticky bar */
   }
 
   .form-row {
@@ -861,7 +1051,7 @@ textarea.form-control {
 
   .quote-meta {
     text-align: left;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   .quote-party-box {
@@ -873,57 +1063,195 @@ textarea.form-control {
     text-align: left;
   }
 
-  .quote-totals-wrapper {
-    flex-direction: column;
-    gap: 16px;
+  .quote-totals-box {
+    max-width: 100%;
   }
 
   .signature-line-wrap {
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
+  }
+
+  /* FIX 2: Sticky action toolbar anchored at bottom of phone screen */
+  .preview-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid #cbd5e1;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+    z-index: 99;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .preview-actions .btn-print-action {
+    flex: 2;
+  }
+
+  .preview-actions .btn {
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* FIX 4: Mobile-optimized quote table for narrow screens (<= 480px) */
+@media (max-width: 480px) {
+  .quote-document {
+    padding: 14px 10px;
+  }
+
+  .quote-table {
+    display: block;
+    width: 100%;
+  }
+
+  .quote-table thead {
+    display: none; /* Hide header on mobile, row cards show details cleanly */
+  }
+
+  .quote-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .quote-table tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 6px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+
+  .quote-table tr td:first-child {
+    flex: 1;
+    padding: 0;
+    border: none;
+  }
+
+  .quote-table tr td:nth-child(2),
+  .quote-table tr td:nth-child(3) {
+    display: none; /* Merged into subtitle in script.js */
+  }
+
+  .quote-table tr td:last-child {
+    padding: 0;
+    border: none;
+    text-align: right;
+    white-space: nowrap;
+    font-size: 1.05rem;
+  }
+
+  .item-service-meta-mobile {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+}
+
+@media (min-width: 481px) {
+  .item-service-meta-mobile {
+    display: none;
   }
 }
 
 /* --------------------------------------------------------------------------
    PRINT STYLESHEET (@media print)
-   - Formats cleanly as a 1-page PDF/hardcopy
-   - Hides interactive controls, navigation, and edit buttons
+   - Suppresses interactive buttons, nav tabs, and headers
+   - Fits on a single 8.5" x 11" page cleanly
    -------------------------------------------------------------------------- */
 @media print {
-  body {
-    background-color: #ffffff;
-    color: #000000;
-    font-size: 11pt;
+  @page {
+    margin: 10mm;
+    size: letter portrait;
   }
 
-  .no-print {
+  html, body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt !important;
+    line-height: 1.35 !important;
+  }
+
+  .no-print,
+  .banner-warning {
     display: none !important;
   }
 
   .app-container {
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .quote-document {
-    border: none;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .quote-rule {
+    background-color: #000000 !important;
+    height: 1px !important;
+    margin: 10px 0 !important;
   }
 
   .quote-party-box {
     background-color: #f8fafc !important;
     border: 1px solid #cbd5e1 !important;
+    padding: 10px 12px !important;
+    margin-bottom: 12px !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
+  .table-responsive {
+    margin-bottom: 12px !important;
+  }
+
+  .quote-table {
+    display: table !important;
+  }
+
+  .quote-table thead {
+    display: table-header-group !important;
+  }
+
+  .quote-table tbody {
+    display: table-row-group !important;
+  }
+
+  .quote-table tr {
+    display: table-row !important;
+  }
+
   .quote-table th {
+    display: table-cell !important;
     background-color: #f1f5f9 !important;
+    padding: 6px 8px !important;
+    font-size: 8pt !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  .quote-table td {
+    display: table-cell !important;
+    padding: 6px 8px !important;
+    font-size: 8.5pt !important;
+  }
+
+  .item-service-meta-mobile {
+    display: none !important;
   }
 
   .quote-badge {
@@ -935,27 +1263,59 @@ textarea.form-control {
 
   .min-charge-applied {
     background-color: #fef3c7 !important;
+    padding: 4px 6px !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
   .grand-total {
-    border-top: 2px solid #000000;
+    border-top: 2px solid #000000 !important;
+    font-size: 11pt !important;
   }
 
-  /* Prevent awkward page breaks */
-  .quote-table tr {
-    page-break-inside: avoid;
+  .grand-total-amount {
+    font-size: 13pt !important;
   }
 
-  .quote-totals-wrapper,
-  .quote-footer,
+  .quote-terms-section {
+    padding: 8px 10px !important;
+    margin-bottom: 12px !important;
+    font-size: 8pt !important;
+    border-left: 3px solid #b45309 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   .quote-photos-section {
-    page-break-inside: avoid;
+    margin-bottom: 12px !important;
+    padding-top: 8px !important;
+  }
+
+  .preview-photos-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
   }
 
   .preview-photo-wrap {
-    page-break-inside: avoid;
-    max-width: 120px;
+    max-height: 80px !important;
+  }
+
+  .quote-footer {
+    padding-top: 10px !important;
+  }
+
+  .thank-you {
+    margin-bottom: 14px !important;
+    font-size: 9pt !important;
+  }
+
+  /* Prevent page breaks across crucial elements */
+  .quote-table,
+  .quote-table tr,
+  .quote-totals-section,
+  .quote-terms-section,
+  .quote-footer,
+  .quote-photos-section {
+    page-break-inside: avoid !important;
   }
 }
