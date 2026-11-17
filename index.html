@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LawnQuote - Instant Crew Quoting Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar (Hidden when printing) -->
+  <header class="app-header no-print">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="app-icon">🌱</span>
+        <div>
+          <h1 class="app-title">LawnQuote</h1>
+          <p class="app-subtitle">Field Quoting for Lawn & Landscaping Crews</p>
+        </div>
+      </div>
+      <nav class="nav-tabs" role="tablist" aria-label="Main Navigation">
+        <button type="button" class="tab-btn" data-target="screen-pricesheet" role="tab" aria-selected="false">
+          <span class="tab-icon">⚙️</span>
+          <span class="tab-label">Price Sheet</span>
+        </button>
+        <button type="button" class="tab-btn active" data-target="screen-newquote" role="tab" aria-selected="true">
+          <span class="tab-icon">📝</span>
+          <span class="tab-label">New Quote</span>
+        </button>
+        <button type="button" class="tab-btn" data-target="screen-preview" role="tab" aria-selected="false">
+          <span class="tab-icon">📄</span>
+          <span class="tab-label">Quote Preview</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-container">
+
+    <!-- ========================================== -->
+    <!-- SCREEN 1: PRICE SHEET (SETTINGS)           -->
+    <!-- ========================================== -->
+    <section id="screen-pricesheet" class="app-screen" style="display: none;">
+      <div class="screen-header">
+        <h2>Business Price Sheet &amp; Settings</h2>
+        <p class="screen-desc">Set your crew's rates and business details. Everything is saved locally on your phone.</p>
+      </div>
+
+      <form id="price-sheet-form" novalidate>
+        <!-- Business Contact Info -->
+        <div class="card">
+          <h3 class="card-title">🏢 Business Information</h3>
+          <div class="form-group">
+            <label for="setting-business-name">Business Name</label>
+            <input type="text" id="setting-business-name" class="form-control" required placeholder="e.g. GreenThumb Lawn &amp; Landscape">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="setting-phone">Phone Number</label>
+              <input type="tel" id="setting-phone" class="form-control" placeholder="(555) 234-5678">
+            </div>
+            <div class="form-group col-half">
+              <label for="setting-email">Email Address</label>
+              <input type="email" id="setting-email" class="form-control" placeholder="quotes@greenthumb-example.com">
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Minimum & Terms -->
+        <div class="card">
+          <h3 class="card-title">📋 Minimum Charge &amp; Terms</h3>
+          <div class="form-group">
+            <label for="setting-min-charge">
+              Minimum Job Charge ($)
+              <span class="hint">No job is billed below this floor</span>
+            </label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-min-charge" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="setting-terms">Quote Terms &amp; Conditions</label>
+            <textarea id="setting-terms" class="form-control" rows="2" placeholder="e.g. Estimates valid for 14 days. Payment due upon completion."></textarea>
+          </div>
+        </div>
+
+        <!-- Service Rates -->
+        <div class="card">
+          <h3 class="card-title">💵 Service Rates</h3>
+          
+          <div class="form-group">
+            <label for="setting-rate-mowing">Mowing Rate ($ per 1,000 sq ft)</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-mowing" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="setting-rate-edging">Edging Rate ($ per 1,000 sq ft)</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-edging" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="setting-rate-leaf">Leaf Cleanup Rate ($ per 1,000 sq ft)</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-leaf" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="setting-rate-mulch">Mulch Rate ($ per cubic yard delivered &amp; spread)</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-mulch" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="setting-rate-hedge">Hedge Trimming Rate ($ per crew hour)</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-hedge" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-block">💾 Save Settings</button>
+          <button type="button" id="btn-reset-settings" class="btn btn-secondary btn-block">↺ Reset to Realistic Defaults</button>
+        </div>
+        <div id="settings-toast" class="toast" role="status" aria-live="polite">Settings saved successfully!</div>
+      </form>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SCREEN 2: NEW QUOTE                        -->
+    <!-- ========================================== -->
+    <section id="screen-newquote" class="app-screen">
+      <div class="screen-header flex-between">
+        <div>
+          <h2>Create New Quote</h2>
+          <p class="screen-desc">Price out a job in under a minute right from the curb.</p>
+        </div>
+        <button type="button" id="btn-fill-fake" class="btn btn-sm btn-outline" title="Populate with sample fake customer data">
+          ⚡ Fill Fake Sample
+        </button>
+      </div>
+
+      <form id="new-quote-form" novalidate>
+        <!-- Customer Details Card -->
+        <div class="card">
+          <h3 class="card-title">👤 Customer Information</h3>
+          <div class="form-group">
+            <label for="quote-cust-name">Customer Name *</label>
+            <input type="text" id="quote-cust-name" class="form-control" placeholder="e.g. Jane Doe (Fake Customer)" required>
+          </div>
+          <div class="form-group">
+            <label for="quote-cust-address">Property / Service Address *</label>
+            <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 123 Maple Street, Sampleville, TX 75001" required>
+          </div>
+          <div class="form-group">
+            <label for="quote-yard-size">
+              Lawn / Yard Size (sq ft) *
+              <span class="hint">1/4 acre ≈ 10,890 sq ft · Typical yard ≈ 4,000–7,000 sq ft</span>
+            </label>
+            <div class="input-suffix-wrapper">
+              <input type="number" id="quote-yard-size" class="form-control with-suffix" min="100" step="100" inputmode="numeric" placeholder="e.g. 4200" required>
+              <span class="input-suffix">sq ft</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Services Selection Card -->
+        <div class="card">
+          <h3 class="card-title">🛠️ Services to Include</h3>
+          <p class="card-subtitle">Select services for this quote. Rates apply automatically from your Price Sheet.</p>
+
+          <!-- Mowing -->
+          <label class="service-item">
+            <div class="service-checkbox-wrap">
+              <input type="checkbox" id="svc-mowing" class="svc-toggle" checked>
+              <span class="service-name">Mowing</span>
+            </div>
+            <span class="service-rate-badge" id="badge-rate-mowing">$12 / 1k sq ft</span>
+          </label>
+
+          <!-- Edging -->
+          <label class="service-item">
+            <div class="service-checkbox-wrap">
+              <input type="checkbox" id="svc-edging" class="svc-toggle" checked>
+              <span class="service-name">Edging</span>
+            </div>
+            <span class="service-rate-badge" id="badge-rate-edging">$4 / 1k sq ft</span>
+          </label>
+
+          <!-- Leaf Cleanup -->
+          <label class="service-item">
+            <div class="service-checkbox-wrap">
+              <input type="checkbox" id="svc-leaf" class="svc-toggle">
+              <span class="service-name">Leaf Cleanup</span>
+            </div>
+            <span class="service-rate-badge" id="badge-rate-leaf">$8 / 1k sq ft</span>
+          </label>
+
+          <!-- Mulch (with quantity input) -->
+          <div class="service-item-expandable">
+            <label class="service-item">
+              <div class="service-checkbox-wrap">
+                <input type="checkbox" id="svc-mulch" class="svc-toggle">
+                <span class="service-name">Mulch Delivery &amp; Install</span>
+              </div>
+              <span class="service-rate-badge" id="badge-rate-mulch">$85 / cu yd</span>
+            </label>
+            <div id="mulch-qty-container" class="service-qty-box" style="display: none;">
+              <label for="qty-mulch">Quantity (Cubic Yards):</label>
+              <div class="input-suffix-wrapper">
+                <input type="number" id="qty-mulch" class="form-control with-suffix" min="0.5" step="0.5" value="2" inputmode="decimal">
+                <span class="input-suffix">cu yds</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hedge Trimming (with hours input) -->
+          <div class="service-item-expandable">
+            <label class="service-item">
+              <div class="service-checkbox-wrap">
+                <input type="checkbox" id="svc-hedge" class="svc-toggle">
+                <span class="service-name">Hedge Trimming</span>
+              </div>
+              <span class="service-rate-badge" id="badge-rate-hedge">$55 / hr</span>
+            </label>
+            <div id="hedge-qty-container" class="service-qty-box" style="display: none;">
+              <label for="qty-hedge">Estimated Crew Labor (Hours):</label>
+              <div class="input-suffix-wrapper">
+                <input type="number" id="qty-hedge" class="form-control with-suffix" min="0.5" step="0.5" value="1.5" inputmode="decimal">
+                <span class="input-suffix">hours</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="svc-error" class="form-error" style="display: none;">Please select at least one service.</div>
+        </div>
+
+        <!-- Optional Photo Upload Card -->
+        <div class="card">
+          <h3 class="card-title">📸 Job Site Photos (Optional)</h3>
+          <p class="card-subtitle">Take or select photos from your phone. Thumbnails will appear below and can be attached to the quote preview.</p>
+          
+          <div class="file-upload-wrap">
+            <label for="photo-input" class="file-upload-btn">
+              <span>📷 Snap Photo or Upload Files</span>
+              <input type="file" id="photo-input" accept="image/*" multiple capture="environment">
+            </label>
+          </div>
+
+          <div id="photo-thumbnails" class="thumbnails-grid" aria-label="Attached Photos"></div>
+        </div>
+
+        <!-- Form Submission -->
+        <div class="form-actions">
+          <button type="submit" id="btn-generate-quote" class="btn btn-primary btn-large btn-block">
+            Generate Quote Preview →
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SCREEN 3: QUOTE PREVIEW                    -->
+    <!-- ========================================== -->
+    <section id="screen-preview" class="app-screen" style="display: none;">
+      <!-- Interactive Screen Controls (Hidden when printing) -->
+      <div class="preview-actions no-print">
+        <button type="button" id="btn-print" class="btn btn-primary">
+          🖨️ Print / Save as PDF
+        </button>
+        <button type="button" id="btn-edit-quote" class="btn btn-secondary">
+          ✏️ Edit Quote
+        </button>
+        <button type="button" id="btn-new-quote" class="btn btn-outline">
+          ➕ Start Fresh
+        </button>
+      </div>
+
+      <!-- Printable Quote Paper Card -->
+      <article id="quote-card" class="quote-document">
+        
+        <!-- Header -->
+        <header class="quote-header">
+          <div class="quote-branding">
+            <h2 id="view-biz-name" class="quote-biz-name">GreenThumb Lawn &amp; Landscape</h2>
+            <div class="quote-biz-contact">
+              <span id="view-biz-phone">📞 (555) 234-5678</span>
+              <span class="divider">·</span>
+              <span id="view-biz-email">✉️ quotes@greenthumb-example.com</span>
+            </div>
+          </div>
+          <div class="quote-meta">
+            <div class="quote-badge">SERVICE QUOTE</div>
+            <div class="quote-meta-row">
+              <span class="meta-label">Quote Date:</span>
+              <span id="view-quote-date" class="meta-val">Nov 5, 2026</span>
+            </div>
+            <div class="quote-meta-row">
+              <span class="meta-label">Quote Ref:</span>
+              <span id="view-quote-id" class="meta-val">#Q-1042</span>
+            </div>
+          </div>
+        </header>
+
+        <hr class="quote-rule">
+
+        <!-- Customer & Property Details -->
+        <div class="quote-party-box">
+          <div class="party-col">
+            <span class="party-label">PREPARED FOR:</span>
+            <div id="view-cust-name" class="party-name">Jane Doe (Fake Customer)</div>
+            <div id="view-cust-address" class="party-address">123 Maple Street, Sampleville, TX 75001</div>
+          </div>
+          <div class="party-col right-align">
+            <span class="party-label">SERVICE SCOPE:</span>
+            <div class="party-meta">
+              Measured Yard Size: <strong id="view-yard-size">4,200 sq ft</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Line Items Table -->
+        <div class="table-responsive">
+          <table class="quote-table">
+            <thead>
+              <tr>
+                <th scope="col" class="th-service">Service Description</th>
+                <th scope="col" class="th-qty text-center">Quantity / Scope</th>
+                <th scope="col" class="th-rate text-right">Unit Rate</th>
+                <th scope="col" class="th-total text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="quote-line-items">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totals Summary Section -->
+        <div class="quote-totals-wrapper">
+          <div class="quote-terms-callout">
+            <h4>Quote Terms &amp; Conditions</h4>
+            <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
+          </div>
+          <div class="quote-totals-box">
+            <div class="total-row">
+              <span class="total-label">Subtotal:</span>
+              <span id="view-subtotal" class="total-value">$319.70</span>
+            </div>
+            <div id="row-min-charge" class="total-row min-charge-applied" style="display: none;">
+              <span class="total-label">
+                Minimum Job Charge Adjustment:
+                <small class="min-charge-note">(Floor of $<span id="view-min-charge-floor">50</span> applied)</small>
+              </span>
+              <span id="view-min-charge-adj" class="total-value">+$0.00</span>
+            </div>
+            <div class="total-row rounding-row">
+              <span class="total-label">Nearest $5 Rounding Adjustment:</span>
+              <span id="view-rounding-adj" class="total-value">+$0.30</span>
+            </div>
+            <div class="total-row grand-total">
+              <span class="total-label">Total Quote:</span>
+              <span id="view-final-total" class="total-value grand-total-amount">$320.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Site Photos Section (Shows only if photos attached) -->
+        <section id="quote-preview-photos" class="quote-photos-section" style="display: none;">
+          <h4 class="photos-title">Job Site Property Photos</h4>
+          <div id="quote-photos-gallery" class="preview-photos-grid"></div>
+        </section>
+
+        <!-- Quote Footer / Acceptance -->
+        <footer class="quote-footer">
+          <p class="thank-you">Thank you for considering our lawn care &amp; landscaping crew!</p>
+          <div class="signature-line-wrap">
+            <div class="sig-line"><span>Customer Acceptance Signature</span></div>
+            <div class="sig-line"><span>Date</span></div>
+          </div>
+        </footer>
+
+      </article>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
