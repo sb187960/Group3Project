@@ -168,6 +168,23 @@
       photosSection: document.getElementById('quote-preview-photos'),
       photosGallery: document.getElementById('quote-photos-gallery'),
       highValueWarning: document.getElementById('preview-high-value-warning')
+    },
+    map: {
+      btnOpen: document.getElementById('btn-open-map'),
+      modal: document.getElementById('map-modal'),
+      btnClose: document.getElementById('btn-close-map'),
+      searchInput: document.getElementById('map-search-input'),
+      btnSearch: document.getElementById('btn-map-search'),
+      searchStatus: document.getElementById('map-search-status'),
+      offlineBanner: document.getElementById('map-offline-banner'),
+      btnOfflineDismiss: document.getElementById('btn-map-offline-dismiss'),
+      canvas: document.getElementById('map-canvas'),
+      btnUndo: document.getElementById('btn-map-undo'),
+      btnNewArea: document.getElementById('btn-map-new-area'),
+      btnClear: document.getElementById('btn-map-clear'),
+      areaDisplay: document.getElementById('map-area-display'),
+      areaBreakdown: document.getElementById('map-area-breakdown'),
+      btnUseArea: document.getElementById('btn-map-use-area')
     }
   };
 
@@ -1233,6 +1250,281 @@
       setTimeout(() => { toast.style.display = 'none'; }, 2500);
     }
   );
+
+  // ---------------------------------------------------------------------------
+  // 12. Measure on Map Satellite Tool (Leaflet + Turf.js + Nominatim)
+  // ---------------------------------------------------------------------------
+  let leafletMap = null;
+  let mapTileLayer = null;
+  let isMapInitialized = false;
+  let completedAreas = [];       // Array of arrays of { lat, lng }
+  let currentAreaPoints = [];    // Current polygon vertices
+  let drawnLayersGroup = null;   // L.featureGroup for rendered shapes
+  let totalTracedSqFt = 0;
+
+  function calculateSphericalPolygonArea(coords) {
+    if (coords.length < 4) return 0;
+    const radius = 6378137; // WGS84 earth radius in meters
+    let total = 0;
+    for (let i = 0; i < coords.length - 1; i++) {
+      const p1 = coords[i];
+      const p2 = coords[i + 1];
+      const rad1 = p1[1] * Math.PI / 180;
+      const rad2 = p2[1] * Math.PI / 180;
+      const dLon = (p2[0] - p1[0]) * Math.PI / 180;
+      total += dLon * (2 + Math.sin(rad1) + Math.sin(rad2));
+    }
+    total = Math.abs(total * radius * radius / 4.0);
+    return total;
+  }
+
+  function recalculateMapArea() {
+    let totalSqMeters = 0;
+    const allAreas = [...completedAreas];
+    if (currentAreaPoints.length >= 3) {
+      allAreas.push(currentAreaPoints);
+    }
+
+    allAreas.forEach(points => {
+      if (points.length < 3) return;
+      const ring = points.map(p => [p.lng, p.lat]);
+      ring.push([points[0].lng, points[0].lat]); // Close polygon ring
+
+      let sqM = 0;
+      if (typeof window.turf !== 'undefined' && typeof window.turf.polygon === 'function' && typeof window.turf.area === 'function') {
+        try {
+          const poly = window.turf.polygon([ring]);
+          sqM = window.turf.area(poly);
+        } catch (e) {
+          sqM = calculateSphericalPolygonArea(ring);
+        }
+      } else {
+        sqM = calculateSphericalPolygonArea(ring);
+      }
+      totalSqMeters += sqM;
+    });
+
+    totalTracedSqFt = Math.round(totalSqMeters * 10.7639104);
+    DOM.map.areaDisplay.textContent = `${totalTracedSqFt.toLocaleString()} sq ft`;
+
+    const areaCount = allAreas.length;
+    if (areaCount === 0) {
+      DOM.map.areaBreakdown.textContent = '0 areas';
+    } else if (areaCount === 1) {
+      DOM.map.areaBreakdown.textContent = '1 area traced';
+    } else {
+      DOM.map.areaBreakdown.textContent = `${areaCount} areas combined`;
+    }
+
+    DOM.map.btnUseArea.disabled = (totalTracedSqFt <= 0);
+  }
+
+  function redrawMapPolygons() {
+    if (!leafletMap || !drawnLayersGroup) return;
+    drawnLayersGroup.clearLayers();
+
+    // 1. Draw completed areas (Green with solid boundary)
+    completedAreas.forEach((areaPts) => {
+      const latlngs = areaPts.map(p => [p.lat, p.lng]);
+      const poly = L.polygon(latlngs, {
+        color: '#16A34A',
+        weight: 3,
+        fillColor: '#22C55E',
+        fillOpacity: 0.35
+      });
+      drawnLayersGroup.addLayer(poly);
+
+      areaPts.forEach(pt => {
+        const marker = L.circleMarker([pt.lat, pt.lng], {
+          radius: 5,
+          color: '#166534',
+          fillColor: '#FFFFFF',
+          fillOpacity: 1,
+          weight: 2
+        });
+        drawnLayersGroup.addLayer(marker);
+      });
+    });
+
+    // 2. Draw current in-progress area (Amber / Mint with active vertices)
+    if (currentAreaPoints.length > 0) {
+      const latlngs = currentAreaPoints.map(p => [p.lat, p.lng]);
+      if (currentAreaPoints.length >= 3) {
+        const activePoly = L.polygon(latlngs, {
+          color: '#EAB308',
+          weight: 3,
+          dashArray: '6, 6',
+          fillColor: '#FACC15',
+          fillOpacity: 0.25
+        });
+        drawnLayersGroup.addLayer(activePoly);
+      } else if (currentAreaPoints.length === 2) {
+        const line = L.polyline(latlngs, {
+          color: '#EAB308',
+          weight: 3,
+          dashArray: '6, 6'
+        });
+        drawnLayersGroup.addLayer(line);
+      }
+
+      currentAreaPoints.forEach((pt, i) => {
+        const isFirst = (i === 0);
+        const marker = L.circleMarker([pt.lat, pt.lng], {
+          radius: isFirst ? 8 : 6,
+          color: isFirst ? '#EAB308' : '#0F172A',
+          fillColor: isFirst ? '#FEF08A' : '#FFFFFF',
+          fillOpacity: 1,
+          weight: 2
+        });
+        drawnLayersGroup.addLayer(marker);
+      });
+    }
+
+    recalculateMapArea();
+  }
+
+  function initLeafletMap() {
+    if (isMapInitialized) return true;
+
+    // Check if Leaflet library is available
+    if (typeof window.L === 'undefined') {
+      DOM.map.offlineBanner.style.display = 'flex';
+      return false;
+    }
+
+    try {
+      DOM.map.offlineBanner.style.display = 'none';
+      leafletMap = L.map('map-canvas', {
+        zoomControl: true,
+        maxZoom: 19,
+        attributionControl: true
+      }).setView([39.8283, -98.5795], 4); // Center of US initially
+      window._lawnQuoteLeafletMap = leafletMap;
+
+      mapTileLayer = L.tileLayer(
+        'https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',
+        {
+          maxZoom: 19,
+          attribution: 'Tiles courtesy of the U.S. Geological Survey | &copy; OpenStreetMap contributors, Nominatim'
+        }
+      ).addTo(leafletMap);
+
+      drawnLayersGroup = L.featureGroup().addTo(leafletMap);
+
+      leafletMap.on('click', (e) => {
+        currentAreaPoints.push({ lat: e.latlng.lat, lng: e.latlng.lng });
+        redrawMapPolygons();
+      });
+
+      isMapInitialized = true;
+      return true;
+    } catch (err) {
+      console.warn('Map initialization failed:', err);
+      DOM.map.offlineBanner.style.display = 'flex';
+      return false;
+    }
+  }
+
+  async function searchPropertyAddress(query) {
+    if (!query || !query.trim()) return;
+    const cleanQuery = query.trim();
+    DOM.map.searchStatus.style.display = 'block';
+    DOM.map.searchStatus.textContent = 'Searching property address...';
+
+    try {
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cleanQuery)}&limit=1`,
+        { headers: { 'Accept': 'application/json' } }
+      );
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+
+      if (data && data.length > 0) {
+        const lat = parseFloat(data[0].lat);
+        const lon = parseFloat(data[0].lon);
+        if (leafletMap) {
+          leafletMap.setView([lat, lon], 18);
+        }
+        DOM.map.searchStatus.style.display = 'none';
+      } else {
+        DOM.map.searchStatus.textContent = 'Address not found on satellite map. Try adding city/state, or pan directly.';
+      }
+    } catch (e) {
+      DOM.map.searchStatus.textContent = 'Unable to search address. You can zoom and pan the satellite map directly.';
+    }
+  }
+
+  // Map Event Listeners
+  DOM.map.btnOpen.addEventListener('click', () => {
+    DOM.map.modal.style.display = 'flex';
+
+    // Prefill search address if available
+    const existingAddr = DOM.newQuote.custAddress.value.trim();
+    if (existingAddr && !DOM.map.searchInput.value) {
+      DOM.map.searchInput.value = existingAddr;
+    }
+
+    const mapReady = initLeafletMap();
+    if (mapReady && leafletMap) {
+      setTimeout(() => {
+        leafletMap.invalidateSize();
+        if (existingAddr && !completedAreas.length && !currentAreaPoints.length) {
+          searchPropertyAddress(existingAddr);
+        }
+      }, 250);
+    }
+  });
+
+  DOM.map.btnClose.addEventListener('click', () => {
+    DOM.map.modal.style.display = 'none';
+  });
+
+  DOM.map.btnOfflineDismiss.addEventListener('click', () => {
+    DOM.map.modal.style.display = 'none';
+    DOM.newQuote.yardSize.focus();
+  });
+
+  DOM.map.btnSearch.addEventListener('click', () => {
+    searchPropertyAddress(DOM.map.searchInput.value);
+  });
+
+  DOM.map.searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      searchPropertyAddress(DOM.map.searchInput.value);
+    }
+  });
+
+  DOM.map.btnUndo.addEventListener('click', () => {
+    if (currentAreaPoints.length > 0) {
+      currentAreaPoints.pop();
+    } else if (completedAreas.length > 0) {
+      currentAreaPoints = completedAreas.pop();
+    }
+    redrawMapPolygons();
+  });
+
+  DOM.map.btnNewArea.addEventListener('click', () => {
+    if (currentAreaPoints.length >= 3) {
+      completedAreas.push([...currentAreaPoints]);
+      currentAreaPoints = [];
+      redrawMapPolygons();
+    }
+  });
+
+  DOM.map.btnClear.addEventListener('click', () => {
+    completedAreas = [];
+    currentAreaPoints = [];
+    redrawMapPolygons();
+  });
+
+  DOM.map.btnUseArea.addEventListener('click', () => {
+    if (totalTracedSqFt > 0) {
+      DOM.newQuote.yardSize.value = totalTracedSqFt;
+      DOM.newQuote.yardSize.dispatchEvent(new Event('input', { bubbles: true }));
+      DOM.map.modal.style.display = 'none';
+    }
+  });
 
   // ---------------------------------------------------------------------------
   // 11. Initialization
