@@ -72,9 +72,9 @@ $$\text{Final Total} = \text{Math.round}\left(\frac{\text{Base Total}}{5}\right)
 ## 3. Strict Quote Preview Layout Order
 
 Every generated quote must render sections in this exact order:
-1. **Header / Branding:** Business Name, Phone, Email, Date, and Quote ID.
+1. **Header / Branding:** Business Name, Phone, Email, Date, and Sequential Estimate ID (e.g., `Q-0001`).
 2. **Customer Details:** Customer Name, Property Address, Measured Yard Size.
-3. **Itemized Table:** Service Description, Quantity/Dimensions (e.g., `4,200 sq ft (5k sq ft)`), Unit Rate, Line Total.
+3. **Itemized Table:** Service Description, Quantity/Dimensions (e.g., `4,200 sq ft (billed as 5 × 1,000 sq ft)`), Unit Rate, Line Total.
 4. **Totals Breakdown:** Subtotal, Minimum Job Charge Adjustment (if applicable), Rounding Adjustment, and Rounded Final Total.
 5. **Quote Terms & Conditions:** As configured in the settings.
 6. **Site Photos:** Thumbnail gallery of property photos attached.

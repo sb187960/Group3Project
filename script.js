@@ -34,6 +34,33 @@
   };
 
   const STORAGE_KEY = 'lawnquote_crew_settings_v1';
+  const ESTIMATE_COUNTER_KEY = 'lawnquote_estimate_counter_v1';
+  const SAVED_ESTIMATES_KEY = 'lawnquote_saved_estimates_v1';
+
+  /**
+   * Generates sequential estimate numbers (Q-0001, Q-0002, ...)
+   * Saved persistently in localStorage with defensive try/catch and in-memory fallback.
+   * Numbers are strictly monotonic and never reused even if a quote is discarded.
+   */
+  function getNextQuoteNumber() {
+    let count = 1;
+    try {
+      const stored = window.localStorage.getItem(ESTIMATE_COUNTER_KEY);
+      if (stored !== null) {
+        const parsed = parseInt(stored, 10);
+        if (!isNaN(parsed) && parsed >= 1) {
+          count = parsed;
+        }
+      }
+      window.localStorage.setItem(ESTIMATE_COUNTER_KEY, String(count + 1));
+    } catch (e) {
+      console.warn('LocalStorage error reading estimate counter:', e);
+      count = window._inMemoryEstimateCounter || 1;
+      window._inMemoryEstimateCounter = count + 1;
+    }
+    const padded = String(count).padStart(4, '0');
+    return `Q-${padded}`;
+  }
 
   // Industry benchmark guardrails for outlier / typo detection
   const RATE_BENCHMARKS = {
@@ -53,6 +80,9 @@
   let attachedPhotos = [];     // Array of base64 data URLs
   let pendingRateWarning = false;
   let rateWarningTimer = null;
+  let currentSavedFilter = 'all';
+  let yardMeasuredOnMap = false;
+  let lastMeasuredMapSqFt = 0;
 
   // ---------------------------------------------------------------------------
   // 2. DOM Elements (Grouped by Screen Domain)
@@ -61,7 +91,8 @@
     screens: {
       'screen-pricesheet': document.getElementById('screen-pricesheet'),
       'screen-newquote': document.getElementById('screen-newquote'),
-      'screen-preview': document.getElementById('screen-preview')
+      'screen-preview': document.getElementById('screen-preview'),
+      'screen-saved': document.getElementById('screen-saved')
     },
     nav: {
       tabs: document.querySelectorAll('.tab-btn'),
@@ -152,6 +183,7 @@
       }
     },
     preview: {
+      saveBtn: document.getElementById('btn-save-quote'),
       printBtn: document.getElementById('btn-print'),
       editBtn: document.getElementById('btn-edit-quote'),
       newQuoteBtn: document.getElementById('btn-new-quote'),
@@ -180,6 +212,29 @@
       photosSection: document.getElementById('quote-preview-photos'),
       photosGallery: document.getElementById('quote-photos-gallery'),
       highValueWarning: document.getElementById('preview-high-value-warning')
+    },
+    saved: {
+      screen: document.getElementById('screen-saved'),
+      pendingVal: document.getElementById('metric-pending-val'),
+      pendingSub: document.getElementById('metric-pending-sub'),
+      wonVal: document.getElementById('metric-won-val'),
+      wonSub: document.getElementById('metric-won-sub'),
+      winrateCard: document.getElementById('metric-winrate-card'),
+      winrateVal: document.getElementById('metric-winrate-val'),
+      winrateSub: document.getElementById('metric-winrate-sub'),
+      filterBtns: document.querySelectorAll('.filter-pill'),
+      filterCounts: {
+        all: document.getElementById('count-filter-all'),
+        pending: document.getElementById('count-filter-pending'),
+        won: document.getElementById('count-filter-won'),
+        lost: document.getElementById('count-filter-lost')
+      },
+      listContainer: document.getElementById('saved-estimates-list'),
+      emptyState: document.getElementById('saved-empty-state'),
+      emptyTitle: document.getElementById('saved-empty-title'),
+      emptyDesc: document.getElementById('saved-empty-desc'),
+      createNewBtn: document.getElementById('btn-saved-create-new'),
+      toast: document.getElementById('saved-action-toast')
     },
     map: {
       btnOpen: document.getElementById('btn-open-map'),
@@ -363,6 +418,11 @@
       if (DOM.preview.actions) {
         DOM.preview.actions.style.display = hasQuote ? 'flex' : 'none';
       }
+    }
+
+    // If on Saved Estimates screen, refresh pipeline metrics & cards
+    if (screenId === 'screen-saved') {
+      renderSavedScreen();
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -708,7 +768,7 @@
       lineItems.push({
         name: 'Lawn Mowing',
         description: 'Mowing maintained turf areas with clippings blown clean',
-        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        qty: `${yardSize.toLocaleString()} sq ft (billed as ${areaUnits} × 1,000 sq ft)`,
         rate: `${formatCurrency(rate)} / 1k sq ft`,
         amount: Math.round(amount * 100) / 100
       });
@@ -720,7 +780,7 @@
       lineItems.push({
         name: 'Perimeter & Bed Edging',
         description: 'Clean mechanical vertical edge along walks, driveways, and beds',
-        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        qty: `${yardSize.toLocaleString()} sq ft (billed as ${areaUnits} × 1,000 sq ft)`,
         rate: `${formatCurrency(rate)} / 1k sq ft`,
         amount: Math.round(amount * 100) / 100
       });
@@ -732,7 +792,7 @@
       lineItems.push({
         name: 'Leaf Cleanup & Collection',
         description: 'Leaf collection, blowing, and hauling from turf and landscape beds',
-        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        qty: `${yardSize.toLocaleString()} sq ft (billed as ${areaUnits} × 1,000 sq ft)`,
         rate: `${formatCurrency(rate)} / 1k sq ft`,
         amount: Math.round(amount * 100) / 100
       });
@@ -744,7 +804,7 @@
       lineItems.push({
         name: 'Turf Fertilization',
         description: 'Balanced seasonal nutrient application to promote deep root growth',
-        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        qty: `${yardSize.toLocaleString()} sq ft (billed as ${areaUnits} × 1,000 sq ft)`,
         rate: `${formatCurrency(rate)} / 1k sq ft`,
         amount: Math.round(amount * 100) / 100
       });
@@ -756,7 +816,7 @@
       lineItems.push({
         name: 'Overseeding & Winter Rye',
         description: 'Slit-seeding & broadcast application for lush seasonal turf cover',
-        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        qty: `${yardSize.toLocaleString()} sq ft (billed as ${areaUnits} × 1,000 sq ft)`,
         rate: `${formatCurrency(rate)} / 1k sq ft`,
         amount: Math.round(amount * 100) / 100
       });
@@ -867,9 +927,13 @@
 
     const validElem = document.getElementById('view-quote-valid');
     if (validElem) {
-      const d = new Date();
-      d.setDate(d.getDate() + 14);
-      validElem.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      if (quote.validThrough) {
+        validElem.textContent = quote.validThrough;
+      } else {
+        const d = new Date();
+        d.setDate(d.getDate() + 14);
+        validElem.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
     }
 
     // SECTION 2: Customer Details
@@ -920,7 +984,7 @@
     }
 
     // SECTION 5: Quote Terms & Conditions
-    p.terms.textContent = currentSettings.quoteTerms || 'Standard terms apply.';
+    p.terms.textContent = (quote.terms !== undefined ? quote.terms : currentSettings.quoteTerms) || 'Standard terms apply.';
 
     // SECTION 6: Site Photos
     if (quote.photos && quote.photos.length > 0) {
@@ -956,6 +1020,13 @@
   ].forEach(pair => {
     pair.input.addEventListener('input', () => {
       clearFieldError(pair.input, pair.err);
+      if (pair.input === q.yardSize) {
+        if (parseFloat(q.yardSize.value) !== lastMeasuredMapSqFt) {
+          yardMeasuredOnMap = false;
+          const note = document.getElementById('aerial-measure-note');
+          if (note) note.style.display = 'none';
+        }
+      }
       updateLiveRunningTotal();
     });
   });
@@ -1226,19 +1297,27 @@
     );
 
     const today = new Date();
+    const valid = new Date();
+    valid.setDate(valid.getDate() + 14);
+
     const quoteData = {
-      quoteId: `Q-${Math.floor(1000 + Math.random() * 9000)}`,
+      quoteId: getNextQuoteNumber(),
+      createdAt: Date.now(),
       dateFormatted: today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      validThrough: valid.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       custName: formData.custName,
       custAddress: formData.custAddress,
       yardSize: formData.yardSize,
+      measuredOnMap: Boolean(yardMeasuredOnMap),
       lineItems: pricing.lineItems,
       subtotal: pricing.subtotal,
       minCharge: pricing.minCharge,
       minChargeAdj: pricing.minChargeAdj,
       roundingAdj: pricing.roundingAdj,
       finalTotal: pricing.finalTotal,
-      photos: [...attachedPhotos]
+      terms: currentSettings.quoteTerms,
+      photos: [...attachedPhotos],
+      status: 'pending'
     };
 
     currentQuoteData = quoteData;
@@ -1279,6 +1358,8 @@
       attachedPhotos = [];
       renderThumbnails();
       currentQuoteData = null;
+      yardMeasuredOnMap = false;
+      lastMeasuredMapSqFt = 0;
 
       clearFieldError(q.custName, q.errors.custName);
       clearFieldError(q.custAddress, q.errors.custAddress);
@@ -1291,6 +1372,9 @@
       toggleServiceQty(q.svcHedge, q.hedgeContainer, q.qtyHedge);
       updateLiveRunningTotal();
 
+      const note = document.getElementById('aerial-measure-note');
+      if (note) note.style.display = 'none';
+
       showScreen('screen-newquote');
 
       const toast = DOM.preview.toast;
@@ -1299,6 +1383,407 @@
       setTimeout(() => { toast.style.display = 'none'; }, 2500);
     }
   );
+
+  // ---------------------------------------------------------------------------
+  // 11. Screen 4: Saved Estimates & Pipeline System (Part C)
+  // ---------------------------------------------------------------------------
+
+  function showSavedToast(msg) {
+    const toast = DOM.saved.toast;
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2800);
+  }
+
+  function showQuotePreviewToast(msg) {
+    const toast = DOM.preview.toast;
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2800);
+  }
+
+  function getSavedEstimates() {
+    try {
+      const raw = window.localStorage.getItem(SAVED_ESTIMATES_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.warn('LocalStorage error reading saved estimates:', err);
+    }
+    return window._inMemorySavedEstimates || [];
+  }
+
+  function saveSavedEstimatesList(list) {
+    window._inMemorySavedEstimates = list;
+    try {
+      window.localStorage.setItem(SAVED_ESTIMATES_KEY, JSON.stringify(list));
+      return { success: true, strippedPhotos: false };
+    } catch (err) {
+      console.warn('Failed saving estimates to localStorage, attempting without photos:', err);
+      try {
+        const noPhotosList = list.map(item => ({ ...item, photos: [] }));
+        window.localStorage.setItem(SAVED_ESTIMATES_KEY, JSON.stringify(noPhotosList));
+        return { success: true, strippedPhotos: true };
+      } catch (err2) {
+        console.error('Fatal storage quota error:', err2);
+        return { success: false, error: err2 };
+      }
+    }
+  }
+
+  function saveEstimateToStorage(quote) {
+    const list = getSavedEstimates();
+    const existingIdx = list.findIndex(e => e.quoteId === quote.quoteId);
+    const quoteCopy = JSON.parse(JSON.stringify(quote));
+
+    if (existingIdx >= 0) {
+      // Preserve existing status and creation timestamp
+      quoteCopy.status = list[existingIdx].status || quoteCopy.status || 'pending';
+      quoteCopy.createdAt = list[existingIdx].createdAt || quoteCopy.createdAt || Date.now();
+      list[existingIdx] = quoteCopy;
+    } else {
+      quoteCopy.status = quoteCopy.status || 'pending';
+      quoteCopy.createdAt = quoteCopy.createdAt || Date.now();
+      list.unshift(quoteCopy);
+    }
+    return saveSavedEstimatesList(list);
+  }
+
+  function getDaysSince(timestamp) {
+    if (!timestamp) return 0;
+    const created = new Date(timestamp).getTime();
+    const now = Date.now();
+    const diffMs = Math.max(0, now - created);
+    return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  }
+
+  function getDaysSinceLabel(timestamp) {
+    const days = getDaysSince(timestamp);
+    if (days === 0) return 'Today';
+    if (days === 1) return '1 day ago';
+    return `${days} days ago`;
+  }
+
+  function updatePipelineSummary(estimates) {
+    const pending = estimates.filter(e => !e.status || e.status === 'pending');
+    const won = estimates.filter(e => e.status === 'won');
+    const lost = estimates.filter(e => e.status === 'lost');
+
+    const pendingCount = pending.length;
+    const pendingValue = pending.reduce((sum, e) => sum + (Number(e.finalTotal) || 0), 0);
+
+    const wonCount = won.length;
+    const wonValue = won.reduce((sum, e) => sum + (Number(e.finalTotal) || 0), 0);
+
+    const lostCount = lost.length;
+    const decided = wonCount + lostCount;
+    const winRate = decided > 0 ? Math.round((wonCount / decided) * 100) : 0;
+
+    if (DOM.saved.pendingVal) DOM.saved.pendingVal.textContent = pendingCount;
+    if (DOM.saved.pendingSub) DOM.saved.pendingSub.textContent = `${formatCurrency(pendingValue)} in pipeline`;
+
+    if (DOM.saved.wonVal) DOM.saved.wonVal.textContent = formatCurrency(wonValue);
+    if (DOM.saved.wonSub) DOM.saved.wonSub.textContent = `${wonCount} closed job${wonCount === 1 ? '' : 's'}`;
+
+    if (DOM.saved.winrateCard) {
+      if (decided > 0) {
+        DOM.saved.winrateCard.style.display = 'flex';
+        if (DOM.saved.winrateVal) DOM.saved.winrateVal.textContent = `${winRate}%`;
+        if (DOM.saved.winrateSub) DOM.saved.winrateSub.textContent = `${wonCount} of ${decided} decided`;
+      } else {
+        DOM.saved.winrateCard.style.display = 'none';
+      }
+    }
+
+    if (DOM.saved.filterCounts) {
+      if (DOM.saved.filterCounts.all) DOM.saved.filterCounts.all.textContent = estimates.length;
+      if (DOM.saved.filterCounts.pending) DOM.saved.filterCounts.pending.textContent = pendingCount;
+      if (DOM.saved.filterCounts.won) DOM.saved.filterCounts.won.textContent = wonCount;
+      if (DOM.saved.filterCounts.lost) DOM.saved.filterCounts.lost.textContent = lostCount;
+    }
+  }
+
+  function renderSavedScreen() {
+    const allEstimates = getSavedEstimates();
+    allEstimates.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    updatePipelineSummary(allEstimates);
+
+    let filtered = allEstimates;
+    if (currentSavedFilter === 'pending') {
+      filtered = allEstimates.filter(e => !e.status || e.status === 'pending');
+    } else if (currentSavedFilter === 'won') {
+      filtered = allEstimates.filter(e => e.status === 'won');
+    } else if (currentSavedFilter === 'lost') {
+      filtered = allEstimates.filter(e => e.status === 'lost');
+    }
+
+    const container = DOM.saved.listContainer;
+    const emptyState = DOM.saved.emptyState;
+    if (!container || !emptyState) return;
+
+    if (filtered.length === 0) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+      emptyState.style.display = 'block';
+
+      if (allEstimates.length === 0) {
+        DOM.saved.emptyTitle.textContent = 'No Saved Estimates Yet';
+        DOM.saved.emptyDesc.innerHTML = 'Create an estimate in <strong>Yard &amp; Services</strong> and tap <strong>Save Estimate</strong> on Quote Preview to track your jobs here.';
+        if (DOM.saved.createNewBtn) DOM.saved.createNewBtn.style.display = 'inline-flex';
+      } else {
+        DOM.saved.emptyTitle.textContent = `No ${currentSavedFilter.charAt(0).toUpperCase() + currentSavedFilter.slice(1)} Estimates`;
+        DOM.saved.emptyDesc.textContent = `You don't currently have any estimates marked as ${currentSavedFilter}.`;
+        if (DOM.saved.createNewBtn) DOM.saved.createNewBtn.style.display = 'none';
+      }
+      return;
+    }
+
+    emptyState.style.display = 'none';
+    container.style.display = 'flex';
+    container.innerHTML = '';
+
+    filtered.forEach(quote => {
+      const card = document.createElement('article');
+      card.className = 'saved-estimate-card';
+      card.setAttribute('data-quote-id', quote.quoteId);
+
+      const status = quote.status || 'pending';
+      const statusBadgeClass = `badge-${status}`;
+      const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+
+      const daysAgo = getDaysSince(quote.createdAt);
+      const daysAgoLabel = getDaysSinceLabel(quote.createdAt);
+      const isNeedsFollowUp = (status === 'pending' && daysAgo >= 3);
+
+      const servicesSummary = (quote.lineItems && quote.lineItems.length > 0)
+        ? quote.lineItems.map(i => i.name).join(', ')
+        : 'Lawn services';
+
+      const aerialBadgeHtml = quote.measuredOnMap
+        ? `<span class="badge-aerial-tag" title="Yard size measured on aerial map">📷 Aerial</span>`
+        : '';
+
+      const followUpHtml = isNeedsFollowUp
+        ? `<span class="badge badge-followup">⚠️ Follow up (${daysAgo}d)</span>`
+        : '';
+
+      let statusButtonsHtml = '';
+      if (status === 'pending') {
+        statusButtonsHtml = `
+          <button type="button" class="btn btn-secondary btn-action-won" title="Mark this estimate as Won">✓ Mark Won</button>
+          <button type="button" class="btn btn-outline btn-action-lost" title="Mark this estimate as Lost">✕ Mark Lost</button>
+        `;
+      } else if (status === 'won') {
+        statusButtonsHtml = `
+          <button type="button" class="btn btn-outline btn-action-pending" title="Move back to Pending">↩ Revert to Pending</button>
+          <button type="button" class="btn btn-outline btn-action-lost" title="Mark as Lost">✕ Mark Lost</button>
+        `;
+      } else if (status === 'lost') {
+        statusButtonsHtml = `
+          <button type="button" class="btn btn-secondary btn-action-won" title="Mark as Won">✓ Mark Won</button>
+          <button type="button" class="btn btn-outline btn-action-pending" title="Move back to Pending">↩ Revert to Pending</button>
+        `;
+      }
+
+      card.innerHTML = `
+        <div class="saved-card-header">
+          <div class="saved-card-meta">
+            <span class="saved-card-id">#${escapeHtml(quote.quoteId)}</span>
+            <span>&bull;</span>
+            <span>${escapeHtml(quote.dateFormatted || '')}</span>
+            <span>&bull;</span>
+            <span>${escapeHtml(daysAgoLabel)}</span>
+          </div>
+          <div class="saved-card-badges">
+            ${followUpHtml}
+            <span class="badge badge-status ${statusBadgeClass}">${statusLabel}</span>
+          </div>
+        </div>
+        <div class="saved-card-body">
+          <div class="saved-cust-info">
+            <div class="saved-cust-name">${escapeHtml(quote.custName || 'Unnamed Customer')}</div>
+            <div class="saved-cust-address">${escapeHtml(quote.custAddress || 'No address provided')}</div>
+            <div class="saved-cust-details">
+              <span>${Number(quote.yardSize).toLocaleString()} sq ft</span>
+              ${aerialBadgeHtml}
+              <span>&bull;</span>
+              <span>${escapeHtml(servicesSummary)}</span>
+            </div>
+          </div>
+          <div class="saved-total-wrap">
+            <div class="saved-total-label">Total Estimate</div>
+            <div class="saved-total-amount">${formatCurrency(quote.finalTotal)}</div>
+          </div>
+        </div>
+        <div class="saved-card-actions no-print">
+          <button type="button" class="btn btn-primary btn-action-reopen">Reopen</button>
+          ${statusButtonsHtml}
+          <button type="button" class="btn btn-outline btn-action-duplicate">Duplicate</button>
+          <button type="button" class="btn btn-outline btn-action-delete">Delete</button>
+        </div>
+      `;
+
+      const reopenBtn = card.querySelector('.btn-action-reopen');
+      if (reopenBtn) {
+        reopenBtn.addEventListener('click', () => {
+          reopenEstimate(quote.quoteId);
+        });
+      }
+
+      const wonBtn = card.querySelector('.btn-action-won');
+      if (wonBtn) {
+        wonBtn.addEventListener('click', () => {
+          updateEstimateStatus(quote.quoteId, 'won');
+        });
+      }
+
+      const lostBtn = card.querySelector('.btn-action-lost');
+      if (lostBtn) {
+        lostBtn.addEventListener('click', () => {
+          updateEstimateStatus(quote.quoteId, 'lost');
+        });
+      }
+
+      const pendingBtn = card.querySelector('.btn-action-pending');
+      if (pendingBtn) {
+        pendingBtn.addEventListener('click', () => {
+          updateEstimateStatus(quote.quoteId, 'pending');
+        });
+      }
+
+      const duplicateBtn = card.querySelector('.btn-action-duplicate');
+      if (duplicateBtn) {
+        duplicateBtn.addEventListener('click', () => {
+          duplicateEstimate(quote.quoteId);
+        });
+      }
+
+      const deleteBtn = card.querySelector('.btn-action-delete');
+      if (deleteBtn) {
+        bindTwoStepConfirm(
+          deleteBtn,
+          'Confirm Delete?',
+          'Delete',
+          () => {
+            deleteEstimate(quote.quoteId);
+          }
+        );
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  function reopenEstimate(quoteId) {
+    const list = getSavedEstimates();
+    const found = list.find(e => e.quoteId === quoteId);
+    if (!found) return;
+
+    currentQuoteData = JSON.parse(JSON.stringify(found));
+    renderQuotePreview(currentQuoteData);
+    showScreen('screen-preview');
+  }
+
+  function updateEstimateStatus(quoteId, newStatus) {
+    const list = getSavedEstimates();
+    const found = list.find(e => e.quoteId === quoteId);
+    if (!found) return;
+
+    found.status = newStatus;
+    saveSavedEstimatesList(list);
+    renderSavedScreen();
+
+    const label = newStatus === 'won' ? 'Won 🎉' : (newStatus === 'lost' ? 'Lost' : 'Pending');
+    showSavedToast(`Estimate #${quoteId} marked as ${label}`);
+  }
+
+  function duplicateEstimate(quoteId) {
+    const list = getSavedEstimates();
+    const source = list.find(e => e.quoteId === quoteId);
+    if (!source) return;
+
+    const today = new Date();
+    const valid = new Date();
+    valid.setDate(valid.getDate() + 14);
+
+    const newQuote = JSON.parse(JSON.stringify(source));
+    newQuote.quoteId = getNextQuoteNumber();
+    newQuote.createdAt = Date.now();
+    newQuote.dateFormatted = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    newQuote.validThrough = valid.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    newQuote.status = 'pending';
+
+    list.unshift(newQuote);
+    saveSavedEstimatesList(list);
+    renderSavedScreen();
+    showSavedToast(`Duplicated as #${newQuote.quoteId}`);
+  }
+
+  function deleteEstimate(quoteId) {
+    let list = getSavedEstimates();
+    list = list.filter(e => e.quoteId !== quoteId);
+    saveSavedEstimatesList(list);
+    renderSavedScreen();
+    showSavedToast(`Estimate #${quoteId} deleted.`);
+  }
+
+  // Save Estimate Action (Screen 3)
+  if (DOM.preview.saveBtn) {
+    DOM.preview.saveBtn.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+
+      const res = saveEstimateToStorage(currentQuoteData);
+      if (!res.success) {
+        showQuotePreviewToast('Failed to save estimate to local storage.');
+        return;
+      }
+
+      const originalHtml = DOM.preview.saveBtn.innerHTML;
+      DOM.preview.saveBtn.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Saved!
+      `;
+      setTimeout(() => {
+        DOM.preview.saveBtn.innerHTML = originalHtml;
+      }, 2000);
+
+      if (res.strippedPhotos) {
+        showQuotePreviewToast(`Estimate #${currentQuoteData.quoteId} saved (photos omitted due to storage limit).`);
+      } else {
+        showQuotePreviewToast(`Estimate #${currentQuoteData.quoteId} saved to pipeline!`);
+      }
+    });
+  }
+
+  // Filter Pills Event Listeners (Screen 4)
+  if (DOM.saved.filterBtns) {
+    DOM.saved.filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        DOM.saved.filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        currentSavedFilter = btn.getAttribute('data-filter') || 'all';
+        renderSavedScreen();
+      });
+    });
+  }
+
+  // Create First Quote Action in Empty State (Screen 4)
+  if (DOM.saved.createNewBtn) {
+    DOM.saved.createNewBtn.addEventListener('click', () => {
+      showScreen('screen-newquote');
+    });
+  }
 
   // ---------------------------------------------------------------------------
   // 12. Measure on Map Satellite Tool (Leaflet + Turf.js + Nominatim)
@@ -1496,10 +1981,10 @@
         }
         DOM.map.searchStatus.style.display = 'none';
       } else {
-        DOM.map.searchStatus.textContent = 'Address not found on satellite map. Try adding city/state, or pan directly.';
+        DOM.map.searchStatus.textContent = 'Address not found on aerial map. Try adding city/state, or pan directly.';
       }
     } catch (e) {
-      DOM.map.searchStatus.textContent = 'Unable to search address. You can zoom and pan the satellite map directly.';
+      DOM.map.searchStatus.textContent = 'Unable to search address. You can zoom and pan the aerial map directly.';
     }
   }
 
@@ -1523,13 +2008,6 @@
       }, 250);
     }
   });
-
-  const bannerOpenBtn = document.getElementById('btn-banner-open-map');
-  if (bannerOpenBtn) {
-    bannerOpenBtn.addEventListener('click', () => {
-      DOM.map.btnOpen.click();
-    });
-  }
 
   DOM.map.btnClose.addEventListener('click', () => {
     DOM.map.modal.style.display = 'none';
@@ -1576,9 +2054,17 @@
 
   DOM.map.btnUseArea.addEventListener('click', () => {
     if (totalTracedSqFt > 0) {
+      lastMeasuredMapSqFt = totalTracedSqFt;
+      yardMeasuredOnMap = true;
       DOM.newQuote.yardSize.value = totalTracedSqFt;
       DOM.newQuote.yardSize.dispatchEvent(new Event('input', { bubbles: true }));
       DOM.map.modal.style.display = 'none';
+
+      const note = document.getElementById('aerial-measure-note');
+      if (note) {
+        note.style.display = 'block';
+        note.textContent = '📷 Measured from aerial photo. Please double-check.';
+      }
     }
   });
 

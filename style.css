@@ -138,8 +138,8 @@ body {
   font-feature-settings: "tnum";
 }
 
-/* 375px Mobile Viewport Word Wrapping Defense */
-h1, h2, h3, h4, p, span, div, a, td, th, label {
+/* 375px Mobile Viewport Word Wrapping Defense (Excluding Financial Table Cells) */
+h1, h2, h3, h4, p, span, div, a, label {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
@@ -157,7 +157,7 @@ h1, h2, h3, h4, p, span, div, a, td, th, label {
 }
 
 .header-inner {
-  max-width: 880px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 12px 16px;
   display: flex;
@@ -233,6 +233,7 @@ h1, h2, h3, h4, p, span, div, a, td, th, label {
   min-height: 40px;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -257,6 +258,7 @@ h1, h2, h3, h4, p, span, div, a, td, th, label {
    5. Interactive 3-Step Progress Track
    -------------------------------------------------------------------------- */
 .step-progress-nav {
+  display: none !important; /* Unified to ONE navigation system per screen size */
   background-color: var(--color-bg-surface);
   border-bottom: 1px solid var(--color-border-subtle);
   padding: 8px 16px;
@@ -703,6 +705,11 @@ textarea.form-control {
   border: 1px solid var(--color-warning-border);
   padding: 2px 8px;
   border-radius: var(--radius-pill);
+}
+
+#btn-goto-pricesheet {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .live-estimate-chip {
@@ -1198,6 +1205,41 @@ textarea.form-control {
   font-size: 0.75rem; /* 12px */
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.quote-table th.th-service {
+  text-align: left;
+  width: auto;
+}
+
+.quote-table th.th-qty,
+.quote-table td.text-center {
+  width: 30%;
+  min-width: 220px;
+  white-space: nowrap !important;
+  word-break: normal !important;
+  text-align: center;
+}
+
+.quote-table th.th-rate,
+.quote-table td.text-right:nth-child(3) {
+  width: 18%;
+  min-width: 140px;
+  white-space: nowrap !important;
+  word-break: normal !important;
+  text-align: right;
+}
+
+.quote-table th.th-total,
+.quote-table td.text-right:nth-child(4) {
+  width: 16%;
+  min-width: 110px;
+  white-space: nowrap !important;
+  word-break: normal !important;
+  text-align: right;
 }
 
 .quote-table td {
@@ -1205,6 +1247,15 @@ textarea.form-control {
   border-bottom: 1px solid var(--color-border-subtle);
   color: var(--color-text-primary);
   vertical-align: middle;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.quote-table td.tabular-num,
+.quote-table td strong {
+  white-space: nowrap !important;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 .quote-table tbody tr:last-child td {
@@ -1448,42 +1499,42 @@ textarea.form-control {
     flex: 1;
   }
 
+  .tab-step-prefix {
+    display: none;
+  }
+
   .tab-svg-icon {
     width: 22px;
     height: 22px;
   }
 
-  /* Floating Actions Toolbar for Screen 3 */
+  /* In-flow Action Toolbar for Screen 3 at end of Estimate */
   .preview-actions {
-    position: fixed;
-    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(8px);
-    border-top: 1px solid var(--color-border-subtle);
-    padding: 8px 12px;
+    position: static;
+    background: transparent;
+    border-top: none;
+    padding: 16px 0 20px;
     margin: 0;
-    z-index: 99;
-    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 8px;
-  }
-
-  .preview-actions .btn-print-action {
-    flex: 2;
+    z-index: 1;
   }
 
   .preview-actions .btn {
+    flex: 1 1 calc(50% - 6px);
     min-height: 44px;
-    padding: 10px;
-    font-size: 0.875rem;
+    padding: 10px 8px;
+    font-size: 0.8125rem;
     min-width: 0;
+    justify-content: center;
+    white-space: nowrap;
   }
 
   #quote-card {
-    margin-bottom: 70px;
+    margin-bottom: 24px;
   }
 }
 
@@ -1961,5 +2012,300 @@ textarea.form-control {
   .map-tool-btn {
     padding: 6px 10px;
     font-size: 0.75rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   18. Screen 4: Saved Estimates & Pipeline
+   -------------------------------------------------------------------------- */
+.pipeline-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.pipeline-metric-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pipeline-metric-card.metric-pending {
+  border-left: 4px solid #F59E0B;
+}
+
+.pipeline-metric-card.metric-won {
+  border-left: 4px solid var(--color-brand-primary);
+}
+
+.pipeline-metric-card.metric-winrate {
+  border-left: 4px solid #2563EB;
+}
+
+.pipeline-metric-card .metric-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+.pipeline-metric-card .metric-val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.pipeline-metric-card .metric-sub {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.saved-filters-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-pill {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border-subtle);
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease-in-out;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.filter-pill:hover {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.filter-pill.active {
+  background-color: var(--color-brand-primary);
+  color: #FFFFFF;
+  border-color: var(--color-brand-primary);
+}
+
+.saved-estimates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.saved-estimate-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.saved-estimate-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.saved-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.saved-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.saved-card-id {
+  font-weight: 700;
+  color: var(--color-brand-primary);
+}
+
+.saved-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-pending {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.badge-won {
+  background-color: #ECFDF5;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.badge-lost {
+  background-color: #F1F5F9;
+  color: #64748B;
+  border: 1px solid #CBD5E1;
+}
+
+.badge-followup {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FCA5A5;
+}
+
+.badge-aerial-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.saved-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.saved-cust-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+  flex: 1;
+}
+
+.saved-cust-name {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.saved-cust-address {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.saved-cust-details {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.saved-total-wrap {
+  text-align: right;
+  min-width: 120px;
+}
+
+.saved-total-label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.saved-total-amount {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.saved-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.saved-card-actions .btn {
+  min-height: 38px;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 640px) {
+  .pipeline-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .saved-card-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .saved-total-wrap {
+    text-align: left;
+  }
+
+  .saved-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .saved-card-actions .btn {
+    min-height: 44px;
+    justify-content: center;
+    font-size: 0.8125rem;
   }
 }
