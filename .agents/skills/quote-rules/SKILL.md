@@ -17,13 +17,15 @@ The business owner configures base settings stored defensively in browser `local
   1. **Mowing:** Billed per 1,000 sq ft of lawn area (e.g., `$12.00 / 1k sq ft`).
   2. **Edging:** Billed per 1,000 sq ft of lawn area (e.g., `$4.00 / 1k sq ft`).
   3. **Leaf Cleanup:** Billed per 1,000 sq ft of lawn area (e.g., `$8.00 / 1k sq ft`).
-  4. **Mulch:** Billed per cubic yard delivered and installed (e.g., `$85.00 / cu yd`).
-  5. **Hedge Trimming:** Billed per crew hour (e.g., `$55.00 / hr`).
+  4. **Turf Fertilization:** Billed per 1,000 sq ft of lawn area (e.g., `$9.00 / 1k sq ft`).
+  5. **Overseeding & Winter Rye Grass:** Billed per 1,000 sq ft of lawn area (e.g., `$18.00 / 1k sq ft`).
+  6. **Mulch:** Billed per cubic yard delivered and installed (e.g., `$85.00 / cu yd`).
+  7. **Hedge Trimming:** Billed per crew hour (e.g., `$55.00 / hr`).
 
 ## 2. Pricing Calculation Logic
 
 ### A. Line Items & Area Rounding Up Rule
-* **Area-Based Services (Mowing, Edging, Leaf Cleanup):**
+* **Area-Based Services (Mowing, Edging, Leaf Cleanup, Fertilization, Overseeding / Winter Rye):**
   Lawn area must **always** be rounded **UP to the next 1,000 sq ft**:
   $$\text{Area Units} = \left\lceil \frac{\text{Yard Size (sq ft)}}{1000} \right\rceil$$
   *(Examples: $4,200 \text{ sq ft} \to 5 \text{ units}$; $500 \text{ sq ft} \to 1 \text{ unit}$; $1,000 \text{ sq ft} \to 1 \text{ unit}$; $4,200.5 \text{ sq ft} \to 5 \text{ units}$.)*

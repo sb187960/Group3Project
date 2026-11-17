@@ -212,6 +212,24 @@
             </div>
             <div id="error-setting-rate-hedge" class="field-error" style="display: none;"></div>
           </div>
+
+          <div class="form-group">
+            <label for="setting-rate-fertilizer">Fertilization Rate ($ per 1,000 sq ft) *</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-fertilizer" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
+            </div>
+            <div id="error-setting-rate-fertilizer" class="field-error" style="display: none;"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="setting-rate-overseed">Overseeding &amp; Rye Grass Rate ($ per 1,000 sq ft) *</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="number" id="setting-rate-overseed" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
+            </div>
+            <div id="error-setting-rate-overseed" class="field-error" style="display: none;"></div>
+          </div>
         </div>
 
         <div id="pricesheet-warning" class="banner-warning" style="display: none;" role="alert"></div>
@@ -448,6 +466,44 @@
               <div id="error-qty-hedge" class="field-error" style="display: none;"></div>
             </div>
           </div>
+
+          <!-- Fertilization -->
+          <label class="service-item" for="svc-fertilizer">
+            <div class="service-checkbox-wrap">
+              <input type="checkbox" id="svc-fertilizer" class="svc-toggle">
+              <span class="service-name">
+                <span class="service-icon" aria-hidden="true">
+                  <svg class="svc-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7Z"></path>
+                    <path d="M12 6v6"></path>
+                    <path d="M9 9h6"></path>
+                  </svg>
+                </span>
+                Turf Fertilization
+              </span>
+            </div>
+            <span class="service-rate-badge tabular-num" id="badge-rate-fertilizer">$9 / 1k sq ft</span>
+          </label>
+
+          <!-- Overseeding & Rye Grass -->
+          <label class="service-item" for="svc-overseed">
+            <div class="service-checkbox-wrap">
+              <input type="checkbox" id="svc-overseed" class="svc-toggle">
+              <span class="service-name">
+                <span class="service-icon" aria-hidden="true">
+                  <svg class="svc-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 22h20"></path>
+                    <path d="M7 18a5 5 0 0 1 10 0"></path>
+                    <circle cx="12" cy="7" r="1.5"></circle>
+                    <circle cx="8" cy="11" r="1.5"></circle>
+                    <circle cx="16" cy="11" r="1.5"></circle>
+                  </svg>
+                </span>
+                Overseeding &amp; Rye Grass
+              </span>
+            </div>
+            <span class="service-rate-badge tabular-num" id="badge-rate-overseed">$18 / 1k sq ft</span>
+          </label>
 
           <div id="svc-error" class="field-error" style="display: none; margin-top: 10px;">Please select at least one service.</div>
         </div>

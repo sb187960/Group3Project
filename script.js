@@ -26,6 +26,8 @@
       mowing: 12.0,      // $ per 1,000 sq ft
       edging: 4.0,       // $ per 1,000 sq ft
       leaf: 8.0,         // $ per 1,000 sq ft
+      fertilizer: 9.0,   // $ per 1,000 sq ft
+      overseed: 18.0,    // $ per 1,000 sq ft
       mulch: 85.0,       // $ per cubic yard
       hedge: 55.0        // $ per crew hour
     }
@@ -38,6 +40,8 @@
     mowing: { min: 3, max: 40, label: 'Mowing', typical: '$10–$25 / 1k sq ft' },
     edging: { min: 1, max: 25, label: 'Edging', typical: '$3–$10 / 1k sq ft' },
     leaf: { min: 2, max: 35, label: 'Leaf cleanup', typical: '$6–$15 / 1k sq ft' },
+    fertilizer: { min: 3, max: 40, label: 'Fertilization', typical: '$6–$18 / 1k sq ft' },
+    overseed: { min: 5, max: 60, label: 'Overseeding / Rye', typical: '$12–$30 / 1k sq ft' },
     mulch: { min: 20, max: 200, label: 'Mulch', typical: '$70–$120 / cu yd' },
     hedge: { min: 15, max: 150, label: 'Hedge trimming', typical: '$45–$75 / hr' },
     minJobCharge: { min: 10, max: 250, label: 'Minimum job charge', typical: '$35–$100' }
@@ -79,6 +83,8 @@
       rateMowing: document.getElementById('setting-rate-mowing'),
       rateEdging: document.getElementById('setting-rate-edging'),
       rateLeaf: document.getElementById('setting-rate-leaf'),
+      rateFertilizer: document.getElementById('setting-rate-fertilizer'),
+      rateOverseed: document.getElementById('setting-rate-overseed'),
       rateMulch: document.getElementById('setting-rate-mulch'),
       rateHedge: document.getElementById('setting-rate-hedge'),
       resetBtn: document.getElementById('btn-reset-settings'),
@@ -94,6 +100,8 @@
         rateMowing: document.getElementById('error-setting-rate-mowing'),
         rateEdging: document.getElementById('error-setting-rate-edging'),
         rateLeaf: document.getElementById('error-setting-rate-leaf'),
+        rateFertilizer: document.getElementById('error-setting-rate-fertilizer'),
+        rateOverseed: document.getElementById('error-setting-rate-overseed'),
         rateMulch: document.getElementById('error-setting-rate-mulch'),
         rateHedge: document.getElementById('error-setting-rate-hedge')
       }
@@ -109,6 +117,8 @@
       svcMowing: document.getElementById('svc-mowing'),
       svcEdging: document.getElementById('svc-edging'),
       svcLeaf: document.getElementById('svc-leaf'),
+      svcFertilizer: document.getElementById('svc-fertilizer'),
+      svcOverseed: document.getElementById('svc-overseed'),
       svcMulch: document.getElementById('svc-mulch'),
       svcHedge: document.getElementById('svc-hedge'),
       mulchContainer: document.getElementById('mulch-qty-container'),
@@ -135,6 +145,8 @@
         mowing: document.getElementById('badge-rate-mowing'),
         edging: document.getElementById('badge-rate-edging'),
         leaf: document.getElementById('badge-rate-leaf'),
+        fertilizer: document.getElementById('badge-rate-fertilizer'),
+        overseed: document.getElementById('badge-rate-overseed'),
         mulch: document.getElementById('badge-rate-mulch'),
         hedge: document.getElementById('badge-rate-hedge')
       }
@@ -428,7 +440,8 @@
     }
 
     if (loaded && typeof loaded === 'object' && loaded.rates) {
-      currentSettings = loaded;
+      currentSettings = Object.assign({}, DEFAULT_SETTINGS, loaded);
+      currentSettings.rates = Object.assign({}, DEFAULT_SETTINGS.rates, loaded.rates);
       if (DOM.priceSheet.hintBanner) {
         DOM.priceSheet.hintBanner.style.display = 'none';
       }
@@ -462,6 +475,8 @@
     s.rateMowing.value = currentSettings.rates.mowing;
     s.rateEdging.value = currentSettings.rates.edging;
     s.rateLeaf.value = currentSettings.rates.leaf;
+    s.rateFertilizer.value = currentSettings.rates.fertilizer;
+    s.rateOverseed.value = currentSettings.rates.overseed;
     s.rateMulch.value = currentSettings.rates.mulch;
     s.rateHedge.value = currentSettings.rates.hedge;
   }
@@ -479,6 +494,8 @@
     q.badges.mowing.textContent = `${formatCurrency(currentSettings.rates.mowing)} / 1k sq ft`;
     q.badges.edging.textContent = `${formatCurrency(currentSettings.rates.edging)} / 1k sq ft`;
     q.badges.leaf.textContent = `${formatCurrency(currentSettings.rates.leaf)} / 1k sq ft`;
+    q.badges.fertilizer.textContent = `${formatCurrency(currentSettings.rates.fertilizer)} / 1k sq ft`;
+    q.badges.overseed.textContent = `${formatCurrency(currentSettings.rates.overseed)} / 1k sq ft`;
     q.badges.mulch.textContent = `${formatCurrency(currentSettings.rates.mulch)} / cu yd`;
     q.badges.hedge.textContent = `${formatCurrency(currentSettings.rates.hedge)} / hr`;
   }
@@ -514,6 +531,8 @@
       { elem: s.rateMowing, err: s.errors.rateMowing, key: 'mowing', name: 'Mowing' },
       { elem: s.rateEdging, err: s.errors.rateEdging, key: 'edging', name: 'Edging' },
       { elem: s.rateLeaf, err: s.errors.rateLeaf, key: 'leaf', name: 'Leaf cleanup' },
+      { elem: s.rateFertilizer, err: s.errors.rateFertilizer, key: 'fertilizer', name: 'Fertilization' },
+      { elem: s.rateOverseed, err: s.errors.rateOverseed, key: 'overseed', name: 'Overseeding / Rye grass' },
       { elem: s.rateMulch, err: s.errors.rateMulch, key: 'mulch', name: 'Mulch' },
       { elem: s.rateHedge, err: s.errors.rateHedge, key: 'hedge', name: 'Hedge trimming' }
     ];
@@ -582,7 +601,7 @@
     }
 
     // 4. Services Selection
-    const hasService = q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcMulch.checked || q.svcHedge.checked;
+    const hasService = q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcFertilizer.checked || q.svcOverseed.checked || q.svcMulch.checked || q.svcHedge.checked;
     if (!hasService) {
       q.errors.svc.style.display = 'block';
       hasError = true;
@@ -635,6 +654,8 @@
         mowing: q.svcMowing.checked,
         edging: q.svcEdging.checked,
         leaf: q.svcLeaf.checked,
+        fertilizer: q.svcFertilizer.checked,
+        overseed: q.svcOverseed.checked,
         mulch: q.svcMulch.checked,
         hedge: q.svcHedge.checked
       },
@@ -717,6 +738,30 @@
       });
     }
 
+    if (services.fertilizer) {
+      const rate = rates.fertilizer !== undefined ? rates.fertilizer : DEFAULT_SETTINGS.rates.fertilizer;
+      const amount = areaUnits * rate;
+      lineItems.push({
+        name: 'Turf Fertilization',
+        description: 'Balanced seasonal nutrient application to promote deep root growth',
+        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        rate: `${formatCurrency(rate)} / 1k sq ft`,
+        amount: Math.round(amount * 100) / 100
+      });
+    }
+
+    if (services.overseed) {
+      const rate = rates.overseed !== undefined ? rates.overseed : DEFAULT_SETTINGS.rates.overseed;
+      const amount = areaUnits * rate;
+      lineItems.push({
+        name: 'Overseeding & Winter Rye',
+        description: 'Slit-seeding & broadcast application for lush seasonal turf cover',
+        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits}k sq ft)`,
+        rate: `${formatCurrency(rate)} / 1k sq ft`,
+        amount: Math.round(amount * 100) / 100
+      });
+    }
+
     if (services.mulch) {
       const rate = rates.mulch;
       const amount = quantities.mulchYards * rate;
@@ -778,7 +823,7 @@
 
     const rawYard = q.yardSize.value.trim();
     const yardSize = parseFloat(rawYard);
-    const hasService = q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcMulch.checked || q.svcHedge.checked;
+    const hasService = q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcFertilizer.checked || q.svcOverseed.checked || q.svcMulch.checked || q.svcHedge.checked;
 
     if (!rawYard || isNaN(yardSize) || yardSize <= 0 || !hasService) {
       q.liveRunningTotal.textContent = '—';
@@ -789,6 +834,8 @@
       mowing: q.svcMowing.checked,
       edging: q.svcEdging.checked,
       leaf: q.svcLeaf.checked,
+      fertilizer: q.svcFertilizer.checked,
+      overseed: q.svcOverseed.checked,
       mulch: q.svcMulch.checked,
       hedge: q.svcHedge.checked
     };
@@ -913,9 +960,9 @@
     });
   });
 
-  [q.svcMowing, q.svcEdging, q.svcLeaf, q.svcMulch, q.svcHedge].forEach(cb => {
+  [q.svcMowing, q.svcEdging, q.svcLeaf, q.svcFertilizer, q.svcOverseed, q.svcMulch, q.svcHedge].forEach(cb => {
     cb.addEventListener('change', () => {
-      if (q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcMulch.checked || q.svcHedge.checked) {
+      if (q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcFertilizer.checked || q.svcOverseed.checked || q.svcMulch.checked || q.svcHedge.checked) {
         q.errors.svc.style.display = 'none';
       }
       updateLiveRunningTotal();
@@ -1005,6 +1052,8 @@
     q.svcMowing.checked = true;
     q.svcEdging.checked = true;
     q.svcLeaf.checked = false;
+    q.svcFertilizer.checked = false;
+    q.svcOverseed.checked = false;
 
     q.svcMulch.checked = true;
     toggleServiceQty(q.svcMulch, q.mulchContainer, q.qtyMulch);
@@ -1151,7 +1200,7 @@
 
       const s = DOM.priceSheet;
       Object.values(s.errors).forEach(err => { if (err) err.style.display = 'none'; });
-      [s.bizName, s.minCharge, s.rateMowing, s.rateEdging, s.rateLeaf, s.rateMulch, s.rateHedge].forEach(i => {
+      [s.bizName, s.minCharge, s.rateMowing, s.rateEdging, s.rateLeaf, s.rateFertilizer, s.rateOverseed, s.rateMulch, s.rateHedge].forEach(i => {
         if (i) i.classList.remove('input-invalid');
       });
 
