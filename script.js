@@ -7,6 +7,7 @@
  * - Final quote total rounded to the nearest multiple of $5
  * - Zero native popups (alert/confirm/prompt); all validations inline
  * - Defensive localStorage read/write with graceful in-memory fallback
+ * - Fairway Pro Brand & Modern Thumb Navigation System
  */
 
 (function () {
@@ -44,7 +45,8 @@
 
   // State
   let currentSettings = null;
-  let attachedPhotos = []; // Array of base64 data URLs
+  let currentQuoteData = null; // null until user creates a quote
+  let attachedPhotos = [];     // Array of base64 data URLs
   let pendingRateWarning = false;
   let rateWarningTimer = null;
 
@@ -59,7 +61,13 @@
     },
     nav: {
       tabs: document.querySelectorAll('.tab-btn'),
-      gotoPriceSheetBtn: document.getElementById('btn-goto-pricesheet')
+      gotoPriceSheetBtn: document.getElementById('btn-goto-pricesheet'),
+      stepBtns: document.querySelectorAll('.step-item'),
+      stepBtn1: document.getElementById('step-btn-1'),
+      stepBtn2: document.getElementById('step-btn-2'),
+      stepBtn3: document.getElementById('step-btn-3'),
+      stepConn1: document.getElementById('step-conn-1'),
+      stepConn2: document.getElementById('step-conn-2')
     },
     priceSheet: {
       form: document.getElementById('price-sheet-form'),
@@ -76,6 +84,7 @@
       resetBtn: document.getElementById('btn-reset-settings'),
       toast: document.getElementById('settings-toast'),
       warningBanner: document.getElementById('pricesheet-warning'),
+      hintBanner: document.getElementById('pricesheet-hint-banner'),
       exportBtn: document.getElementById('btn-export-backup'),
       importBtn: document.getElementById('btn-import-backup'),
       importFileInput: document.getElementById('backup-file-input'),
@@ -112,6 +121,8 @@
       hedgePlusBtn: document.getElementById('btn-hedge-plus'),
       photoInput: document.getElementById('photo-input'),
       thumbnails: document.getElementById('photo-thumbnails'),
+      liveTotalChip: document.getElementById('live-total-chip'),
+      liveRunningTotal: document.getElementById('live-running-total'),
       errors: {
         custName: document.getElementById('error-quote-cust-name'),
         custAddress: document.getElementById('error-quote-cust-address'),
@@ -133,6 +144,11 @@
       editBtn: document.getElementById('btn-edit-quote'),
       newQuoteBtn: document.getElementById('btn-new-quote'),
       toast: document.getElementById('quote-action-toast'),
+      emptyState: document.getElementById('quote-empty-state'),
+      quoteCard: document.getElementById('quote-card'),
+      actions: document.querySelector('.preview-actions'),
+      emptyStartBtn: document.getElementById('btn-empty-start-quote'),
+      emptySampleBtn: document.getElementById('btn-empty-sample-quote'),
       bizName: document.getElementById('view-biz-name'),
       bizPhone: document.getElementById('view-biz-phone'),
       bizEmail: document.getElementById('view-biz-email'),
@@ -207,6 +223,7 @@
       val = Math.max(minVal, Math.round((val - step) * 10) / 10);
       inputElem.value = val;
       clearFieldError(inputElem, errorElem);
+      inputElem.dispatchEvent(new Event('input', { bubbles: true }));
     });
 
     plusBtn.addEventListener('click', (e) => {
@@ -215,6 +232,7 @@
       val = Math.round((val + step) * 10) / 10;
       inputElem.value = val;
       clearFieldError(inputElem, errorElem);
+      inputElem.dispatchEvent(new Event('input', { bubbles: true }));
     });
   }
 
@@ -228,13 +246,13 @@
     button.addEventListener('click', () => {
       if (!pending) {
         pending = true;
-        button.textContent = promptText;
+        button.innerHTML = `⚠️ ${promptText}`;
         button.classList.add('btn-secondary');
         button.classList.remove('btn-outline');
 
         timer = setTimeout(() => {
           pending = false;
-          button.textContent = defaultText;
+          button.innerHTML = defaultText;
           button.classList.remove('btn-secondary');
           button.classList.add('btn-outline');
         }, 3500);
@@ -243,7 +261,7 @@
 
       clearTimeout(timer);
       pending = false;
-      button.textContent = defaultText;
+      button.innerHTML = defaultText;
       button.classList.remove('btn-secondary');
       button.classList.add('btn-outline');
       onConfirm();
@@ -287,7 +305,7 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Screen Navigation
+  // 4. Screen Navigation & Connected 3-Step Progress
   // ---------------------------------------------------------------------------
   function showScreen(screenId) {
     Object.keys(DOM.screens).forEach(id => {
@@ -302,12 +320,73 @@
       btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
     });
 
+    updateStepProgress(screenId);
+
+    // If on Quote Preview screen, toggle empty state vs rendered quote card
+    if (screenId === 'screen-preview') {
+      const hasQuote = currentQuoteData !== null;
+      if (DOM.preview.emptyState) {
+        DOM.preview.emptyState.style.display = hasQuote ? 'none' : 'block';
+      }
+      if (DOM.preview.quoteCard) {
+        DOM.preview.quoteCard.style.display = hasQuote ? 'block' : 'none';
+      }
+      if (DOM.preview.actions) {
+        DOM.preview.actions.style.display = hasQuote ? 'flex' : 'none';
+      }
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function updateStepProgress(screenId) {
+    const s1 = DOM.nav.stepBtn1;
+    const s2 = DOM.nav.stepBtn2;
+    const s3 = DOM.nav.stepBtn3;
+    const c1 = DOM.nav.stepConn1;
+    const c2 = DOM.nav.stepConn2;
+    if (!s1 || !s2 || !s3) return;
+
+    [s1, s2, s3].forEach(btn => btn.classList.remove('active', 'completed'));
+    if (c1) c1.classList.remove('completed');
+    if (c2) c2.classList.remove('completed');
+
+    if (screenId === 'screen-pricesheet') {
+      s1.classList.add('active');
+      s1.querySelector('.step-badge').textContent = '1';
+      s2.querySelector('.step-badge').textContent = '2';
+      s3.querySelector('.step-badge').textContent = '3';
+    } else if (screenId === 'screen-newquote') {
+      s1.classList.add('completed');
+      s1.querySelector('.step-badge').textContent = '✓';
+      if (c1) c1.classList.add('completed');
+      s2.classList.add('active');
+      s2.querySelector('.step-badge').textContent = '2';
+      s3.querySelector('.step-badge').textContent = '3';
+    } else if (screenId === 'screen-preview') {
+      s1.classList.add('completed');
+      s1.querySelector('.step-badge').textContent = '✓';
+      if (c1) c1.classList.add('completed');
+      s2.classList.add('completed');
+      s2.querySelector('.step-badge').textContent = '✓';
+      if (c2) c2.classList.add('completed');
+      s3.classList.add('active');
+      s3.querySelector('.step-badge').textContent = '3';
+    }
+  }
+
+  // Bind tab buttons
   DOM.nav.tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       showScreen(btn.getAttribute('data-target'));
+    });
+  });
+
+  // Bind step progress bar buttons for 1-tap navigation
+  DOM.nav.stepBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      if (target) showScreen(target);
     });
   });
 
@@ -333,6 +412,9 @@
 
     if (loaded && typeof loaded === 'object' && loaded.rates) {
       currentSettings = loaded;
+      if (DOM.priceSheet.hintBanner) {
+        DOM.priceSheet.hintBanner.style.display = 'none';
+      }
     } else {
       currentSettings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
       saveSettingsToStorage();
@@ -671,17 +753,60 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 8. Render Quote Preview (Strict Skill Section Ordering: 1 -> 7)
+  // 8. Live Running Total Calculation on Screen 2
+  // ---------------------------------------------------------------------------
+  function updateLiveRunningTotal() {
+    const q = DOM.newQuote;
+    if (!q.liveRunningTotal) return;
+
+    const rawYard = q.yardSize.value.trim();
+    const yardSize = parseFloat(rawYard);
+    const hasService = q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcMulch.checked || q.svcHedge.checked;
+
+    if (!rawYard || isNaN(yardSize) || yardSize <= 0 || !hasService) {
+      q.liveRunningTotal.textContent = '—';
+      return;
+    }
+
+    const services = {
+      mowing: q.svcMowing.checked,
+      edging: q.svcEdging.checked,
+      leaf: q.svcLeaf.checked,
+      mulch: q.svcMulch.checked,
+      hedge: q.svcHedge.checked
+    };
+
+    const quantities = {
+      mulchYards: q.svcMulch.checked ? (parseFloat(q.qtyMulch.value) || 0) : 0,
+      hedgeHours: q.svcHedge.checked ? (parseFloat(q.qtyHedge.value) || 0) : 0
+    };
+
+    const rates = (currentSettings && currentSettings.rates) ? currentSettings.rates : DEFAULT_SETTINGS.rates;
+    const minCharge = (currentSettings && currentSettings.minJobCharge !== undefined) ? currentSettings.minJobCharge : DEFAULT_SETTINGS.minJobCharge;
+
+    const pricing = calculateQuote(yardSize, services, quantities, rates, minCharge);
+    q.liveRunningTotal.textContent = formatCurrency(pricing.finalTotal);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 9. Render Quote Preview (Strict Skill Section Ordering: 1 -> 7)
   // ---------------------------------------------------------------------------
   function renderQuotePreview(quote) {
     const p = DOM.preview;
 
     // SECTION 1: Header / Branding
     p.bizName.textContent = currentSettings.businessName;
-    p.bizPhone.textContent = currentSettings.phone ? `📞 ${currentSettings.phone}` : '';
-    p.bizEmail.textContent = currentSettings.email ? `✉️ ${currentSettings.email}` : '';
+    p.bizPhone.textContent = currentSettings.phone ? currentSettings.phone : '';
+    p.bizEmail.textContent = currentSettings.email ? currentSettings.email : '';
     p.quoteDate.textContent = quote.dateFormatted;
     p.quoteId.textContent = `#${quote.quoteId}`;
+
+    const validElem = document.getElementById('view-quote-valid');
+    if (validElem) {
+      const d = new Date();
+      d.setDate(d.getDate() + 14);
+      validElem.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
 
     // SECTION 2: Customer Details
     p.custName.textContent = quote.custName;
@@ -698,9 +823,9 @@
           <div class="item-service-desc">${escapeHtml(item.description)}</div>
           <div class="item-service-meta-mobile">${escapeHtml(item.qty)} &bull; ${escapeHtml(item.rate)}</div>
         </td>
-        <td class="text-center">${escapeHtml(item.qty)}</td>
-        <td class="text-right">${escapeHtml(item.rate)}</td>
-        <td class="text-right"><strong>${formatCurrency(item.amount)}</strong></td>
+        <td class="text-center tabular-num">${escapeHtml(item.qty)}</td>
+        <td class="text-right tabular-num">${escapeHtml(item.rate)}</td>
+        <td class="text-right tabular-num"><strong>${formatCurrency(item.amount)}</strong></td>
       `;
       p.lineItems.appendChild(tr);
     });
@@ -723,7 +848,7 @@
     // Safeguard: High-Value / Sanity Advisory (Hidden on Print)
     if (p.highValueWarning) {
       if (quote.finalTotal >= 1000 || quote.yardSize >= 20000) {
-        p.highValueWarning.innerHTML = `⚠️ <strong>High Quote Notice:</strong> ${formatCurrency(quote.finalTotal)} for ${quote.yardSize.toLocaleString()} sq ft. Please verify yard size and quantities before sending to the customer.`;
+        p.highValueWarning.innerHTML = `<strong>High Quote Advisory:</strong> ${formatCurrency(quote.finalTotal)} for ${quote.yardSize.toLocaleString()} sq ft. Please verify yard size and quantities before sending to the customer.`;
         p.highValueWarning.style.display = 'block';
       } else {
         p.highValueWarning.style.display = 'none';
@@ -753,10 +878,10 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 9. Event Listeners & Binding
+  // 10. Event Listeners & Binding
   // ---------------------------------------------------------------------------
 
-  // Auto-clear validation errors as user types
+  // Auto-clear validation errors as user types & update live running total
   const q = DOM.newQuote;
   [
     { input: q.custName, err: q.errors.custName },
@@ -765,7 +890,10 @@
     { input: q.qtyMulch, err: q.errors.qtyMulch },
     { input: q.qtyHedge, err: q.errors.qtyHedge }
   ].forEach(pair => {
-    pair.input.addEventListener('input', () => clearFieldError(pair.input, pair.err));
+    pair.input.addEventListener('input', () => {
+      clearFieldError(pair.input, pair.err);
+      updateLiveRunningTotal();
+    });
   });
 
   [q.svcMowing, q.svcEdging, q.svcLeaf, q.svcMulch, q.svcHedge].forEach(cb => {
@@ -773,6 +901,7 @@
       if (q.svcMowing.checked || q.svcEdging.checked || q.svcLeaf.checked || q.svcMulch.checked || q.svcHedge.checked) {
         q.errors.svc.style.display = 'none';
       }
+      updateLiveRunningTotal();
     });
   });
 
@@ -788,8 +917,14 @@
     }
   }
 
-  q.svcMulch.addEventListener('change', () => toggleServiceQty(q.svcMulch, q.mulchContainer, q.qtyMulch));
-  q.svcHedge.addEventListener('change', () => toggleServiceQty(q.svcHedge, q.hedgeContainer, q.qtyHedge));
+  q.svcMulch.addEventListener('change', () => {
+    toggleServiceQty(q.svcMulch, q.mulchContainer, q.qtyMulch);
+    updateLiveRunningTotal();
+  });
+  q.svcHedge.addEventListener('change', () => {
+    toggleServiceQty(q.svcHedge, q.hedgeContainer, q.qtyHedge);
+    updateLiveRunningTotal();
+  });
 
   // Steppers for Mulch (cu yds) and Hedge (hrs)
   setupStepper(q.mulchMinusBtn, q.mulchPlusBtn, q.qtyMulch, q.errors.qtyMulch, 0.5, 0.5);
@@ -861,6 +996,8 @@
     q.svcHedge.checked = true;
     toggleServiceQty(q.svcHedge, q.hedgeContainer, q.qtyHedge);
     q.qtyHedge.value = 1.5;
+
+    updateLiveRunningTotal();
   });
 
   // Price Sheet Form Submit (with Safeguard: Rate Outlier & Typo Detection)
@@ -905,10 +1042,12 @@
     pendingRateWarning = false;
     clearTimeout(rateWarningTimer);
     if (DOM.priceSheet.warningBanner) DOM.priceSheet.warningBanner.style.display = 'none';
+    if (DOM.priceSheet.hintBanner) DOM.priceSheet.hintBanner.style.display = 'none';
 
     currentSettings = validated;
     const saved = saveSettingsToStorage();
     updateScreenBadges();
+    updateLiveRunningTotal();
 
     const toast = DOM.priceSheet.toast;
     toast.textContent = saved ? 'Settings saved successfully!' : 'Settings updated in memory (localStorage blocked).';
@@ -961,7 +1100,9 @@
             saveSettingsToStorage();
             populateSettingsForm();
             updateScreenBadges();
+            updateLiveRunningTotal();
             if (DOM.priceSheet.warningBanner) DOM.priceSheet.warningBanner.style.display = 'none';
+            if (DOM.priceSheet.hintBanner) DOM.priceSheet.hintBanner.style.display = 'none';
 
             const toast = DOM.priceSheet.toast;
             toast.textContent = 'Settings successfully restored from backup!';
@@ -989,6 +1130,7 @@
       saveSettingsToStorage();
       populateSettingsForm();
       updateScreenBadges();
+      updateLiveRunningTotal();
 
       const s = DOM.priceSheet;
       Object.values(s.errors).forEach(err => { if (err) err.style.display = 'none'; });
@@ -1033,9 +1175,24 @@
       photos: [...attachedPhotos]
     };
 
+    currentQuoteData = quoteData;
     renderQuotePreview(quoteData);
     showScreen('screen-preview');
   });
+
+  // Empty State Action Buttons in Screen 3
+  if (DOM.preview.emptyStartBtn) {
+    DOM.preview.emptyStartBtn.addEventListener('click', () => {
+      showScreen('screen-newquote');
+    });
+  }
+
+  if (DOM.preview.emptySampleBtn) {
+    DOM.preview.emptySampleBtn.addEventListener('click', () => {
+      q.quickFillBtn.click();
+      q.form.dispatchEvent(new Event('submit', { cancelable: true }));
+    });
+  }
 
   // Quote Preview Actions (Print, Edit, Start Fresh)
   DOM.preview.printBtn.addEventListener('click', () => {
@@ -1055,6 +1212,7 @@
       q.form.reset();
       attachedPhotos = [];
       renderThumbnails();
+      currentQuoteData = null;
 
       clearFieldError(q.custName, q.errors.custName);
       clearFieldError(q.custAddress, q.errors.custAddress);
@@ -1065,6 +1223,7 @@
 
       toggleServiceQty(q.svcMulch, q.mulchContainer, q.qtyMulch);
       toggleServiceQty(q.svcHedge, q.hedgeContainer, q.qtyHedge);
+      updateLiveRunningTotal();
 
       showScreen('screen-newquote');
 
@@ -1076,9 +1235,10 @@
   );
 
   // ---------------------------------------------------------------------------
-  // 10. Initialization
+  // 11. Initialization
   // ---------------------------------------------------------------------------
   loadSettings();
   showScreen('screen-newquote');
+  updateLiveRunningTotal();
 
 })();
