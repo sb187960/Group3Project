@@ -1509,7 +1509,7 @@
 
     // Prefill search address if available
     const existingAddr = DOM.newQuote.custAddress.value.trim();
-    if (existingAddr && !DOM.map.searchInput.value) {
+    if (existingAddr) {
       DOM.map.searchInput.value = existingAddr;
     }
 
@@ -1523,6 +1523,13 @@
       }, 250);
     }
   });
+
+  const bannerOpenBtn = document.getElementById('btn-banner-open-map');
+  if (bannerOpenBtn) {
+    bannerOpenBtn.addEventListener('click', () => {
+      DOM.map.btnOpen.click();
+    });
+  }
 
   DOM.map.btnClose.addEventListener('click', () => {
     DOM.map.modal.style.display = 'none';
