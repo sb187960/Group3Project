@@ -882,6 +882,282 @@ textarea.form-control {
     flex-direction: column;
     gap: 20px;
   }
+
+  .send-buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Gentle Feedback Tips & Party Contact
+   -------------------------------------------------------------------------- */
+.gentle-tip {
+  margin-top: 5px;
+  font-size: 0.78rem;
+  color: #b45309;
+  background-color: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  line-height: 1.35;
+}
+
+.party-contact {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Send to Customer Section
+   -------------------------------------------------------------------------- */
+.send-quote-section {
+  margin-top: 20px;
+}
+
+.send-card {
+  border-top: 4px solid var(--primary);
+  background-color: #ffffff;
+}
+
+.send-card-header {
+  margin-bottom: 14px;
+}
+
+.send-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.send-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.send-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.btn-send {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  min-height: 52px;
+  text-align: left;
+}
+
+.btn-send .send-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.btn-send .send-text-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.send-btn-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.send-btn-desc {
+  font-size: 0.72rem;
+  opacity: 0.88;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+/* SMS Button: Vibrant green */
+.btn-send-sms {
+  background-color: #15803d;
+  color: #ffffff;
+  border-color: #166534;
+}
+
+.btn-send-sms:hover, .btn-send-sms:focus-visible {
+  background-color: #166534;
+  color: #ffffff;
+}
+
+/* Email Button: Vibrant blue */
+.btn-send-email {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0369a1;
+}
+
+.btn-send-email:hover, .btn-send-email:focus-visible {
+  background-color: #0369a1;
+  color: #ffffff;
+}
+
+/* Copy Button: Clean neutral */
+.btn-send-copy {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+
+.btn-send-copy:hover, .btn-send-copy:focus-visible {
+  background-color: #e2e8f0;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+/* Copy Confirmation Toast */
+.send-toast {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 12px;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.send-toast-success {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.send-toast-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* Sent Status Badge */
+.send-status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background-color: #f1f5f9;
+  color: #475569;
+  margin-bottom: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Message Preview Box */
+.message-preview-wrapper {
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.btn-preview-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 8px 4px;
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.btn-preview-toggle:hover {
+  text-decoration: underline;
+}
+
+.preview-toggle-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-preview-toggle[aria-expanded="true"] .preview-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.msg-preview-box {
+  margin-top: 10px;
+  background-color: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.preview-tabs-bar {
+  display: flex;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid var(--border);
+}
+
+.preview-tab {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 38px;
+}
+
+.preview-tab.active {
+  background-color: #ffffff;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+
+.preview-panel {
+  padding: 14px;
+}
+
+.preview-meta-line {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+
+.preview-meta-line strong {
+  color: var(--text-main);
+}
+
+.preview-pre {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #1e293b;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: all;
+  margin: 0;
 }
 
 /* --------------------------------------------------------------------------

@@ -59,6 +59,10 @@
   const btnFillFake = document.getElementById('btn-fill-fake');
   const inputCustName = document.getElementById('quote-cust-name');
   const inputCustAddress = document.getElementById('quote-cust-address');
+  const inputCustPhone = document.getElementById('quote-cust-phone');
+  const inputCustEmail = document.getElementById('quote-cust-email');
+  const phoneFeedback = document.getElementById('phone-feedback');
+  const emailFeedback = document.getElementById('email-feedback');
   const inputYardSize = document.getElementById('quote-yard-size');
   
   const svcMowing = document.getElementById('svc-mowing');
@@ -95,6 +99,7 @@
   const viewQuoteId = document.getElementById('view-quote-id');
   const viewCustName = document.getElementById('view-cust-name');
   const viewCustAddress = document.getElementById('view-cust-address');
+  const viewCustContact = document.getElementById('view-cust-contact');
   const viewYardSize = document.getElementById('view-yard-size');
   const quoteLineItems = document.getElementById('quote-line-items');
   const viewQuoteTerms = document.getElementById('view-quote-terms');
@@ -106,6 +111,27 @@
   const viewFinalTotal = document.getElementById('view-final-total');
   const quotePreviewPhotos = document.getElementById('quote-preview-photos');
   const quotePhotosGallery = document.getElementById('quote-photos-gallery');
+
+  // DOM Elements - Screen 3: Send to Customer
+  const btnSendSms = document.getElementById('btn-send-sms');
+  const btnSendEmail = document.getElementById('btn-send-email');
+  const btnCopyQuote = document.getElementById('btn-copy-quote');
+  const labelSmsTarget = document.getElementById('label-sms-target');
+  const labelEmailTarget = document.getElementById('label-email-target');
+  const copyConfirmToast = document.getElementById('copy-confirmation-toast');
+  const copyErrorToast = document.getElementById('copy-error-toast');
+  const sendStatusBadge = document.getElementById('send-status-badge');
+  const btnToggleMsgPreview = document.getElementById('btn-toggle-msg-preview');
+  const msgPreviewContainer = document.getElementById('msg-preview-container');
+  const tabBtnSms = document.getElementById('tab-btn-sms');
+  const tabBtnEmail = document.getElementById('tab-btn-email');
+  const previewPanelSms = document.getElementById('preview-panel-sms');
+  const previewPanelEmail = document.getElementById('preview-panel-email');
+  const previewSmsRecipient = document.getElementById('preview-sms-recipient');
+  const previewSmsContent = document.getElementById('preview-sms-content');
+  const previewEmailRecipient = document.getElementById('preview-email-recipient');
+  const previewEmailSubject = document.getElementById('preview-email-subject');
+  const previewEmailContent = document.getElementById('preview-email-content');
 
   // ---------------------------------------------------------------------------
   // Navigation & Screen Switching
@@ -295,12 +321,60 @@
   }
 
   // ---------------------------------------------------------------------------
+  // Customer Contact Validation (Gentle on-page messages, non-blocking)
+  // ---------------------------------------------------------------------------
+  function validateCustomerPhone() {
+    const val = inputCustPhone.value.trim();
+    if (!val) {
+      phoneFeedback.style.display = 'none';
+      phoneFeedback.textContent = '';
+      return;
+    }
+    const digits = val.replace(/\D/g, '');
+    const isValid = digits.length === 10 || (digits.length === 11 && digits.startsWith('1'));
+    if (!isValid) {
+      phoneFeedback.textContent = "Note: Phone number doesn't appear to be 10 digits. You can still proceed.";
+      phoneFeedback.style.display = 'block';
+    } else {
+      phoneFeedback.style.display = 'none';
+      phoneFeedback.textContent = '';
+    }
+  }
+
+  function validateCustomerEmail() {
+    const val = inputCustEmail.value.trim();
+    if (!val) {
+      emailFeedback.style.display = 'none';
+      emailFeedback.textContent = '';
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val)) {
+      emailFeedback.textContent = "Note: Email address format looks incomplete. You can still proceed.";
+      emailFeedback.style.display = 'block';
+    } else {
+      emailFeedback.style.display = 'none';
+      emailFeedback.textContent = '';
+    }
+  }
+
+  inputCustPhone.addEventListener('input', validateCustomerPhone);
+  inputCustPhone.addEventListener('blur', validateCustomerPhone);
+  inputCustEmail.addEventListener('input', validateCustomerEmail);
+  inputCustEmail.addEventListener('blur', validateCustomerEmail);
+
+  // ---------------------------------------------------------------------------
   // Quick-Fill Fake Sample Data (Instant testing under 1 minute)
   // ---------------------------------------------------------------------------
   btnFillFake.addEventListener('click', () => {
     inputCustName.value = 'Jane Doe (Fake Sample Customer)';
     inputCustAddress.value = '742 Evergreen Terrace, Springfield, TX 75001';
-    inputYardSize.value = 4200;
+    inputCustPhone.value = '(817) 555-0100';
+    inputCustEmail.value = 'sample@example.com';
+    inputYardSize.value = 5000;
+
+    validateCustomerPhone();
+    validateCustomerEmail();
 
     svcMowing.checked = true;
     svcEdging.checked = true;
@@ -326,6 +400,8 @@
     // Validations
     const custName = inputCustName.value.trim();
     const custAddress = inputCustAddress.value.trim();
+    const custPhone = inputCustPhone.value.trim();
+    const custEmail = inputCustEmail.value.trim();
     const yardSize = parseFloat(inputYardSize.value);
 
     if (!custName) {
@@ -456,6 +532,8 @@
       dateFormatted,
       custName,
       custAddress,
+      custPhone,
+      custEmail,
       yardSize,
       lineItems,
       subtotal,
@@ -463,7 +541,8 @@
       minChargeAdj,
       roundingAdj,
       finalTotal,
-      photos: [...attachedPhotos]
+      photos: [...attachedPhotos],
+      sentHistory: []
     };
 
     renderQuotePreview(currentQuoteData);
@@ -483,6 +562,18 @@
     viewCustName.textContent = quote.custName;
     viewCustAddress.textContent = quote.custAddress;
     viewYardSize.textContent = `${quote.yardSize.toLocaleString()} sq ft`;
+
+    // Customer Contact (if provided)
+    if (quote.custPhone || quote.custEmail) {
+      viewCustContact.style.display = 'block';
+      const parts = [];
+      if (quote.custPhone) parts.push(`📞 ${escapeHtml(quote.custPhone)}`);
+      if (quote.custEmail) parts.push(`✉️ ${escapeHtml(quote.custEmail)}`);
+      viewCustContact.innerHTML = parts.join(' <span class="divider">·</span> ');
+    } else {
+      viewCustContact.style.display = 'none';
+      viewCustContact.innerHTML = '';
+    }
 
     viewQuoteTerms.textContent = currentSettings.quoteTerms || 'Standard terms apply.';
 
@@ -538,7 +629,321 @@
       quotePreviewPhotos.style.display = 'none';
       quotePhotosGallery.innerHTML = '';
     }
+
+    // Refresh Send to Customer buttons & preview messages
+    updateSendSection(quote);
   }
+
+  // ---------------------------------------------------------------------------
+  // Message Generation & Send Helpers
+  // ---------------------------------------------------------------------------
+  function getCustomerFirstName(fullName) {
+    if (!fullName) return 'there';
+    const trimmed = fullName.trim();
+    // Strip parenthetical suffixes (e.g., "(Fake Sample Customer)")
+    const clean = trimmed.replace(/\s*\([^)]*\)/g, '').trim();
+    const first = clean.split(/\s+/)[0];
+    return first || trimmed;
+  }
+
+  function formatMoneyShort(amount) {
+    const num = Number(amount) || 0;
+    return num % 1 === 0 ? `$${num.toFixed(0)}` : `$${num.toFixed(2)}`;
+  }
+
+  function generateSmsMessage(quote, settings) {
+    const firstName = getCustomerFirstName(quote.custName);
+    const bizName = settings.businessName || 'our crew';
+    const phone = settings.phone || '';
+
+    // Extract validity days from quote terms, default to 14
+    const daysMatch = settings.quoteTerms ? settings.quoteTerms.match(/(\d+)\s*days?/i) : null;
+    const validityDays = daysMatch ? daysMatch[1] : '14';
+
+    const lines = [
+      `Hi ${firstName}, here's your quote from ${bizName}:`
+    ];
+
+    quote.lineItems.forEach(item => {
+      let label = item.name;
+      if (/mowing/i.test(item.name)) {
+        label = 'Mowing';
+      } else if (/edging/i.test(item.name)) {
+        label = 'Edging';
+      } else if (/leaf/i.test(item.name)) {
+        label = 'Leaf cleanup';
+      } else if (/mulch/i.test(item.name)) {
+        const yards = item.qty.replace(/[^0-9.]/g, '');
+        label = `Mulch (${yards} cu yd)`;
+      } else if (/hedge/i.test(item.name)) {
+        const hours = item.qty.replace(/[^0-9.]/g, '');
+        label = `Hedge trimming (${hours} hr)`;
+      }
+      lines.push(`- ${label}: ${formatMoneyShort(item.amount)}`);
+    });
+
+    if (quote.minChargeAdj > 0) {
+      lines.push(`- Minimum job charge floor: $${quote.minCharge.toFixed(0)} applied (+${formatMoneyShort(quote.minChargeAdj)})`);
+    }
+
+    lines.push(`Total: ${formatMoneyShort(quote.finalTotal)}`);
+    lines.push(`Quote #${quote.quoteId}, valid for ${validityDays} days.`);
+
+    if (phone) {
+      lines.push(`Questions? Call ${phone}.`);
+    } else if (settings.email) {
+      lines.push(`Questions? Email ${settings.email}.`);
+    } else {
+      lines.push(`Questions? Let us know!`);
+    }
+
+    return lines.join('\n');
+  }
+
+  function generateEmailQuote(quote, settings) {
+    const firstName = getCustomerFirstName(quote.custName);
+    const bizName = settings.businessName || 'Our Lawn Care & Landscaping Crew';
+    const bizPhone = settings.phone || '';
+    const bizEmail = settings.email || '';
+    const terms = settings.quoteTerms || 'Estimates valid for 14 days. Payment due upon completion of services.';
+
+    const subject = `Your quote from ${bizName} – #${quote.quoteId}`;
+
+    const lines = [
+      `Hi ${firstName},`,
+      '',
+      `Thank you for the opportunity to quote lawn care and landscaping services for your property at ${quote.custAddress}.`,
+      '',
+      `QUOTE DETAILS (Ref: #${quote.quoteId} · Date: ${quote.dateFormatted})`,
+      '--------------------------------------------------',
+    ];
+
+    quote.lineItems.forEach(item => {
+      lines.push(`- ${item.name}: $${item.amount.toFixed(2)}`);
+      lines.push(`  Scope: ${item.qty} @ ${item.rate}`);
+    });
+
+    lines.push('--------------------------------------------------');
+    lines.push(`Subtotal: $${quote.subtotal.toFixed(2)}`);
+
+    if (quote.minChargeAdj > 0) {
+      lines.push(`Minimum Job Charge Adjustment: +$${quote.minChargeAdj.toFixed(2)} (Minimum job charge floor of $${quote.minCharge.toFixed(0)} applied)`);
+    }
+
+    const roundSign = quote.roundingAdj >= 0 ? '+' : '-';
+    lines.push(`Nearest $5 Rounding Adjustment: ${roundSign}$${Math.abs(quote.roundingAdj).toFixed(2)}`);
+    lines.push(`Total Quote: $${quote.finalTotal.toFixed(2)}`);
+    lines.push('');
+    lines.push('TERMS & CONDITIONS:');
+    lines.push(terms);
+    lines.push('');
+    lines.push('If you have any questions or would like to approve this quote, please call or reply directly to this email!');
+    lines.push('');
+    lines.push('Best regards,');
+    lines.push(bizName);
+    if (bizPhone) lines.push(`Phone: ${bizPhone}`);
+    if (bizEmail) lines.push(`Email: ${bizEmail}`);
+
+    const body = lines.join('\n');
+    return { subject, body };
+  }
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  function buildSmsUrl(phone, text) {
+    const cleanPhone = phone ? phone.replace(/[^\d+]/g, '') : '';
+    // Encode properly for URL query parameters; encode single quote to %27
+    const encodedBody = encodeURIComponent(text).replace(/'/g, '%27');
+
+    if (isIOS()) {
+      return cleanPhone ? `sms:${cleanPhone}&body=${encodedBody}` : `sms:&body=${encodedBody}`;
+    } else {
+      return cleanPhone ? `sms:${cleanPhone}?body=${encodedBody}` : `sms:?body=${encodedBody}`;
+    }
+  }
+
+  function buildMailtoUrl(email, subject, body) {
+    const cleanEmail = email ? email.trim() : '';
+    const encodedSub = encodeURIComponent(subject).replace(/'/g, '%27');
+    const encodedBody = encodeURIComponent(body).replace(/'/g, '%27');
+    return `mailto:${cleanEmail}?subject=${encodedSub}&body=${encodedBody}`;
+  }
+
+  function copyToClipboard(text, onSuccess, onError) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(onSuccess)
+        .catch(() => fallbackClipboardCopy(text, onSuccess, onError));
+    } else {
+      fallbackClipboardCopy(text, onSuccess, onError);
+    }
+  }
+
+  function fallbackClipboardCopy(text, onSuccess, onError) {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (successful) {
+        onSuccess();
+      } else {
+        onError(new Error('execCommand copy returned false'));
+      }
+    } catch (err) {
+      onError(err);
+    }
+  }
+
+  function recordQuoteSent(channel) {
+    if (!currentQuoteData) return;
+    const now = new Date();
+    const timeFormatted = now.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }) + ' at ' + now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+
+    const entry = {
+      channel,
+      timestamp: now.toISOString(),
+      displayDate: timeFormatted
+    };
+
+    if (!currentQuoteData.sentHistory) {
+      currentQuoteData.sentHistory = [];
+    }
+    currentQuoteData.sentHistory.push(entry);
+
+    const channelLabel = channel === 'text' ? 'text' : channel === 'email' ? 'email' : 'copy';
+    sendStatusBadge.textContent = `✓ Sent on ${timeFormatted} by ${channelLabel}`;
+    sendStatusBadge.style.display = 'inline-block';
+  }
+
+  function updateSendSection(quote) {
+    const smsText = generateSmsMessage(quote, currentSettings);
+    const emailData = generateEmailQuote(quote, currentSettings);
+
+    btnSendSms.href = buildSmsUrl(quote.custPhone, smsText);
+    if (quote.custPhone) {
+      labelSmsTarget.textContent = `To: ${quote.custPhone}`;
+    } else {
+      labelSmsTarget.textContent = 'Pick contact in app';
+    }
+
+    btnSendEmail.href = buildMailtoUrl(quote.custEmail, emailData.subject, emailData.body);
+    if (quote.custEmail) {
+      labelEmailTarget.textContent = `To: ${quote.custEmail}`;
+    } else {
+      labelEmailTarget.textContent = 'Pick recipient in app';
+    }
+
+    previewSmsRecipient.innerHTML = `<strong>Recipient:</strong> ${quote.custPhone ? escapeHtml(quote.custPhone) : '<em>(None specified – select in messaging app)</em>'}`;
+    previewSmsContent.textContent = smsText;
+
+    previewEmailRecipient.innerHTML = `<strong>To:</strong> ${quote.custEmail ? escapeHtml(quote.custEmail) : '<em>(None specified – select in email app)</em>'}`;
+    previewEmailSubject.innerHTML = `<strong>Subject:</strong> ${escapeHtml(emailData.subject)}`;
+    previewEmailContent.textContent = emailData.body;
+
+    if (quote.sentHistory && quote.sentHistory.length > 0) {
+      const last = quote.sentHistory[quote.sentHistory.length - 1];
+      const channelLabel = last.channel === 'text' ? 'text' : last.channel === 'email' ? 'email' : 'copy';
+      sendStatusBadge.textContent = `✓ Sent on ${last.displayDate} by ${channelLabel}`;
+      sendStatusBadge.style.display = 'inline-block';
+    } else {
+      sendStatusBadge.style.display = 'none';
+      sendStatusBadge.textContent = '';
+    }
+
+    copyConfirmToast.style.display = 'none';
+    copyErrorToast.style.display = 'none';
+  }
+
+  // Send action listeners
+  btnSendSms.addEventListener('click', () => {
+    recordQuoteSent('text');
+  });
+
+  btnSendEmail.addEventListener('click', () => {
+    recordQuoteSent('email');
+  });
+
+  let copyToastTimeout = null;
+  btnCopyQuote.addEventListener('click', () => {
+    if (!currentQuoteData) return;
+    const { body } = generateEmailQuote(currentQuoteData, currentSettings);
+    copyToClipboard(
+      body,
+      () => {
+        recordQuoteSent('copy');
+        copyErrorToast.style.display = 'none';
+        copyConfirmToast.style.display = 'block';
+        if (copyToastTimeout) clearTimeout(copyToastTimeout);
+        copyToastTimeout = setTimeout(() => {
+          copyConfirmToast.style.display = 'none';
+        }, 2000);
+      },
+      (err) => {
+        console.warn('Clipboard write failed:', err);
+        copyConfirmToast.style.display = 'none';
+        copyErrorToast.style.display = 'block';
+        showMsgPreview();
+      }
+    );
+  });
+
+  // Message preview toggle & tabs
+  function showMsgPreview() {
+    msgPreviewContainer.style.display = 'block';
+    btnToggleMsgPreview.setAttribute('aria-expanded', 'true');
+  }
+
+  function hideMsgPreview() {
+    msgPreviewContainer.style.display = 'none';
+    btnToggleMsgPreview.setAttribute('aria-expanded', 'false');
+  }
+
+  btnToggleMsgPreview.addEventListener('click', () => {
+    const isExpanded = btnToggleMsgPreview.getAttribute('aria-expanded') === 'true';
+    if (isExpanded) {
+      hideMsgPreview();
+    } else {
+      showMsgPreview();
+    }
+  });
+
+  tabBtnSms.addEventListener('click', () => {
+    tabBtnSms.classList.add('active');
+    tabBtnSms.setAttribute('aria-selected', 'true');
+    tabBtnEmail.classList.remove('active');
+    tabBtnEmail.setAttribute('aria-selected', 'false');
+    previewPanelSms.style.display = 'block';
+    previewPanelEmail.style.display = 'none';
+  });
+
+  tabBtnEmail.addEventListener('click', () => {
+    tabBtnEmail.classList.add('active');
+    tabBtnEmail.setAttribute('aria-selected', 'true');
+    tabBtnSms.classList.remove('active');
+    tabBtnSms.setAttribute('aria-selected', 'false');
+    previewPanelEmail.style.display = 'block';
+    previewPanelSms.style.display = 'none';
+  });
 
   // ---------------------------------------------------------------------------
   // Screen 3 Actions: Print, Edit, Start Fresh
@@ -554,6 +959,14 @@
   btnNewQuote.addEventListener('click', () => {
     if (confirm('Start a fresh new quote?')) {
       newQuoteForm.reset();
+      inputCustPhone.value = '';
+      inputCustEmail.value = '';
+      phoneFeedback.style.display = 'none';
+      emailFeedback.style.display = 'none';
+      sendStatusBadge.style.display = 'none';
+      copyConfirmToast.style.display = 'none';
+      copyErrorToast.style.display = 'none';
+      hideMsgPreview();
       attachedPhotos = [];
       renderThumbnails();
       toggleServiceQty(svcMulch, mulchQtyContainer, inputQtyMulch);

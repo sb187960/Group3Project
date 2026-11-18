@@ -165,6 +165,22 @@
             <label for="quote-cust-address">Property / Service Address *</label>
             <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 123 Maple Street, Sampleville, TX 75001" required>
           </div>
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="quote-cust-phone">
+                Customer Phone <span class="hint">(optional)</span>
+              </label>
+              <input type="tel" id="quote-cust-phone" class="form-control" placeholder="e.g. (817) 555-0142" inputmode="tel">
+              <div id="phone-feedback" class="gentle-tip" style="display: none;"></div>
+            </div>
+            <div class="form-group col-half">
+              <label for="quote-cust-email">
+                Customer Email <span class="hint">(optional)</span>
+              </label>
+              <input type="email" id="quote-cust-email" class="form-control" placeholder="e.g. sample@example.com" inputmode="email">
+              <div id="email-feedback" class="gentle-tip" style="display: none;"></div>
+            </div>
+          </div>
           <div class="form-group">
             <label for="quote-yard-size">
               Lawn / Yard Size (sq ft) *
@@ -323,6 +339,7 @@
             <span class="party-label">PREPARED FOR:</span>
             <div id="view-cust-name" class="party-name">Jane Doe (Fake Customer)</div>
             <div id="view-cust-address" class="party-address">123 Maple Street, Sampleville, TX 75001</div>
+            <div id="view-cust-contact" class="party-contact" style="display: none;"></div>
           </div>
           <div class="party-col right-align">
             <span class="party-label">SERVICE SCOPE:</span>
@@ -394,6 +411,80 @@
         </footer>
 
       </article>
+
+      <!-- Send to Customer Section (Hidden when printing) -->
+      <section id="section-send-quote" class="send-quote-section no-print">
+        <div class="card send-card">
+          <div class="send-card-header">
+            <h3 class="send-card-title">📤 Send to Customer</h3>
+            <p class="send-card-subtitle">Send this quote right from the curb in two taps.</p>
+          </div>
+
+          <!-- Send Action Buttons -->
+          <div class="send-buttons-grid">
+            <a id="btn-send-sms" class="btn btn-send btn-send-sms" role="button" href="#">
+              <span class="send-icon">💬</span>
+              <span class="send-text-wrap">
+                <span class="send-btn-title">Text Quote</span>
+                <span class="send-btn-desc" id="label-sms-target">Opens Messages</span>
+              </span>
+            </a>
+            <a id="btn-send-email" class="btn btn-send btn-send-email" role="button" href="#">
+              <span class="send-icon">✉️</span>
+              <span class="send-text-wrap">
+                <span class="send-btn-title">Email Quote</span>
+                <span class="send-btn-desc" id="label-email-target">Opens Mail App</span>
+              </span>
+            </a>
+            <button type="button" id="btn-copy-quote" class="btn btn-send btn-send-copy">
+              <span class="send-icon">📋</span>
+              <span class="send-text-wrap">
+                <span class="send-btn-title">Copy Quote</span>
+                <span class="send-btn-desc">Copies full text</span>
+              </span>
+            </button>
+          </div>
+
+          <!-- On-Page Copy Confirmation Toast / Messages -->
+          <div id="copy-confirmation-toast" class="send-toast send-toast-success" style="display: none;" role="status" aria-live="polite">
+            ✓ Copied quote to clipboard!
+          </div>
+          <div id="copy-error-toast" class="send-toast send-toast-error" style="display: none;" role="alert">
+            Unable to access clipboard automatically. Please copy the text directly from the preview below.
+          </div>
+
+          <!-- Message Sent History / Status Badge -->
+          <div id="send-status-badge" class="send-status-badge" style="display: none;"></div>
+
+          <!-- Message Preview Toggle & Box -->
+          <div class="message-preview-wrapper">
+            <button type="button" id="btn-toggle-msg-preview" class="btn-preview-toggle" aria-expanded="false">
+              <span class="preview-toggle-text">👁️ Preview message</span>
+              <span id="preview-toggle-arrow" class="preview-toggle-arrow">▼</span>
+            </button>
+            <div id="msg-preview-container" class="msg-preview-box" style="display: none;">
+              <div class="preview-tabs-bar" role="tablist">
+                <button type="button" id="tab-btn-sms" class="preview-tab active" role="tab" aria-selected="true">
+                  💬 Text (SMS)
+                </button>
+                <button type="button" id="tab-btn-email" class="preview-tab" role="tab" aria-selected="false">
+                  ✉️ Email / Full Quote
+                </button>
+              </div>
+              <div id="preview-panel-sms" class="preview-panel" role="tabpanel">
+                <div class="preview-meta-line" id="preview-sms-recipient"></div>
+                <pre id="preview-sms-content" class="preview-pre"></pre>
+              </div>
+              <div id="preview-panel-email" class="preview-panel" role="tabpanel" style="display: none;">
+                <div class="preview-meta-line" id="preview-email-recipient"></div>
+                <div class="preview-meta-line" id="preview-email-subject"></div>
+                <pre id="preview-email-content" class="preview-pre"></pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </section>
 
   </main>
