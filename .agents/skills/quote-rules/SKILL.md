@@ -106,3 +106,12 @@ Every generated quote must render sections in this exact order:
 
 * **Three Files Only:** Must consist strictly of `index.html`, `style.css`, and `script.js` in the repository root.
 * **Zero Dependencies:** No external build tools, package managers, npm packages, server endpoints, API keys, or external CDN scripts/fonts. Must operate entirely offline or on intermittent cellular connections via GitHub Pages.
+
+## 7. Architectural & Integrity Invariants
+
+1. **Saved Estimates Keep Original Prices:** Saved estimates must always preserve their historical rates, line items, and totals. Changing prices on the Price Sheet settings screen must never retroactively recalculate or alter existing saved quotes.
+2. **Sequential Quote Numbers:** Estimate numbers (e.g., `Q-0001`, `Q-0002`, `Q-0003`) are strictly sequential, monotonic, and never reused under any circumstances, even if an estimate is deleted, reverted, or discarded.
+3. **Aerial Photos Terminology & Editability:** Lot measurements must always use the term "aerial photos" (never satellite or aerial satellite alone) and the measured yard size must remain immediately and fully editable by hand.
+4. **Third-Party Libraries & Licenses in /vendor:** Third-party libraries (Leaflet, Turf.js) must live in the `/vendor` directory alongside their official, unaltered LICENSE files.
+5. **Bilingual String Completeness:** Every user-visible string, label, button, toast, error message, and placeholder must be defined in both the English (`en`) and Spanish (`es`) translation dictionaries, with a development-time console check that flags any missing translation key.
+6. **AI Never Calculates Prices:** Optional in-browser AI features are strictly confined to drafting or polishing natural language notes and messages. AI models must never calculate, alter, round, or suggest prices, quantities, or financial amounts.

@@ -86,7 +86,14 @@ The file `.agents/skills/quote-rules/SKILL.md` holds our single source of truth 
 
 ## DATA AND PRIVACY
 
-The app uses synthetic (made-up) data only. Sample customers have obviously fake names and addresses. Price sheets and quotes are stored solely in the user's browser `localStorage`. Nothing is transmitted to external servers. Attached site photos are for job documentation only and are not uploaded or analyzed. This repository contains no passwords, API keys, or real customer information.
+The app uses synthetic (made-up) data only. Sample customers have obviously fake names and addresses. Attached site photos are for job documentation only and are not uploaded or analyzed. This repository contains no passwords, API keys, or real customer information.
+
+Network and data handling:
+* **Quotes and settings:** Stored solely on the device in browser `localStorage`.
+* **Aerial map:** Loads imagery from USGS.
+* **Address search:** Sends only the typed address to OpenStreetMap.
+* **Fonts:** Loads typography from Google Fonts.
+* **Optional in-browser AI:** Downloads its model from a CDN but runs entirely on the device.
 
 **TEAM:** Leyla, Daniela, Maritza, Shane
 

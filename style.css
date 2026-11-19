@@ -1234,7 +1234,7 @@ textarea.form-control {
 }
 
 .quote-table tbody tr:last-child td {
-  border-bottom: 2px solid var(--color-border-subtle);
+  border-bottom: none;
 }
 
 .item-service-title {
@@ -1558,6 +1558,10 @@ textarea.form-control {
     align-items: center;
     padding: 10px 4px;
     border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .quote-table tr:last-child {
+    border-bottom: none;
   }
 
   .quote-table td {

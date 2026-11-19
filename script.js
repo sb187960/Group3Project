@@ -18,11 +18,12 @@
   // 1. Constants & Baseline Configuration
   // ---------------------------------------------------------------------------
   const DEFAULT_TERMS_EN = 'Estimates valid for 14 days. Payment due upon completion of services.';
-  const DEFAULT_TERMS_ES = 'Presupuestos válidos por 14 días. Pago al finalizar los servicios.';
+  const DEFAULT_TERMS_ES = 'Cotizaciones válidas por 14 días. Pago al finalizar los servicios.';
+  const LEGACY_DEFAULT_TERMS_ES = 'Presupuestos válidos por 14 días. Pago al finalizar los servicios.';
 
   function getEffectiveTerms(terms, lang) {
     const current = (terms || '').trim();
-    if (!current || current === DEFAULT_TERMS_EN || current === DEFAULT_TERMS_ES) {
+    if (!current || current === DEFAULT_TERMS_EN || current === DEFAULT_TERMS_ES || current === LEGACY_DEFAULT_TERMS_ES) {
       return (lang === 'es') ? DEFAULT_TERMS_ES : DEFAULT_TERMS_EN;
     }
     return current; // Owner custom terms, preserve exactly!
@@ -137,7 +138,9 @@
       unitHedge: 'hours',
       unitYardSize: 'sq ft',
       unit1kSqFt: '1k sq ft',
+      unitPer1k: '1k sq ft',
       unitCuYd: 'cu yd',
+      unitYard: 'cu yd',
       unitHour: 'hr',
       svcError: 'Please select at least one service.',
       photosTitle: 'Job Site Photos (Optional)',
@@ -361,7 +364,7 @@
       lblMinCharge: 'Cargo Mínimo por Trabajo ($) *',
       hintMinCharge: 'Ningún trabajo se factura por debajo de este monto',
       lblTerms: 'Términos y Condiciones de la Cotización',
-      placeholderTerms: 'ej. Estimaciones válidas por 14 días. Pago al finalizar los servicios.',
+      placeholderTerms: 'ej. Cotizaciones válidas por 14 días. Pago al finalizar los servicios.',
       ratesTitle: 'Tarifas de Servicios',
       lblRateMowing: 'Tarifa de Corte ($ por 1,000 pies²) *',
       lblRateEdging: 'Tarifa de Bordeado ($ por 1,000 pies²) *',
@@ -416,14 +419,16 @@
       lblHedgeQty: 'Mano de Obra Estimada (Horas) *',
       unitHedge: 'horas',
       unitYardSize: 'pies²',
-      unit1kSqFt: '1k pies²',
+      unit1kSqFt: '1,000 pies²',
+      unitPer1k: '1,000 pies²',
       unitCuYd: 'yd³',
-      unitHour: 'hr',
+      unitYard: 'yd³',
+      unitHour: 'hora',
       svcError: 'Por favor seleccione al menos un servicio.',
       photosTitle: 'Fotos del Lugar de Trabajo (Opcional)',
       photosDesc: 'Tome nuevas fotos o elija de su galería. Las miniaturas se incluirán en la cotización.',
       btnSnapPhoto: 'Tomar Foto o Elegir Archivos',
-      liveEstimateLabel: 'Estimado en Vivo',
+      liveEstimateLabel: 'Cotización en Vivo',
       liveEstimateSub: 'Calculado en vivo · Incluye mínimo y redondeo a $5',
       btnGenerateQuote: 'Generar Vista Previa',
 
@@ -432,8 +437,8 @@
       emptyStateText: 'Ingrese las medidas de la propiedad y seleccione los servicios en el Paso 2 para generar una cotización profesional en menos de 60 segundos.',
       btnEmptyStart: 'Crear Nueva Cotización',
       btnEmptySample: 'Cargar Ejemplo de Referencia ($335.00)',
-      quoteTypeEstimate: 'PRESUPUESTO',
-      lblEstimateNum: 'Presupuesto #:',
+      quoteTypeEstimate: 'COTIZACIÓN',
+      lblEstimateNum: 'Cotización #:',
       lblDate: 'Fecha:',
       lblValidThrough: 'Válido Hasta:',
       lblPreparedFor: 'PREPARADO PARA',
@@ -447,21 +452,21 @@
       lblMinFloorAdj: 'Ajuste por Cargo Mínimo',
       minFloorNote: '(Mínimo de ${min} aplicado)',
       lblCashRounding: 'Redondeo en Efectivo ($5 más cercano)',
-      lblTotalEstimate: 'Estimación Total',
+      lblTotalEstimate: 'Total de la Cotización',
       termsTitle: 'Términos y Condiciones',
       photosTitlePreview: 'Fotos del Lugar de Trabajo',
       thankYou: '¡Gracias por considerar a nuestra cuadrilla de jardinería y mantenimiento!',
       sigLine: 'Firma Autorizada',
       sigDate: 'Fecha',
-      btnSaveEstimate: 'Guardar Estimación',
-      btnUpdateEstimate: 'Actualizar Estimación',
+      btnSaveEstimate: 'Guardar Cotización',
+      btnUpdateEstimate: 'Actualizar Cotización',
       btnSavedCheck: '¡Guardada!',
       btnPrint: 'Imprimir / Guardar PDF',
       btnEditQuote: 'Editar Cotización',
       btnStartFresh: 'Comenzar de Nuevo',
 
       // Screen 4: Saved Estimates & Pipeline
-      savedQuotesTitle: 'Estimaciones Guardadas y Flujo de Trabajo',
+      savedQuotesTitle: 'Cotizaciones Guardadas y Flujo de Trabajo',
       savedQuotesDesc: 'Dé seguimiento a cotizaciones, contacte a clientes y supervise su tasa de cierre.',
       statPending: 'Cotizaciones Pendientes',
       subInPipeline: '{val} en seguimiento',
@@ -474,8 +479,8 @@
       filterPending: 'Pendientes',
       filterWon: 'Ganadas',
       filterLost: 'Perdidas',
-      emptySavedTitle: 'No Hay Estimaciones Guardadas Aún',
-      emptySavedDesc: 'Cree una cotización en <strong>Terreno y Servicios</strong> y presione <strong>Guardar Estimación</strong> en Vista Previa para dar seguimiento aquí.',
+      emptySavedTitle: 'No Hay Cotizaciones Guardadas Aún',
+      emptySavedDesc: 'Cree una cotización en <strong>Terreno y Servicios</strong> y presione <strong>Guardar Cotización</strong> en Vista Previa para dar seguimiento aquí.',
       btnCreateFirstQuote: 'Crear Primera Cotización',
       followUpBadge: 'Seguimiento ({days}d)',
       btnReopen: 'Reabrir',
@@ -484,17 +489,17 @@
       btnRevert: '↩ Volver a Pendiente',
       btnDuplicate: 'Duplicar',
       btnDelete: 'Eliminar',
-      deleteConfirmMsg: '¿Eliminar estimación #{id}? No se puede deshacer.',
+      deleteConfirmMsg: '¿Eliminar cotización #{id}? No se puede deshacer.',
       timeToday: 'Hoy',
       timeYesterday: 'Hace 1 día',
       timeDaysAgo: 'Hace {n} días',
       aerialBadgeTag: '📷 Aérea',
-      quoteSavedToast: '¡Estimación #{id} guardada en el flujo de trabajo!',
-      quoteUpdatedToast: '¡Estimación #{id} actualizada!',
-      quoteSavedNoPhotos: 'Estimación #{id} guardada (sin fotos por límite de almacenamiento).',
+      quoteSavedToast: '¡Cotización #{id} guardada en el flujo de trabajo!',
+      quoteUpdatedToast: '¡Cotización #{id} actualizada!',
+      quoteSavedNoPhotos: 'Cotización #{id} guardada (sin fotos por límite de almacenamiento).',
       quoteDuplicatedToast: 'Duplicada como #{id}',
-      quoteDeletedToast: 'Estimación #{id} eliminada.',
-      quoteSaveError: 'No se pudo guardar la estimación en el almacenamiento local.',
+      quoteDeletedToast: 'Cotización #{id} eliminada.',
+      quoteSaveError: 'No se pudo guardar la cotización en el almacenamiento local.',
       confirmStartFresh: '¿Comenzar una nueva cotización en blanco?',
 
       // Aerial Map Modal
@@ -510,7 +515,7 @@
       mapBtnClear: 'Limpiar',
       mapTracedArea: 'Área Medida del Césped:',
       mapAreaBreakdown: '{n} área(s)',
-      mapDisclaimer: '⚠️ <strong>Nota de Estimación:</strong> Las mediciones aéreas son aproximadas (las fotos pueden tener algunos años). Excluya la casa, entrada y canteros, y verifique el total antes de cotizar.',
+      mapDisclaimer: '⚠️ <strong>Nota de Cotización:</strong> Las mediciones con fotos aéreas son aproximadas (las fotos pueden tener algunos años). Excluya la casa, entrada y canteros, y verifique el total antes de cotizar.',
       mapUseArea: 'Usar esta área',
       // Dynamic Notes & Phrasing
       minFloorAppliedNote: '(Se aplicó el cargo mínimo base de {amount})',
@@ -529,7 +534,7 @@
       ariaTotalsBreakdown: 'Desglose de totales financieros',
       ariaTerms: 'Términos y condiciones',
       ariaPhotos: 'Fotos del sitio de trabajo',
-      ariaFilterSaved: 'Filtrar estimaciones guardadas',
+      ariaFilterSaved: 'Filtrar cotizaciones guardadas',
       ariaCloseMap: 'Cerrar mapa',
       ariaTracingTools: 'Herramientas de trazado',
       titleLangEn: 'Inglés',
@@ -888,7 +893,14 @@
 
   function t(key) {
     const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
-    return dict[key] !== undefined ? dict[key] : (TRANSLATIONS.en[key] !== undefined ? TRANSLATIONS.en[key] : key);
+    if (dict && dict[key] !== undefined) {
+      return dict[key];
+    }
+    console.warn(`[LawnQuote I18N] Missing translation key: "${key}" (lang: ${currentLanguage})`);
+    if (TRANSLATIONS.en && TRANSLATIONS.en[key] !== undefined) {
+      return TRANSLATIONS.en[key];
+    }
+    return key;
   }
 
   function formatLocalizedDate(dateOrTimestamp, lang) {
@@ -2594,7 +2606,7 @@
       : "You are a professional assistant for a lawn care and landscaping business. You write short, friendly curbside customer messages. You NEVER invent, calculate, or alter prices or measurements. Output ONLY the message text without quotes, markdown formatting, or introductory commentary.";
 
     const userPrompt = isEs
-      ? 'Redacta un mensaje cordial y profesional para ' + firstName + ' de parte de ' + bizName + ' para los siguientes servicios: ' + servicesList + '.\nPresupuesto total: ' + totalStr + '.\nVálido hasta: ' + validStr + '.\nReglas:\n- Máximo 2 a 3 oraciones amables.\n- Menciona únicamente el total exacto de ' + totalStr + '. NO menciones ningún otro monto ni calcules nada.\n- Menciona los servicios y la validez del presupuesto.\n- Responde ÚNICAMENTE con el texto del mensaje en español.'
+      ? 'Redacta un mensaje cordial y profesional para ' + firstName + ' de parte de ' + bizName + ' para los siguientes servicios: ' + servicesList + '.\nCotización total: ' + totalStr + '.\nVálida hasta: ' + validStr + '.\nReglas:\n- Máximo 2 a 3 oraciones amables.\n- Menciona únicamente el total exacto de ' + totalStr + '. NO menciones ningún otro monto ni calcules nada.\n- Menciona los servicios y la validez de la cotización.\n- Responde ÚNICAMENTE con el texto del mensaje en español.'
       : 'Draft a warm, professional curbside message to ' + firstName + ' from ' + bizName + ' for the following services: ' + servicesList + '.\nTotal estimate: ' + totalStr + '.\nValid through: ' + validStr + '.\nRules:\n- Keep it to 2-3 friendly sentences.\n- Mention only the exact total of ' + totalStr + '. Do NOT mention any other dollar amounts, discounts, or calculations.\n- Mention the services and estimate validity.\n- Output ONLY the plain message text.';
 
     try {
@@ -2659,11 +2671,11 @@
 
     const isEs = currentLanguage === 'es';
     const systemPrompt = isEs
-      ? "Eres un asistente profesional para un negocio de cuidado del césped. Pules notas rápidas de la cuadrilla en 1 o 2 oraciones profesionales para la sección de alcance del presupuesto. NUNCA incluyas precios, presupuestos ni montos en dinero. Responde ÚNICAMENTE con las notas pulidas."
+      ? "Eres un asistente profesional para un negocio de cuidado del césped. Pules notas rápidas de la cuadrilla en 1 o 2 oraciones profesionales para la sección de alcance de la cotización. NUNCA incluyas precios, cotizaciones ni montos en dinero. Responde ÚNICAMENTE con las notas pulidas."
       : "You are a professional assistant for a lawn care business. You polish rough crew notes into 1-2 professional sentences for the estimate's property scope section. You NEVER include prices, estimates, or dollar amounts. Output ONLY the polished notes.";
 
     const userPrompt = isEs
-      ? 'Convierte estas notas preliminares de la cuadrilla en 1 o 2 oraciones profesionales para la sección de alcance del presupuesto:\n"' + roughNotes + '"\nReglas:\n- Mantén la exactitud de las instrucciones sobre portones, peligros o estado del terreno.\n- NO incluyas ningún monto en dinero, precios ni tarifas.\n- Responde ÚNICAMENTE con las oraciones pulidas en español sin comillas ni explicaciones.'
+      ? 'Convierte estas notas preliminares de la cuadrilla en 1 o 2 oraciones profesionales para la sección de alcance de la cotización:\n"' + roughNotes + '"\nReglas:\n- Mantén la exactitud de las instrucciones sobre portones, peligros o estado del terreno.\n- NO incluyas ningún monto en dinero, precios ni tarifas.\n- Responde ÚNICAMENTE con las oraciones pulidas en español sin comillas ni explicaciones.'
       : "Turn these rough crew notes into 1 or 2 professional sentences for the estimate's scope section:\n\"" + roughNotes + "\"\nRules:\n- Keep the original facts, gate access, and hazard instructions accurate.\n- Do NOT include any dollar amounts, prices, or rates.\n- Output ONLY the polished sentences without quotes or conversational filler.";
 
     try {
