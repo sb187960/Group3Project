@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LawnQuote - Instant Crew Quoting Tool</title>
+  <meta name="description" content="Field quoting tool for lawn care and landscaping crews right from the curb.">
+  <meta name="theme-color" content="#0D5C3A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LawnQuote">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -11,6 +18,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Accessibility: Skip to Main Content Link -->
+  <a href="#main-content" class="skip-link" data-i18n="skipToMain">Skip to main content</a>
 
   <!-- App Header & Navigation (Hidden when printing) -->
   <header class="app-header no-print">
@@ -74,7 +84,7 @@
     </div>
   </header>
 
-  <main class="app-container">
+  <main id="main-content" class="app-container">
 
     <!-- ========================================== -->
     <!-- SCREEN 1: PRICE SHEET (SETTINGS)           -->
@@ -626,7 +636,7 @@
     <section id="screen-preview" class="app-screen" style="display: none;" aria-labelledby="heading-preview">
       
       <!-- EMPTY STATE: Shown before a quote has been generated -->
-      <div id="quote-empty-state" class="empty-state-card" style="display: none;">
+      <div id="quote-empty-state" class="empty-state-card" style="display: block;">
         <div class="empty-state-icon" aria-hidden="true">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0D5C3A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -651,7 +661,7 @@
       </div>
 
       <!-- Printable Quote Document Card -->
-      <article id="quote-card" class="quote-document">
+      <article id="quote-card" class="quote-document" style="display: none;">
         
         <!-- SECTION 1: Header / Branding -->
         <header class="quote-header">
@@ -807,6 +817,16 @@
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
             <span data-i18n="btnCopyEstimate">Copy Estimate</span>
+          </button>
+          <button type="button" id="btn-share-estimate" class="btn btn-outline btn-send-action" style="display: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span data-i18n="btnShareEstimate">Share</span>
           </button>
         </div>
 
@@ -1090,17 +1110,6 @@
       </div>
     </div>
   </div>
-
-  <!-- In-Browser AI via WebLLM Script Tag (Optional Client-Side Module) -->
-  <script type="module">
-    try {
-      const webllm = await import("https://esm.run/@mlc-ai/web-llm");
-      window.webllm = webllm;
-      window.dispatchEvent(new CustomEvent('webllm-ready'));
-    } catch (e) {
-      console.warn("WebLLM preload deferred or offline:", e);
-    }
-  </script>
 
   <!-- Local Vendor Libraries (Offline-Ready) -->
   <script src="./vendor/leaflet/leaflet.js"></script>

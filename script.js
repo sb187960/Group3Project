@@ -17,6 +17,17 @@
   // ---------------------------------------------------------------------------
   // 1. Constants & Baseline Configuration
   // ---------------------------------------------------------------------------
+  const DEFAULT_TERMS_EN = 'Estimates valid for 14 days. Payment due upon completion of services.';
+  const DEFAULT_TERMS_ES = 'Presupuestos válidos por 14 días. Pago al finalizar los servicios.';
+
+  function getEffectiveTerms(terms, lang) {
+    const current = (terms || '').trim();
+    if (!current || current === DEFAULT_TERMS_EN || current === DEFAULT_TERMS_ES) {
+      return (lang === 'es') ? DEFAULT_TERMS_ES : DEFAULT_TERMS_EN;
+    }
+    return current; // Owner custom terms, preserve exactly!
+  }
+
   const DEFAULT_SETTINGS = {
     businessName: 'GreenThumb Lawn & Landscape',
     phone: '(555) 234-5678',
@@ -320,13 +331,16 @@
       notesAppliedToast: 'Polished crew notes applied!',
       notesDraftEmpty: 'Please enter rough crew notes first.',
       aiDraftCopiedToast: 'AI draft copied to clipboard!',
+      skipToMain: 'Skip to main content',
+      btnShareEstimate: 'Share',
+      methodShare: 'share',
     },
     es: {
       appTitle: 'LawnQuote',
       appSubtitle: 'Cotizaciones de Campo para Equipos de Jardinería',
       navPriceSheet: 'Tarifas',
-      navYardServices: 'Terreno y Servicios',
-      navPreview: 'Vista Previa',
+      navYardServices: 'Servicios',
+      navPreview: 'Vista',
       navSavedQuotes: 'Guardadas',
       stepPriceSheet: 'Tarifas',
       stepYardServices: 'Terreno y Servicios',
@@ -597,6 +611,9 @@
       notesAppliedToast: '¡Notas pulidas aplicadas!',
       notesDraftEmpty: 'Por favor ingrese primero notas preliminares.',
       aiDraftCopiedToast: '¡Borrador copiado al portapapeles!',
+      skipToMain: 'Saltar al contenido principal',
+      btnShareEstimate: 'Compartir',
+      methodShare: 'compartido',
     }
   };
 
@@ -894,6 +911,22 @@
 
     document.documentElement.setAttribute('lang', currentLanguage);
 
+    // If quoteTerms are still default sample text, display localized sample terms
+    if (typeof currentSettings !== 'undefined' && currentSettings) {
+      const isDefaultTerms = !currentSettings.quoteTerms || 
+        currentSettings.quoteTerms === DEFAULT_TERMS_EN || 
+        currentSettings.quoteTerms === DEFAULT_TERMS_ES;
+      if (isDefaultTerms) {
+        currentSettings.quoteTerms = (currentLanguage === 'es') ? DEFAULT_TERMS_ES : DEFAULT_TERMS_EN;
+        if (DOM.priceSheet && DOM.priceSheet.terms) {
+          DOM.priceSheet.terms.value = currentSettings.quoteTerms;
+        }
+        if (DOM.preview && DOM.preview.terms && (!currentQuoteData || !currentQuoteData.terms || currentQuoteData.terms === DEFAULT_TERMS_EN || currentQuoteData.terms === DEFAULT_TERMS_ES)) {
+          DOM.preview.terms.textContent = currentSettings.quoteTerms;
+        }
+      }
+    }
+
     // Toggle active state on language buttons
     if (DOM.lang.btnEn && DOM.lang.btnEs) {
       DOM.lang.btnEn.classList.toggle('active', currentLanguage === 'en');
@@ -1118,8 +1151,6 @@
       btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
     });
 
-    updateStepProgress(screenId);
-
     // If on Quote Preview screen, toggle empty state vs rendered quote card
     if (screenId === 'screen-preview') {
       const hasQuote = currentQuoteData !== null;
@@ -1131,6 +1162,9 @@
       }
       if (DOM.preview.actions) {
         DOM.preview.actions.style.display = hasQuote ? 'flex' : 'none';
+      }
+      if (DOM.preview.sendCard) {
+        DOM.preview.sendCard.style.display = hasQuote ? 'block' : 'none';
       }
     }
 
@@ -1738,7 +1772,8 @@
     }
 
     // SECTION 5: Quote Terms & Conditions
-    p.terms.textContent = (quote.terms !== undefined ? quote.terms : currentSettings.quoteTerms) || t('placeholderTerms');
+    const rawTerms = (quote.terms !== undefined ? quote.terms : currentSettings.quoteTerms);
+    p.terms.textContent = getEffectiveTerms(rawTerms, currentLanguage);
 
     // SECTION 6: Site Photos
     if (quote.photos && quote.photos.length > 0) {
@@ -2381,12 +2416,12 @@
       return window.webllm;
     }
     try {
-      const mod = await import('https://esm.run/@mlc-ai/web-llm');
+      const mod = await import('https://esm.run/@mlc-ai/web-llm@0.2.89');
       window.webllm = mod;
       return mod;
     } catch (e1) {
       try {
-        const mod2 = await import('https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm/+esm');
+        const mod2 = await import('https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.89/+esm');
         window.webllm = mod2;
         return mod2;
       } catch (e2) {
@@ -3561,7 +3596,49 @@
     }
   });
 
+
   // ---------------------------------------------------------------------------
+  // Web Share & Keyboard Navigation
+  // ---------------------------------------------------------------------------
+
+  function initWebShare() {
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      if (DOM.preview.shareEstimateBtn) {
+        DOM.preview.shareEstimateBtn.style.display = 'inline-flex';
+      }
+    }
+  }
+
+  if (DOM.preview.shareEstimateBtn) {
+    DOM.preview.shareEstimateBtn.addEventListener('click', async () => {
+      if (!currentQuoteData || !navigator.share) return;
+      const fullText = generateEstimateText(currentQuoteData, currentLanguage, false);
+      const bizName = currentSettings.businessName || 'GreenThumb Lawn & Landscape';
+      try {
+        await navigator.share({
+          title: (currentLanguage === 'es' ? 'Cotización #' : 'Estimate #') + currentQuoteData.quoteId + ' - ' + bizName,
+          text: fullText
+        });
+        recordEstimateSent(currentQuoteData.quoteId, 'share');
+      } catch (err) {
+        // User dismissed share sheet
+      }
+    });
+  }
+
+  // Global Keyboard: Escape closes active modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      if (DOM.map.modal && DOM.map.modal.style.display !== 'none') {
+        DOM.map.modal.style.display = 'none';
+      }
+      if (DOM.ai && DOM.ai.modal && DOM.ai.modal.style.display !== 'none') {
+        closeAiDownloadModal();
+      }
+    }
+  });
+
+    // ---------------------------------------------------------------------------
   // 13. Initialization
   // ---------------------------------------------------------------------------
   loadSettings();
@@ -3570,5 +3647,6 @@
   showScreen('screen-newquote');
   updateLiveRunningTotal();
   initWebGPUStatus();
+  initWebShare();
 
 })();
