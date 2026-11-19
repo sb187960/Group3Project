@@ -31,14 +31,14 @@
       <!-- Header Right Actions: Language Switcher + Navigation -->
       <div class="header-actions">
         <!-- Language Switcher (English / Spanish) -->
-        <div class="lang-switch" role="group" aria-label="Language selection">
-          <button type="button" class="lang-btn active" id="btn-lang-en" data-lang="en" title="English">EN</button>
-          <button type="button" class="lang-btn" id="btn-lang-es" data-lang="es" title="Español">ES</button>
+        <div class="lang-switch" role="group" aria-label="Language selection" data-i18n-aria-label="ariaLangSelection">
+          <button type="button" class="lang-btn active" id="btn-lang-en" data-lang="en" title="English" data-i18n-title="titleLangEn">EN</button>
+          <button type="button" class="lang-btn" id="btn-lang-es" data-lang="es" title="Español" data-i18n-title="titleLangEs">ES</button>
         </div>
 
         <!-- Main Navigation Tabs (Laptop Top Bar / Mobile Fixed Bottom Bar) -->
-        <nav class="nav-tabs" role="tablist" aria-label="Main Navigation">
-          <button type="button" class="tab-btn" id="tab-pricesheet" data-target="screen-pricesheet" role="tab" aria-selected="false">
+        <nav class="nav-tabs" role="tablist" aria-label="Main Navigation" data-i18n-aria-label="ariaMainNav">
+          <button type="button" class="tab-btn" id="tab-pricesheet" data-target="screen-pricesheet" role="tab" aria-selected="false" data-i18n-title="titleNavPriceSheet">
             <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="3"></circle>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -72,26 +72,6 @@
         </nav>
       </div>
     </div>
-
-    <!-- 3-Step Interactive Progress Bar -->
-    <nav class="step-progress-nav no-print" aria-label="Quote Creation Steps">
-      <div class="step-track">
-        <button type="button" class="step-item" id="step-btn-1" data-target="screen-pricesheet">
-          <span class="step-badge">1</span>
-          <span class="step-title" data-i18n="stepPriceSheet">Price Sheet</span>
-        </button>
-        <div class="step-connector" id="step-conn-1"></div>
-        <button type="button" class="step-item active" id="step-btn-2" data-target="screen-newquote">
-          <span class="step-badge">2</span>
-          <span class="step-title" data-i18n="stepYardServices">Yard &amp; Services</span>
-        </button>
-        <div class="step-connector" id="step-conn-2"></div>
-        <button type="button" class="step-item" id="step-btn-3" data-target="screen-preview">
-          <span class="step-badge">3</span>
-          <span class="step-title" data-i18n="stepPreview">Quote Preview</span>
-        </button>
-      </div>
-    </nav>
   </header>
 
   <main class="app-container">
@@ -131,17 +111,17 @@
           </h3>
           <div class="form-group">
             <label for="setting-business-name" data-i18n="lblBizName">Business Name *</label>
-            <input type="text" id="setting-business-name" class="form-control" required placeholder="e.g. GreenThumb Lawn &amp; Landscape">
+            <input type="text" id="setting-business-name" class="form-control" required placeholder="e.g. GreenThumb Lawn &amp; Landscape" data-i18n-placeholder="placeholderBizName">
             <div id="error-setting-business-name" class="field-error" style="display: none;"></div>
           </div>
           <div class="form-row">
             <div class="form-group col-half">
               <label for="setting-phone" data-i18n="lblPhone">Phone Number</label>
-              <input type="tel" id="setting-phone" class="form-control" placeholder="(555) 234-5678">
+              <input type="tel" id="setting-phone" class="form-control" placeholder="(555) 234-5678" data-i18n-placeholder="placeholderPhone">
             </div>
             <div class="form-group col-half">
               <label for="setting-email" data-i18n="lblEmail">Email Address</label>
-              <input type="email" id="setting-email" class="form-control" placeholder="quotes@greenthumb-example.com">
+              <input type="email" id="setting-email" class="form-control" placeholder="quotes@greenthumb-example.com" data-i18n-placeholder="placeholderEmail">
             </div>
           </div>
         </div>
@@ -170,7 +150,7 @@
           </div>
           <div class="form-group">
             <label for="setting-terms" data-i18n="lblTerms">Quote Terms &amp; Conditions</label>
-            <textarea id="setting-terms" class="form-control" rows="2" placeholder="e.g. Estimates valid for 14 days. Payment due upon completion."></textarea>
+            <textarea id="setting-terms" class="form-control" rows="2" placeholder="e.g. Estimates valid for 14 days. Payment due upon completion." data-i18n-placeholder="placeholderTerms"></textarea>
           </div>
         </div>
 
@@ -299,7 +279,7 @@
           <h2 id="heading-newquote" data-i18n="newQuoteTitle">Create New Quote</h2>
           <p class="screen-desc" data-i18n="newQuoteDesc">Price out a job in under a minute right from the curb.</p>
         </div>
-        <button type="button" id="btn-fill-fake" class="btn btn-outline btn-quick-fill" title="Populate with sample fake customer data">
+        <button type="button" id="btn-fill-fake" class="btn btn-outline btn-quick-fill" title="Populate with sample fake customer data" data-i18n-title="titleFillSample">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
           <span data-i18n="btnFillFake">Fill Sample</span>
         </button>
@@ -318,14 +298,33 @@
           
           <div class="form-group">
             <label for="quote-cust-name" data-i18n="lblCustName">Customer Name *</label>
-            <input type="text" id="quote-cust-name" class="form-control" placeholder="e.g. Jane Doe (Fake Customer)" required>
+            <input type="text" id="quote-cust-name" class="form-control" placeholder="e.g. Jane Doe (Fake Customer)" data-i18n-placeholder="placeholderCustName" required>
             <div id="error-quote-cust-name" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
             <label for="quote-cust-address" data-i18n="lblCustAddress">Property / Service Address *</label>
-            <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 742 Evergreen Terrace, Springfield, TX 75001" required>
+            <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 742 Evergreen Terrace, Springfield, TX 75001" data-i18n-placeholder="placeholderCustAddress" required>
             <div id="error-quote-cust-address" class="field-error" style="display: none;"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="quote-cust-phone">
+                <span data-i18n="lblCustPhone">Customer Phone</span>
+                <span class="hint" data-i18n="hintOptional">(Optional for texting quote)</span>
+              </label>
+              <input type="tel" id="quote-cust-phone" class="form-control" placeholder="e.g. 555-0100" data-i18n-placeholder="placeholderCustPhone">
+              <div id="error-quote-cust-phone" class="field-error" style="display: none;"></div>
+            </div>
+            <div class="form-group col-half">
+              <label for="quote-cust-email">
+                <span data-i18n="lblCustEmail">Customer Email</span>
+                <span class="hint" data-i18n="hintOptionalEmail">(Optional for emailing quote)</span>
+              </label>
+              <input type="email" id="quote-cust-email" class="form-control" placeholder="e.g. sample@example.com" data-i18n-placeholder="placeholderCustEmail">
+              <div id="error-quote-cust-email" class="field-error" style="display: none;"></div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -335,10 +334,10 @@
             </label>
             <div class="yard-input-row">
               <div class="input-suffix-wrapper flex-1">
-                <input type="number" id="quote-yard-size" class="form-control with-suffix" min="1" step="1" inputmode="numeric" placeholder="e.g. 4200" required>
+                <input type="number" id="quote-yard-size" class="form-control with-suffix" min="1" step="1" inputmode="numeric" placeholder="e.g. 4200" data-i18n-placeholder="placeholderYardSize" required>
                 <span class="input-suffix" id="unit-yard-size" data-i18n="unitYardSize">sq ft</span>
               </div>
-              <button type="button" id="btn-open-map" class="btn btn-secondary btn-measure-map" title="Trace property boundaries on aerial imagery">
+              <button type="button" id="btn-open-map" class="btn btn-secondary btn-measure-map" title="Trace property boundaries on aerial imagery" data-i18n-title="titleOpenMap">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
                   <line x1="8" y1="2" x2="8" y2="18"></line>
@@ -445,12 +444,12 @@
             <div id="mulch-qty-container" class="service-qty-box" style="display: none;">
               <label for="qty-mulch" data-i18n="lblMulchQty">Quantity (Cubic Yards) *</label>
               <div class="stepper-input-wrapper">
-                <button type="button" class="stepper-btn" id="btn-mulch-minus" aria-label="Decrease mulch quantity">−</button>
+                <button type="button" class="stepper-btn" id="btn-mulch-minus" aria-label="Decrease mulch quantity" data-i18n-aria-label="ariaDecreaseMulch">−</button>
                 <div class="input-suffix-wrapper flex-1">
                   <input type="number" id="qty-mulch" class="form-control with-suffix text-center tabular-num" min="0.1" step="0.5" value="2" inputmode="decimal">
                   <span class="input-suffix" id="unit-mulch" data-i18n="unitMulch">cu yds</span>
                 </div>
-                <button type="button" class="stepper-btn" id="btn-mulch-plus" aria-label="Increase mulch quantity">+</button>
+                <button type="button" class="stepper-btn" id="btn-mulch-plus" aria-label="Increase mulch quantity" data-i18n-aria-label="ariaIncreaseMulch">+</button>
               </div>
               <div id="error-qty-mulch" class="field-error" style="display: none;"></div>
             </div>
@@ -478,12 +477,12 @@
             <div id="hedge-qty-container" class="service-qty-box" style="display: none;">
               <label for="qty-hedge" data-i18n="lblHedgeQty">Estimated Crew Labor (Hours) *</label>
               <div class="stepper-input-wrapper">
-                <button type="button" class="stepper-btn" id="btn-hedge-minus" aria-label="Decrease hedge hours">−</button>
+                <button type="button" class="stepper-btn" id="btn-hedge-minus" aria-label="Decrease hedge hours" data-i18n-aria-label="ariaDecreaseHedge">−</button>
                 <div class="input-suffix-wrapper flex-1">
                   <input type="number" id="qty-hedge" class="form-control with-suffix text-center" min="0.1" step="0.5" value="1.5" inputmode="decimal">
                   <span class="input-suffix" id="unit-hedge" data-i18n="unitHedge">hours</span>
                 </div>
-                <button type="button" class="stepper-btn" id="btn-hedge-plus" aria-label="Increase hedge hours">+</button>
+                <button type="button" class="stepper-btn" id="btn-hedge-plus" aria-label="Increase hedge hours" data-i18n-aria-label="ariaIncreaseHedge">+</button>
               </div>
               <div id="error-qty-hedge" class="field-error" style="display: none;"></div>
             </div>
@@ -553,7 +552,7 @@
             </label>
           </div>
 
-          <div id="photo-thumbnails" class="thumbnails-grid" aria-label="Attached Photos"></div>
+          <div id="photo-thumbnails" class="thumbnails-grid" aria-label="Attached Photos" data-i18n-aria-label="ariaAttachedPhotos"></div>
         </div>
 
         <!-- LIVE RUNNING TOTAL CHIP -->
@@ -657,11 +656,12 @@
         <hr class="quote-rule">
 
         <!-- SECTION 2: Customer Details -->
-        <section class="quote-party-box" aria-label="Customer and Job Details">
+        <section class="quote-party-box" aria-label="Customer and Job Details" data-i18n-aria-label="ariaCustomerDetails">
           <div class="party-col">
             <span class="party-label" data-i18n="lblPreparedFor">PREPARED FOR</span>
             <div id="view-cust-name" class="party-name">Jane Doe (Fake Customer)</div>
             <div id="view-cust-address" class="party-address">742 Evergreen Terrace, Springfield, TX 75001</div>
+            <div id="view-cust-contact" class="party-contact" style="display: none;"></div>
           </div>
           <div class="party-col party-col-right right-align">
             <span class="party-label" data-i18n="lblPropertyScope">PROPERTY &amp; SCOPE</span>
@@ -672,7 +672,7 @@
         </section>
 
         <!-- SECTION 3: Itemized Table -->
-        <section class="table-responsive" aria-label="Itemized Services">
+        <section class="table-responsive" aria-label="Itemized Services" data-i18n-aria-label="ariaItemizedServices">
           <table class="quote-table">
             <thead>
               <tr>
@@ -689,7 +689,7 @@
         </section>
 
         <!-- SECTION 4: Totals Breakdown -->
-        <section class="quote-totals-section" aria-label="Financial Totals Breakdown">
+        <section class="quote-totals-section" aria-label="Financial Totals Breakdown" data-i18n-aria-label="ariaTotalsBreakdown">
           <div class="quote-totals-box">
             <div class="total-row">
               <span class="total-label" data-i18n="lblSubtotal">Subtotal</span>
@@ -698,7 +698,7 @@
             <div id="row-min-charge" class="total-row min-charge-applied" style="display: none;">
               <span class="total-label">
                 <span data-i18n="lblMinFloorAdj">Minimum Job Floor Adjustment</span>
-                <small class="min-charge-note">(Minimum floor of $<span id="view-min-charge-floor">50</span> applied)</small>
+                <small class="min-charge-note" id="view-min-charge-note">(Minimum floor of $<span id="view-min-charge-floor">50</span> applied)</small>
               </span>
               <span id="view-min-charge-adj" class="total-value tabular-num">+$0.00</span>
             </div>
@@ -715,13 +715,13 @@
         </section>
 
         <!-- SECTION 5: Quote Terms & Conditions -->
-        <section class="quote-terms-section" aria-label="Terms and Conditions">
+        <section class="quote-terms-section" aria-label="Terms and Conditions" data-i18n-aria-label="ariaTerms">
           <h4 class="terms-title" data-i18n="termsTitle">Terms &amp; Conditions</h4>
           <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
         </section>
 
         <!-- SECTION 6: Site Photos -->
-        <section id="quote-preview-photos" class="quote-photos-section" style="display: none;" aria-label="Job Site Photos">
+        <section id="quote-preview-photos" class="quote-photos-section" style="display: none;" aria-label="Job Site Photos" data-i18n-aria-label="ariaPhotos">
           <h4 class="photos-title" data-i18n="photosTitlePreview">Job Site Property Photos</h4>
           <div id="quote-photos-gallery" class="preview-photos-grid"></div>
         </section>
@@ -738,6 +738,39 @@
       </article>
 
       <!-- SECTION 7: Actions Toolbar -->
+      <!-- Send to Customer Action Group (no-print) -->
+      <div class="send-actions-card no-print" id="quote-send-card" style="display: none;" role="group" aria-label="Send estimate to customer" data-i18n-aria-label="ariaSendEstimateGroup">
+        <div class="send-actions-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+          <span class="send-actions-title" data-i18n="sendToCustomerTitle">Send Estimate to Customer</span>
+        </div>
+        <div class="send-actions-buttons">
+          <button type="button" id="btn-send-sms" class="btn btn-secondary btn-send-action">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span data-i18n="btnSendSms">Text Estimate</span>
+          </button>
+          <button type="button" id="btn-send-email" class="btn btn-secondary btn-send-action">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span data-i18n="btnSendEmail">Email Estimate</span>
+          </button>
+          <button type="button" id="btn-copy-estimate" class="btn btn-outline btn-send-action">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span data-i18n="btnCopyEstimate">Copy Estimate</span>
+          </button>
+        </div>
+      </div>
+
       <div class="preview-actions no-print">
         <button type="button" id="btn-save-quote" class="btn btn-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
@@ -789,7 +822,7 @@
       </div>
 
       <!-- Pipeline Filter Pills -->
-      <div class="saved-filters-bar no-print" role="tablist" aria-label="Filter saved estimates">
+      <div class="saved-filters-bar no-print" role="tablist" aria-label="Filter saved estimates" data-i18n-aria-label="ariaFilterSaved">
         <button type="button" class="filter-pill active" id="filter-btn-all" data-filter="all" role="tab" aria-selected="true">
           <span data-i18n="filterAll">All</span> (<span id="count-filter-all">0</span>)
         </button>
@@ -835,7 +868,7 @@
   </main>
 
   <!-- ========================================== -->
-  <!-- MEASURE ON MAP SATELLITE MODAL             -->
+  <!-- MEASURE ON MAP AERIAL PHOTOS MODAL             -->
   <!-- ========================================== -->
   <div id="map-modal" class="map-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="map-modal-title">
     <div class="map-modal-container">
@@ -853,7 +886,7 @@
             <span class="map-header-sub" data-i18n="mapModalSub">Trace property boundaries on USGS aerial photos (updated periodically; may be a few years old)</span>
           </div>
         </div>
-        <button type="button" id="btn-close-map" class="map-close-btn" aria-label="Close Map">
+        <button type="button" id="btn-close-map" class="map-close-btn" aria-label="Close Map" data-i18n-aria-label="ariaCloseMap">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -868,7 +901,7 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="map-search-input" class="map-search-input" placeholder="Search property address..." autocomplete="street-address">
+          <input type="text" id="map-search-input" class="map-search-input" placeholder="Search property address..." data-i18n-placeholder="mapSearchPlaceholder" autocomplete="street-address">
         </div>
         <button type="button" id="btn-map-search" class="btn btn-primary map-search-btn">
           <span data-i18n="mapBtnFind">Find</span>
@@ -900,21 +933,21 @@
 
         <!-- Floating Tracing Controls (Outdoor Thumb Targets >= 44px) -->
         <div class="map-floating-controls" aria-label="Tracing Tools">
-          <button type="button" id="btn-map-undo" class="map-tool-btn" title="Undo last point">
+          <button type="button" id="btn-map-undo" class="map-tool-btn" title="Undo last point" data-i18n-title="mapBtnUndoTitle">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="1 4 1 10 7 10"></polyline>
               <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
             </svg>
             <span data-i18n="mapBtnUndo">Undo Point</span>
           </button>
-          <button type="button" id="btn-map-new-area" class="map-tool-btn" title="Finish current area and trace another (e.g. front vs back yard)">
+          <button type="button" id="btn-map-new-area" class="map-tool-btn" title="Finish current area and trace another (e.g. front vs back yard)" data-i18n-title="mapBtnNextAreaTitle">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
             <span data-i18n="mapBtnNextArea">Finish / Next Area</span>
           </button>
-          <button type="button" id="btn-map-clear" class="map-tool-btn map-tool-danger" title="Clear all traced points">
+          <button type="button" id="btn-map-clear" class="map-tool-btn map-tool-danger" title="Clear all traced points" data-i18n-title="mapBtnClearTitle">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="3 6 5 6 21 6"></polyline>
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>

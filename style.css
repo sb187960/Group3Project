@@ -229,8 +229,8 @@ h1, h2, h3, h4, p, span, div, a, label {
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition);
-  min-height: 32px;
-  min-width: 36px;
+  min-height: 44px;
+  min-width: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -287,7 +287,7 @@ h1, h2, h3, h4, p, span, div, a, label {
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: var(--transition);
-  min-height: 40px;
+  min-height: 44px;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   white-space: nowrap;
@@ -313,88 +313,6 @@ h1, h2, h3, h4, p, span, div, a, label {
 
 /* --------------------------------------------------------------------------
    5. Interactive 3-Step Progress Track
-   -------------------------------------------------------------------------- */
-.step-progress-nav {
-  display: none !important; /* Unified to ONE navigation system per screen size */
-  background-color: var(--color-bg-surface);
-  border-bottom: 1px solid var(--color-border-subtle);
-  padding: 8px 16px;
-}
-
-.step-track {
-  max-width: 880px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.step-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: 1px solid transparent;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  transition: var(--transition);
-  min-height: 40px;
-}
-
-.step-item:hover {
-  background-color: var(--color-brand-wash);
-  color: var(--color-brand-primary);
-}
-
-.step-item.active {
-  color: var(--color-brand-primary);
-  font-weight: 700;
-}
-
-.step-badge {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background-color: var(--color-border-subtle);
-  color: var(--color-text-secondary);
-  font-size: 0.75rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-}
-
-.step-item.active .step-badge {
-  background-color: var(--color-brand-primary);
-  color: var(--color-text-inverse);
-}
-
-.step-item.completed .step-badge {
-  background-color: var(--color-brand-wash);
-  color: var(--color-brand-primary);
-  border: 1px solid var(--color-brand-border);
-}
-
-.step-connector {
-  flex: 1;
-  height: 2px;
-  background-color: var(--color-border-subtle);
-  margin: 0 4px;
-}
-
-.step-connector.completed {
-  background-color: var(--color-brand-primary);
-}
-
-/* --------------------------------------------------------------------------
-   6. Main Content Layout & Screen Containers
    -------------------------------------------------------------------------- */
 .app-container {
   max-width: 880px;
@@ -1505,8 +1423,8 @@ textarea.form-control {
   .lang-btn {
     padding: 4px 8px;
     font-size: 0.75rem;
-    min-height: 28px;
-    min-width: 32px;
+    min-height: 44px;
+    min-width: 44px;
   }
 
   .app-container {
@@ -1756,7 +1674,7 @@ textarea.form-control {
 }
 
 /* --------------------------------------------------------------------------
-   18. Measure on Map Satellite Tool
+   18. Measure on Map Aerial Photos Tool
    -------------------------------------------------------------------------- */
 .yard-input-row {
   display: flex;
@@ -2162,7 +2080,7 @@ textarea.form-control {
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease-in-out;
-  min-height: 40px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
 }
@@ -2348,7 +2266,7 @@ textarea.form-control {
 }
 
 .saved-card-actions .btn {
-  min-height: 38px;
+  min-height: 44px;
   padding: 6px 12px;
   font-size: 0.8125rem;
 }
@@ -2381,4 +2299,68 @@ textarea.form-control {
     justify-content: center;
     font-size: 0.8125rem;
   }
+}
+
+
+/* --------------------------------------------------------------------------
+   Send to Customer Action Group
+   -------------------------------------------------------------------------- */
+.send-actions-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-brand-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.send-actions-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-brand-primary);
+  margin-bottom: 12px;
+}
+
+.send-actions-title {
+  letter-spacing: -0.01em;
+}
+
+.send-actions-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-send-action {
+  flex: 1;
+  min-width: 140px;
+  min-height: 44px;
+  justify-content: center;
+}
+
+.party-contact {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.badge-sent {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+/* Step Item Fallback Touch Target */
+.step-item {
+  min-height: 44px;
+  min-width: 44px;
 }

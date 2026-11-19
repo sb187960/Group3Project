@@ -56,7 +56,7 @@
       stepPreview: 'Quote Preview',
 
       // Price Sheet
-      pricesheetHint: "Crew Pricing Setup: We've pre-filled realistic baseline rates ($12/1k mowing, $50 min charge). Update with your crew's actual pricing, then tap Save Settings.",
+      pricesheetHint: "<strong>Crew Pricing Setup:</strong> We've pre-filled realistic baseline rates ($12/1k mowing, $50 min charge). Update with your crew's actual pricing, then tap <strong>Save Settings</strong>.",
       priceSheetTitle: 'Business Price Sheet & Settings',
       priceSheetDesc: "Set your crew's rates and business details. Everything is saved locally on your phone.",
       bizInfoTitle: 'Business Information',
@@ -98,6 +98,7 @@
       placeholderCustName: 'e.g. Jane Doe (Fake Customer)',
       lblCustAddress: 'Property / Service Address *',
       placeholderCustAddress: 'e.g. 742 Evergreen Terrace, Springfield, TX 75001',
+      placeholderYardSize: 'e.g. 4200',
       lblYardSize: 'Lawn / Yard Size (sq ft) *',
       hintYardSize: 'Area rounded up to next 1,000 sq ft · 4,200 sq ft = 5 units',
       btnMeasureMap: 'Measure on Aerial Map',
@@ -183,7 +184,7 @@
       filterWon: 'Won',
       filterLost: 'Lost',
       emptySavedTitle: 'No Saved Estimates Yet',
-      emptySavedDesc: 'Create an estimate in Yard & Services and tap Save Estimate on Quote Preview to track your jobs here.',
+      emptySavedDesc: 'Create an estimate in <strong>Yard &amp; Services</strong> and tap <strong>Save Estimate</strong> on Quote Preview to track your jobs here.',
       btnCreateFirstQuote: 'Create First Quote',
       followUpBadge: 'Follow up ({days}d)',
       btnReopen: 'Reopen',
@@ -218,8 +219,80 @@
       mapBtnClear: 'Clear',
       mapTracedArea: 'Traced Lawn Area:',
       mapAreaBreakdown: '{n} area(s)',
-      mapDisclaimer: '⚠️ Estimate Note: Aerial measurements are estimates (photos may be a few years old). Exclude the house, driveway, and beds, and verify the number before quoting.',
-      mapUseArea: 'Use this area'
+      mapDisclaimer: '⚠️ <strong>Estimate Note:</strong> Aerial measurements are estimates (photos may be a few years old). Exclude the house, driveway, and beds, and verify the number before quoting.',
+      mapUseArea: 'Use this area',
+      // Dynamic Notes & Phrasing
+      minFloorAppliedNote: '(Minimum floor of {amount} applied)',
+      billedAs: 'billed as',
+
+      // Accessibility & Titles
+      ariaLangSelection: 'Language selection',
+      ariaMainNav: 'Main Navigation',
+      ariaDecreaseMulch: 'Decrease mulch quantity',
+      ariaIncreaseMulch: 'Increase mulch quantity',
+      ariaDecreaseHedge: 'Decrease hedge hours',
+      ariaIncreaseHedge: 'Increase hedge hours',
+      ariaAttachedPhotos: 'Attached Photos',
+      ariaCustomerDetails: 'Customer and Job Details',
+      ariaItemizedServices: 'Itemized Services',
+      ariaTotalsBreakdown: 'Financial Totals Breakdown',
+      ariaTerms: 'Terms and Conditions',
+      ariaPhotos: 'Job Site Photos',
+      ariaFilterSaved: 'Filter saved estimates',
+      ariaCloseMap: 'Close Map',
+      ariaTracingTools: 'Tracing Tools',
+      titleLangEn: 'English',
+      titleLangEs: 'Español',
+      titleNavPriceSheet: 'Customize business profile and rates',
+      titleFillSample: 'Populate with sample fake customer data',
+      titleOpenMap: 'Trace property boundaries on aerial imagery',
+      mapBtnUndoTitle: 'Undo last point',
+      mapBtnNextAreaTitle: 'Finish current area and trace another (e.g. front vs back yard)',
+      mapBtnClearTitle: 'Clear all traced points',
+
+      // Additional UI Toasts & Confirmations
+      toastBackupExported: 'Settings backup exported successfully!',
+      toastBackupRestored: 'Settings successfully restored from backup!',
+      toastFormCleared: 'Form cleared for new customer quote.',
+      confirmDeleteTapAgain: 'Tap again to confirm',
+      emptyFilterTitle: 'No {filter} Quotes',
+      emptyFilterDesc: "You don't currently have any estimates marked as {filter}.",
+      unusualRateNotice: '⚠️ <strong>Unusual Rate Notice:</strong> {warnings}.<br>Tap <strong>Save Settings</strong> again to confirm these rates.',
+
+      // Validation Errors
+      errBizNameRequired: 'Business name is required.',
+      errMinChargeValid: 'Minimum charge must be a valid number >= $0.',
+      errRateValid: '{name} must be a valid number >= $0.',
+      errCustNameRequired: 'Customer name is required.',
+      errCustAddressRequired: 'Property / Service address is required.',
+      errYardSizeRequired: 'Yard size must be a valid positive number greater than 0 sq ft.',
+      errYardSizeMax: 'Yard size cannot exceed 500,000 sq ft (approx 11.5 acres).',
+      errMulchQtyPositive: 'Mulch quantity must be greater than 0 cubic yards.',
+      errMulchQtyMax: 'Mulch quantity cannot exceed 200 cubic yards per job.',
+      errHedgeHoursPositive: 'Hedge trimming hours must be greater than 0.',
+      errHedgeHoursMax: 'Hedge trimming crew hours cannot exceed 80 hours per job.',
+      errBackupInvalidStructure: 'Backup file missing valid rate structure.',
+      errBackupInvalidJson: 'Invalid JSON backup file.',
+      // Part B: Customer Contact & Share Actions
+      lblCustPhone: 'Customer Phone',
+      lblCustEmail: 'Customer Email',
+      hintOptional: '(Optional for texting quote)',
+      hintOptionalEmail: '(Optional for emailing quote)',
+      placeholderCustPhone: 'e.g. 555-0100',
+      placeholderCustEmail: 'e.g. sample@example.com',
+      warnPhoneFormat: 'Please check phone number format.',
+      warnEmailFormat: 'Please check email format.',
+      sendToCustomerTitle: 'Send Estimate to Customer',
+      ariaSendEstimateGroup: 'Send estimate to customer',
+      btnSendSms: 'Text Estimate',
+      btnSendEmail: 'Email Estimate',
+      btnCopyEstimate: 'Copy Estimate',
+      toastEstimateCopied: 'Estimate copied to clipboard!',
+      toastEstimateCopyFailed: 'Unable to copy to clipboard.',
+      sentBadgeLabel: 'Sent {date} by {method}',
+      methodSms: 'text',
+      methodEmail: 'email',
+      methodCopy: 'clipboard',
     },
     es: {
       appTitle: 'LawnQuote',
@@ -233,7 +306,7 @@
       stepPreview: 'Vista Previa',
 
       // Price Sheet
-      pricesheetHint: 'Configuración de Tarifas: Hemos completado tarifas base realistas ($12/1k corte, $50 cargo mínimo). Modifique según sus precios y presione Guardar Configuración.',
+      pricesheetHint: '<strong>Configuración de Tarifas:</strong> Hemos completado tarifas base realistas ($12/1k corte, $50 cargo mínimo). Modifique según sus precios y presione <strong>Guardar Configuración</strong>.',
       priceSheetTitle: 'Tarifas y Configuración del Negocio',
       priceSheetDesc: 'Configure las tarifas y datos de su cuadrilla. Todo se guarda localmente en su teléfono.',
       bizInfoTitle: 'Información del Negocio',
@@ -275,6 +348,7 @@
       placeholderCustName: 'ej. Juana Pérez (Cliente de Ejemplo)',
       lblCustAddress: 'Dirección de la Propiedad *',
       placeholderCustAddress: 'ej. 742 Evergreen Terrace, Springfield, TX 75001',
+      placeholderYardSize: 'ej. 4200',
       lblYardSize: 'Tamaño del Césped (pies²) *',
       hintYardSize: 'Área redondeada hacia arriba a los siguientes 1,000 pies² · 4,200 pies² = 5 unidades',
       btnMeasureMap: 'Medir en Mapa Aéreo',
@@ -360,7 +434,7 @@
       filterWon: 'Ganadas',
       filterLost: 'Perdidas',
       emptySavedTitle: 'No Hay Estimaciones Guardadas Aún',
-      emptySavedDesc: 'Cree una cotización en Terreno y Servicios y presione Guardar Estimación en Vista Previa para dar seguimiento aquí.',
+      emptySavedDesc: 'Cree una cotización en <strong>Terreno y Servicios</strong> y presione <strong>Guardar Estimación</strong> en Vista Previa para dar seguimiento aquí.',
       btnCreateFirstQuote: 'Crear Primera Cotización',
       followUpBadge: 'Seguimiento ({days}d)',
       btnReopen: 'Reabrir',
@@ -395,8 +469,80 @@
       mapBtnClear: 'Limpiar',
       mapTracedArea: 'Área Medida del Césped:',
       mapAreaBreakdown: '{n} área(s)',
-      mapDisclaimer: '⚠️ Nota de Estimación: Las mediciones aéreas son aproximadas (las fotos pueden tener algunos años). Excluya la casa, entrada y canteros, y verifique el total antes de cotizar.',
-      mapUseArea: 'Usar esta área'
+      mapDisclaimer: '⚠️ <strong>Nota de Estimación:</strong> Las mediciones aéreas son aproximadas (las fotos pueden tener algunos años). Excluya la casa, entrada y canteros, y verifique el total antes de cotizar.',
+      mapUseArea: 'Usar esta área',
+      // Dynamic Notes & Phrasing
+      minFloorAppliedNote: '(Se aplicó el cargo mínimo base de {amount})',
+      billedAs: 'facturado como',
+
+      // Accessibility & Titles
+      ariaLangSelection: 'Selección de idioma',
+      ariaMainNav: 'Navegación principal',
+      ariaDecreaseMulch: 'Reducir cantidad de mantillo',
+      ariaIncreaseMulch: 'Aumentar cantidad de mantillo',
+      ariaDecreaseHedge: 'Reducir horas de recorte',
+      ariaIncreaseHedge: 'Aumentar horas de recorte',
+      ariaAttachedPhotos: 'Fotos adjuntas',
+      ariaCustomerDetails: 'Detalles del cliente y del trabajo',
+      ariaItemizedServices: 'Servicios detallados',
+      ariaTotalsBreakdown: 'Desglose de totales financieros',
+      ariaTerms: 'Términos y condiciones',
+      ariaPhotos: 'Fotos del sitio de trabajo',
+      ariaFilterSaved: 'Filtrar estimaciones guardadas',
+      ariaCloseMap: 'Cerrar mapa',
+      ariaTracingTools: 'Herramientas de trazado',
+      titleLangEn: 'Inglés',
+      titleLangEs: 'Español',
+      titleNavPriceSheet: 'Personalizar perfil del negocio y tarifas',
+      titleFillSample: 'Llenar con datos ficticios de muestra',
+      titleOpenMap: 'Trazar límites del terreno en imagen aérea',
+      mapBtnUndoTitle: 'Deshacer último punto',
+      mapBtnNextAreaTitle: 'Finalizar área actual y trazar otra (ej. jardín delantero y trasero)',
+      mapBtnClearTitle: 'Limpiar todos los puntos trazados',
+
+      // Additional UI Toasts & Confirmations
+      toastBackupExported: '¡Copia de respaldo exportada con éxito!',
+      toastBackupRestored: '¡Configuración restaurada con éxito desde la copia!',
+      toastFormCleared: 'Formulario limpio para una nueva cotización.',
+      confirmDeleteTapAgain: '¿Confirmar eliminar?',
+      emptyFilterTitle: 'No hay cotizaciones: {filter}',
+      emptyFilterDesc: 'Actualmente no tiene cotizaciones marcadas como {filter}.',
+      unusualRateNotice: '⚠️ <strong>Aviso de Tarifas Inusuales:</strong> {warnings}.<br>Presione <strong>Guardar Configuración</strong> nuevamente para confirmar estas tarifas.',
+
+      // Validation Errors
+      errBizNameRequired: 'El nombre del negocio es obligatorio.',
+      errMinChargeValid: 'El cargo mínimo debe ser un número válido >= $0.',
+      errRateValid: '{name} debe ser un número válido >= $0.',
+      errCustNameRequired: 'El nombre del cliente es obligatorio.',
+      errCustAddressRequired: 'La dirección de la propiedad / servicio es obligatoria.',
+      errYardSizeRequired: 'El tamaño del terreno debe ser un número positivo mayor a 0 pies².',
+      errYardSizeMax: 'El tamaño del terreno no puede exceder 500,000 pies² (aprox. 11.5 acres).',
+      errMulchQtyPositive: 'La cantidad de mantillo debe ser mayor a 0 yardas cúbicas.',
+      errMulchQtyMax: 'La cantidad de mantillo no puede exceder 200 yardas cúbicas por trabajo.',
+      errHedgeHoursPositive: 'Las horas de recorte de setos deben ser mayores a 0.',
+      errHedgeHoursMax: 'Las horas de cuadrilla para recorte de setos no pueden exceder 80 horas por trabajo.',
+      errBackupInvalidStructure: 'El archivo de respaldo no tiene una estructura de tarifas válida.',
+      errBackupInvalidJson: 'Archivo JSON de respaldo no válido.',
+      // Part B: Customer Contact & Share Actions
+      lblCustPhone: 'Teléfono del Cliente',
+      lblCustEmail: 'Correo del Cliente',
+      hintOptional: '(Opcional para enviar por mensaje)',
+      hintOptionalEmail: '(Opcional para enviar por correo)',
+      placeholderCustPhone: 'ej. 555-0100',
+      placeholderCustEmail: 'ej. sample@example.com',
+      warnPhoneFormat: 'Por favor verifique el formato del teléfono.',
+      warnEmailFormat: 'Por favor verifique el formato del correo.',
+      sendToCustomerTitle: 'Enviar Cotización al Cliente',
+      ariaSendEstimateGroup: 'Enviar cotización al cliente',
+      btnSendSms: 'Enviar por Mensaje',
+      btnSendEmail: 'Enviar por Correo',
+      btnCopyEstimate: 'Copiar Texto',
+      toastEstimateCopied: '¡Cotización copiada al portapapeles!',
+      toastEstimateCopyFailed: 'No se pudo copiar al portapapeles.',
+      sentBadgeLabel: 'Enviado {date} por {method}',
+      methodSms: 'mensaje',
+      methodEmail: 'correo',
+      methodCopy: 'copia',
     }
   };
 
@@ -513,6 +659,8 @@
       sampleBadge: document.getElementById('biz-strip-sample-badge'),
       custName: document.getElementById('quote-cust-name'),
       custAddress: document.getElementById('quote-cust-address'),
+      custPhone: document.getElementById('quote-cust-phone'),
+      custEmail: document.getElementById('quote-cust-email'),
       yardSize: document.getElementById('quote-yard-size'),
       svcMowing: document.getElementById('svc-mowing'),
       svcEdging: document.getElementById('svc-edging'),
@@ -536,6 +684,8 @@
       errors: {
         custName: document.getElementById('error-quote-cust-name'),
         custAddress: document.getElementById('error-quote-cust-address'),
+        custPhone: document.getElementById('error-quote-cust-phone'),
+        custEmail: document.getElementById('error-quote-cust-email'),
         yardSize: document.getElementById('error-quote-yard-size'),
         qtyMulch: document.getElementById('error-qty-mulch'),
         qtyHedge: document.getElementById('error-qty-hedge'),
@@ -580,6 +730,11 @@
       terms: document.getElementById('view-quote-terms'),
       photosSection: document.getElementById('quote-preview-photos'),
       photosGallery: document.getElementById('quote-photos-gallery'),
+      sendCard: document.getElementById('quote-send-card'),
+      sendSmsBtn: document.getElementById('btn-send-sms'),
+      sendEmailBtn: document.getElementById('btn-send-email'),
+      copyEstimateBtn: document.getElementById('btn-copy-estimate'),
+      custContact: document.getElementById('view-cust-contact'),
       highValueWarning: document.getElementById('preview-high-value-warning')
     },
     saved: {
@@ -633,6 +788,16 @@
     return dict[key] !== undefined ? dict[key] : (TRANSLATIONS.en[key] !== undefined ? TRANSLATIONS.en[key] : key);
   }
 
+  function formatLocalizedDate(dateOrTimestamp, lang) {
+    if (!dateOrTimestamp) return '';
+    const d = (dateOrTimestamp instanceof Date) ? dateOrTimestamp : new Date(dateOrTimestamp);
+    if (isNaN(d.getTime())) return String(dateOrTimestamp);
+    if (lang === 'es') {
+      return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   function setLanguage(lang) {
     currentLanguage = (lang === 'es') ? 'es' : 'en';
     try {
@@ -641,7 +806,7 @@
       console.warn('Could not persist language choice:', e);
     }
 
-    document.documentElement.lang = currentLanguage;
+    document.documentElement.setAttribute('lang', currentLanguage);
 
     // Toggle active state on language buttons
     if (DOM.lang.btnEn && DOM.lang.btnEs) {
@@ -651,23 +816,39 @@
       DOM.lang.btnEs.setAttribute('aria-pressed', currentLanguage === 'es' ? 'true' : 'false');
     }
 
-    // Update all elements with data-i18n
+    // Update all elements with data-i18n (preserving bold tags with innerHTML)
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       const val = t(key);
       if (val !== undefined && val !== null) {
-        el.textContent = val;
+        if (typeof val === 'string' && val.includes('<') && val.includes('>')) {
+          el.innerHTML = val;
+        } else {
+          el.textContent = val;
+        }
       }
     });
 
-    // Update placeholders
-    if (DOM.priceSheet.bizName) DOM.priceSheet.bizName.placeholder = t('placeholderBizName');
-    if (DOM.priceSheet.phone) DOM.priceSheet.phone.placeholder = t('placeholderPhone');
-    if (DOM.priceSheet.email) DOM.priceSheet.email.placeholder = t('placeholderEmail');
-    if (DOM.priceSheet.terms) DOM.priceSheet.terms.placeholder = t('placeholderTerms');
-    if (DOM.newQuote.custName) DOM.newQuote.custName.placeholder = t('placeholderCustName');
-    if (DOM.newQuote.custAddress) DOM.newQuote.custAddress.placeholder = t('placeholderCustAddress');
-    if (DOM.map.searchInput) DOM.map.searchInput.placeholder = t('mapSearchPlaceholder');
+    // Update all elements with data-i18n-placeholder
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      const val = t(key);
+      if (val) el.placeholder = val;
+    });
+
+    // Update all elements with data-i18n-aria-label
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria-label');
+      const val = t(key);
+      if (val) el.setAttribute('aria-label', val);
+    });
+
+    // Update all elements with data-i18n-title
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      const val = t(key);
+      if (val) el.title = val;
+    });
 
     // Update unit suffixes
     const yardSuffix = document.getElementById('unit-yard-size');
@@ -876,36 +1057,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function updateStepProgress(screenId) {
-    const nav = DOM.nav;
-    if (!nav.stepBtn1 || !nav.stepBtn2 || !nav.stepBtn3) return;
-
-    const stepNavContainer = document.querySelector('.step-progress-nav');
-    if (stepNavContainer) {
-      stepNavContainer.style.display = (screenId === 'screen-saved') ? 'none' : 'block';
-    }
-
-    nav.stepBtns.forEach(btn => {
-      btn.classList.remove('active', 'completed');
-    });
-    if (nav.stepConn1) nav.stepConn1.classList.remove('completed');
-    if (nav.stepConn2) nav.stepConn2.classList.remove('completed');
-
-    if (screenId === 'screen-pricesheet') {
-      nav.stepBtn1.classList.add('active');
-    } else if (screenId === 'screen-newquote') {
-      nav.stepBtn1.classList.add('completed');
-      if (nav.stepConn1) nav.stepConn1.classList.add('completed');
-      nav.stepBtn2.classList.add('active');
-    } else if (screenId === 'screen-preview') {
-      nav.stepBtn1.classList.add('completed');
-      nav.stepBtn2.classList.add('completed');
-      if (nav.stepConn1) nav.stepConn1.classList.add('completed');
-      if (nav.stepConn2) nav.stepConn2.classList.add('completed');
-      nav.stepBtn3.classList.add('active');
-    }
-  }
-
   // Navigation tab clicks
   DOM.nav.tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -1035,7 +1186,7 @@
     let valid = true;
 
     if (!s.bizName.value.trim()) {
-      setFieldError(s.bizName, s.errors.bizName, 'Business name is required.');
+      setFieldError(s.bizName, s.errors.bizName, t('errBizNameRequired'));
       valid = false;
     } else {
       clearFieldError(s.bizName, s.errors.bizName);
@@ -1043,7 +1194,7 @@
 
     const minChargeVal = parseFloat(s.minCharge.value);
     if (isNaN(minChargeVal) || minChargeVal < 0) {
-      setFieldError(s.minCharge, s.errors.minCharge, 'Minimum charge must be a valid number >= $0.');
+      setFieldError(s.minCharge, s.errors.minCharge, t('errMinChargeValid'));
       valid = false;
     } else {
       clearFieldError(s.minCharge, s.errors.minCharge);
@@ -1063,7 +1214,7 @@
     rateChecks.forEach(r => {
       const val = parseFloat(r.input.value);
       if (isNaN(val) || val < 0) {
-        setFieldError(r.input, r.err, `${r.name} must be a valid number >= $0.`);
+        setFieldError(r.input, r.err, t('errRateValid').replace('{name}', r.name));
         valid = false;
       } else {
         clearFieldError(r.input, r.err);
@@ -1090,7 +1241,7 @@
     // 1. Customer Name
     const nameVal = q.custName.value.trim();
     if (!nameVal) {
-      setFieldError(q.custName, q.errors.custName, 'Customer name is required.');
+      setFieldError(q.custName, q.errors.custName, t('errCustNameRequired'));
       valid = false;
     } else {
       clearFieldError(q.custName, q.errors.custName);
@@ -1099,19 +1250,21 @@
     // 2. Customer Address
     const addressVal = q.custAddress.value.trim();
     if (!addressVal) {
-      setFieldError(q.custAddress, q.errors.custAddress, 'Property / Service address is required.');
+      setFieldError(q.custAddress, q.errors.custAddress, t('errCustAddressRequired'));
       valid = false;
     } else {
       clearFieldError(q.custAddress, q.errors.custAddress);
+    if (q.custPhone && q.errors.custPhone) clearFieldError(q.custPhone, q.errors.custPhone);
+    if (q.custEmail && q.errors.custEmail) clearFieldError(q.custEmail, q.errors.custEmail);
     }
 
     // 3. Yard Size (must be positive number > 0)
     const yardSizeVal = parseFloat(q.yardSize.value);
     if (isNaN(yardSizeVal) || yardSizeVal <= 0) {
-      setFieldError(q.yardSize, q.errors.yardSize, 'Yard size must be a valid positive number greater than 0 sq ft.');
+      setFieldError(q.yardSize, q.errors.yardSize, t('errYardSizeRequired'));
       valid = false;
     } else if (yardSizeVal > 500000) {
-      setFieldError(q.yardSize, q.errors.yardSize, 'Yard size cannot exceed 500,000 sq ft (approx 11.5 acres).');
+      setFieldError(q.yardSize, q.errors.yardSize, t('errYardSizeMax'));
       valid = false;
     } else {
       clearFieldError(q.yardSize, q.errors.yardSize);
@@ -1131,10 +1284,10 @@
     if (q.svcMulch.checked) {
       mulchYards = parseFloat(q.qtyMulch.value);
       if (isNaN(mulchYards) || mulchYards <= 0) {
-        setFieldError(q.qtyMulch, q.errors.qtyMulch, 'Mulch quantity must be greater than 0 cubic yards.');
+        setFieldError(q.qtyMulch, q.errors.qtyMulch, t('errMulchQtyPositive'));
         valid = false;
       } else if (mulchYards > 200) {
-        setFieldError(q.qtyMulch, q.errors.qtyMulch, 'Mulch quantity cannot exceed 200 cubic yards per job.');
+        setFieldError(q.qtyMulch, q.errors.qtyMulch, t('errMulchQtyMax'));
         valid = false;
       } else {
         clearFieldError(q.qtyMulch, q.errors.qtyMulch);
@@ -1146,10 +1299,10 @@
     if (q.svcHedge.checked) {
       hedgeHours = parseFloat(q.qtyHedge.value);
       if (isNaN(hedgeHours) || hedgeHours <= 0) {
-        setFieldError(q.qtyHedge, q.errors.qtyHedge, 'Hedge trimming hours must be greater than 0.');
+        setFieldError(q.qtyHedge, q.errors.qtyHedge, t('errHedgeHoursPositive'));
         valid = false;
       } else if (hedgeHours > 80) {
-        setFieldError(q.qtyHedge, q.errors.qtyHedge, 'Hedge trimming crew hours cannot exceed 80 hours per job.');
+        setFieldError(q.qtyHedge, q.errors.qtyHedge, t('errHedgeHoursMax'));
         valid = false;
       } else {
         clearFieldError(q.qtyHedge, q.errors.qtyHedge);
@@ -1413,10 +1566,13 @@
 
     // SECTION 3: Itemized Table
     p.lineItems.innerHTML = '';
+    const unitYard = t('unitYardSize');
+    const unit1k = t('unitPer1k');
+    const billedAsText = t('billedAs') || (currentLanguage === 'es' ? 'facturado como' : 'billed as');
+
     quote.lineItems.forEach(item => {
       const tr = document.createElement('tr');
 
-      // Localized name and description if key exists
       let itemName = item.name;
       let itemDesc = item.description;
       if (item.key) {
@@ -1425,14 +1581,30 @@
         itemDesc = t('svcDesc' + keyPascal) || item.description;
       }
 
+      let displayQty = item.qty;
+      let displayRate = item.rate;
+
+      if (['mowing', 'edging', 'leaf', 'fertilizer', 'overseed'].includes(item.key)) {
+        displayQty = `${quote.yardSize.toLocaleString()} ${unitYard} (${billedAsText} ${item.areaUnits} × 1,000 ${unitYard})`;
+        displayRate = `${formatCurrency(item.unitRate)} / ${unit1k}`;
+      } else if (item.key === 'mulch') {
+        const mulchVal = item.units || item.quantity || 2;
+        displayQty = `${mulchVal} ${t('unitMulch')}`;
+        displayRate = `${formatCurrency(item.unitRate)} / ${t('unitYard')}`;
+      } else if (item.key === 'hedge') {
+        const hedgeVal = item.units || item.quantity || 1.5;
+        displayQty = `${hedgeVal} ${t('unitHedge')}`;
+        displayRate = `${formatCurrency(item.unitRate)} / ${t('unitHour')}`;
+      }
+
       tr.innerHTML = `
         <td>
           <div class="item-service-title">${escapeHtml(itemName)}</div>
           <div class="item-service-desc">${escapeHtml(itemDesc)}</div>
-          <div class="item-service-meta-mobile">${escapeHtml(item.qty)} &bull; ${escapeHtml(item.rate)}</div>
+          <div class="item-service-meta-mobile">${escapeHtml(displayQty)} &bull; ${escapeHtml(displayRate)}</div>
         </td>
-        <td class="text-center tabular-num">${escapeHtml(item.qty)}</td>
-        <td class="text-right tabular-num">${escapeHtml(item.rate)}</td>
+        <td class="text-center tabular-num">${escapeHtml(displayQty)}</td>
+        <td class="text-right tabular-num">${escapeHtml(displayRate)}</td>
         <td class="text-right tabular-num"><strong>${formatCurrency(item.amount)}</strong></td>
       `;
       p.lineItems.appendChild(tr);
@@ -1635,6 +1807,8 @@
       ? 'Juana Pérez (Cliente de Ejemplo)'
       : 'Jane Doe (Fake Sample Customer)';
     q.custAddress.value = '742 Evergreen Terrace, Springfield, TX 75001';
+    if (q.custPhone) q.custPhone.value = '555-0100';
+    if (q.custEmail) q.custEmail.value = 'sample@example.com';
     q.yardSize.value = 4200;
 
     clearFieldError(q.custName, q.errors.custName);
@@ -1686,7 +1860,7 @@
         pendingRateWarning = true;
         const banner = DOM.priceSheet.warningBanner;
         if (banner) {
-          banner.innerHTML = `⚠️ <strong>Unusual Rate Notice:</strong> ${warnings.join('; ')}.<br>Tap <strong>Save Settings</strong> again to confirm these rates.`;
+          banner.innerHTML = t('unusualRateNotice').replace('{warnings}', warnings.join('; '));
           banner.style.display = 'block';
         }
 
@@ -1734,7 +1908,7 @@
         URL.revokeObjectURL(url);
 
         const toast = DOM.priceSheet.toast;
-        toast.textContent = 'Settings backup exported successfully!';
+        toast.textContent = t('toastBackupExported');
         toast.style.display = 'block';
         setTimeout(() => { toast.style.display = 'none'; }, 2800);
       } catch (err) {
@@ -1766,7 +1940,7 @@
             if (DOM.priceSheet.hintBanner) DOM.priceSheet.hintBanner.style.display = 'none';
 
             const toast = DOM.priceSheet.toast;
-            toast.textContent = 'Settings successfully restored from backup!';
+            toast.textContent = t('toastBackupRestored');
             toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2800);
           } else {
@@ -1913,11 +2087,146 @@
       showScreen('screen-newquote');
 
       const toast = DOM.preview.toast;
-      toast.textContent = (currentLanguage === 'es') ? 'Formulario limpio para una nueva cotización.' : 'Form cleared for new customer quote.';
+      toast.textContent = t('toastFormCleared');
       toast.style.display = 'block';
       setTimeout(() => { toast.style.display = 'none'; }, 2500);
     }
   );
+
+
+  // ---------------------------------------------------------------------------
+  // Send to Customer Engine (Part B)
+  // ---------------------------------------------------------------------------
+
+  function recordEstimateSent(quoteId, method) {
+    if (!quoteId) return;
+    const list = getSavedEstimates();
+    const found = list.find(e => e.quoteId === quoteId);
+    if (found) {
+      found.sentAt = Date.now();
+      found.sentMethod = method; // 'sms' | 'email' | 'copy'
+      saveSavedEstimatesList(list);
+      renderSavedScreen();
+    }
+  }
+
+  function generateEstimateText(quote, lang, isSms) {
+    const isEs = (lang === 'es');
+    const biz = currentSettings.businessName || 'GreenThumb Lawn & Landscape';
+    const phone = currentSettings.phone || '';
+    const email = currentSettings.email || '';
+    const dateStr = formatLocalizedDate(quote.createdAt || Date.now(), lang);
+    const validThroughStr = formatLocalizedDate(
+      (quote.createdAt ? new Date(quote.createdAt).getTime() : Date.now()) + 14 * 86400000,
+      lang
+    );
+
+    // Build service line items text
+    const lines = (quote.lineItems || []).map(i => {
+      let name = i.name;
+      if (i.key) {
+        const kPascal = i.key.charAt(0).toUpperCase() + i.key.slice(1);
+        name = t('svcName' + kPascal) || i.name;
+      }
+      return `• ${name}: ${formatCurrency(i.amount)}`;
+    }).join('\n');
+
+    if (isSms) {
+      if (isEs) {
+        return `${biz} - Cotización #${quote.quoteId}\nCliente: ${quote.custName}\nTotal: ${formatCurrency(quote.finalTotal)}\nServicios:\n${lines}\nVálida hasta: ${validThroughStr}\nPara confirmar llame o responda al ${phone}`;
+      }
+      return `${biz} - Estimate #${quote.quoteId}\nCustomer: ${quote.custName}\nTotal: ${formatCurrency(quote.finalTotal)}\nServices:\n${lines}\nValid through: ${validThroughStr}\nCall or reply to ${phone} to confirm`;
+    }
+
+    if (isEs) {
+      return `${biz}\nCOTIZACIÓN #${quote.quoteId}\nFecha: ${dateStr}\nVálida Hasta: ${validThroughStr}\n\nCLIENTE: ${quote.custName}\nDIRECCIÓN: ${quote.custAddress}${quote.custPhone ? '\nTEL: ' + quote.custPhone : ''}${quote.custEmail ? '\nEMAIL: ' + quote.custEmail : ''}\nÁREA DEL CÉSPED: ${quote.yardSize.toLocaleString()} ${t('unitYardSize')}\n\nSERVICIOS:\n${lines}\n\nSUBTOTAL: ${formatCurrency(quote.subtotal)}${quote.minChargeAdj > 0 ? '\nAJUSTE CARGO MÍNIMO: +' + formatCurrency(quote.minChargeAdj) : ''}\nTOTAL FINAL: ${formatCurrency(quote.finalTotal)}\n\nTÉRMINOS:\n${quote.terms || currentSettings.quoteTerms}\n\nCONTACTO:\n${biz}${phone ? ' · Tel: ' + phone : ''}${email ? ' · ' + email : ''}`;
+    }
+
+    return `${biz}\nESTIMATE #${quote.quoteId}\nDate: ${dateStr}\nValid Through: ${validThroughStr}\n\nCUSTOMER: ${quote.custName}\nPROPERTY: ${quote.custAddress}${quote.custPhone ? '\nPHONE: ' + quote.custPhone : ''}${quote.custEmail ? '\nEMAIL: ' + quote.custEmail : ''}\nLAWN AREA: ${quote.yardSize.toLocaleString()} sq ft\n\nSERVICES:\n${lines}\n\nSUBTOTAL: ${formatCurrency(quote.subtotal)}${quote.minChargeAdj > 0 ? '\nMINIMUM FLOOR ADJUSTMENT: +' + formatCurrency(quote.minChargeAdj) : ''}\nFINAL TOTAL: ${formatCurrency(quote.finalTotal)}\n\nTERMS:\n${quote.terms || currentSettings.quoteTerms}\n\nCONTACT:\n${biz}${phone ? ' · Phone: ' + phone : ''}${email ? ' · ' + email : ''}`;
+  }
+
+  function copyTextToClipboard(text, onSuccess, onFallback) {
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
+        fallbackCopyText(text, onSuccess, onFallback);
+      });
+    } else {
+      fallbackCopyText(text, onSuccess, onFallback);
+    }
+  }
+
+  function fallbackCopyText(text, onSuccess, onFallback) {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (successful) {
+        if (onSuccess) onSuccess();
+      } else {
+        if (onFallback) onFallback();
+      }
+    } catch (err) {
+      if (onFallback) onFallback();
+    }
+  }
+
+  // Wire up Send to Customer Buttons
+  if (DOM.preview.sendSmsBtn) {
+    DOM.preview.sendSmsBtn.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+      const smsBody = generateEstimateText(currentQuoteData, currentLanguage, true);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const phoneDigits = (currentQuoteData.custPhone || '').replace(/[^0-9+]/g, '');
+      const separator = isIOS ? '&' : '?';
+      const smsUrl = phoneDigits
+        ? `sms:${phoneDigits}${separator}body=${encodeURIComponent(smsBody)}`
+        : `sms:${separator}body=${encodeURIComponent(smsBody)}`;
+
+      recordEstimateSent(currentQuoteData.quoteId, 'sms');
+      window.location.href = smsUrl;
+    });
+  }
+
+  if (DOM.preview.sendEmailBtn) {
+    DOM.preview.sendEmailBtn.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+      const emailBody = generateEstimateText(currentQuoteData, currentLanguage, false);
+      const bizName = currentSettings.businessName || 'GreenThumb Lawn & Landscape';
+      const subject = (currentLanguage === 'es')
+        ? `Su cotización de ${bizName} – #${currentQuoteData.quoteId}`
+        : `Your estimate from ${bizName} – #${currentQuoteData.quoteId}`;
+      const emailTo = (currentQuoteData.custEmail || '').trim();
+      const mailtoUrl = `mailto:${encodeURIComponent(emailTo)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+
+      recordEstimateSent(currentQuoteData.quoteId, 'email');
+      window.location.href = mailtoUrl;
+    });
+  }
+
+  if (DOM.preview.copyEstimateBtn) {
+    DOM.preview.copyEstimateBtn.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+      const fullText = generateEstimateText(currentQuoteData, currentLanguage, false);
+      copyTextToClipboard(
+        fullText,
+        () => {
+          recordEstimateSent(currentQuoteData.quoteId, 'copy');
+          showQuotePreviewToast(t('toastEstimateCopied'));
+        },
+        () => {
+          showQuotePreviewToast(t('toastEstimateCopyFailed'));
+        }
+      );
+    });
+  }
+
 
   // ---------------------------------------------------------------------------
   // 11. Screen 4: Saved Estimates & Pipeline System (Part C)
@@ -2186,7 +2495,7 @@
           <div class="saved-card-meta">
             <span class="saved-card-id">#${escapeHtml(quote.quoteId)}</span>
             <span>&bull;</span>
-            <span>${escapeHtml(quote.dateFormatted || '')}</span>
+            <span>${escapeHtml(formatLocalizedDate(quote.createdAt, currentLanguage))}</span>
             <span>&bull;</span>
             <span>${escapeHtml(daysAgoLabel)}</span>
           </div>
@@ -2258,7 +2567,7 @@
       if (deleteBtn) {
         bindTwoStepConfirm(
           deleteBtn,
-          t('deleteConfirmMsg').replace('{id}', quote.quoteId),
+          t('confirmDeleteTapAgain'),
           t('btnDelete'),
           () => {
             deleteEstimate(quote.quoteId);
@@ -2402,7 +2711,7 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 12. Measure on Map Satellite Tool (Leaflet + Turf.js + Nominatim)
+  // 12. Measure on Map Aerial Photos Tool (Leaflet + Turf.js + Nominatim)
   // ---------------------------------------------------------------------------
   let leafletMap = null;
   let mapTileLayer = null;
@@ -2552,7 +2861,7 @@
 
       isMapInitialized = true;
     } catch (e) {
-      console.error('Failed to initialize Leaflet satellite map:', e);
+      console.error('Failed to initialize Leaflet aerial photo map:', e);
       DOM.map.offlineBanner.style.display = 'block';
     }
   }
