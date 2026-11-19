@@ -203,6 +203,63 @@ h1, h2, h3, h4, p, span, div, a, label {
   line-height: 1.25;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Language Switcher */
+.lang-switch {
+  display: inline-flex;
+  background-color: var(--color-bg-subtle);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  border: 1px solid var(--color-border-subtle);
+  gap: 2px;
+}
+
+.lang-btn {
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 32px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-btn:hover {
+  color: var(--color-text-primary);
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.lang-btn.active {
+  background-color: var(--color-brand-primary);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-xs);
+}
+
+/* Nav Badge for Pending Estimates */
+.nav-badge {
+  background-color: #F59E0B;
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  margin-left: 4px;
+  display: inline-block;
+  line-height: 1;
+}
+
 /* --------------------------------------------------------------------------
    4. Navigation Tabs (Laptop Top Bar / Mobile Bottom Bar)
    -------------------------------------------------------------------------- */
@@ -1436,6 +1493,22 @@ textarea.form-control {
    15. Mobile Viewport & Ergonomics (<= 640px)
    -------------------------------------------------------------------------- */
 @media (max-width: 640px) {
+  .header-inner {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .lang-btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    min-height: 28px;
+    min-width: 32px;
+  }
+
   .app-container {
     padding: 12px 12px 86px;
   }

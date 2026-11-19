@@ -24,43 +24,53 @@
         </svg>
         <div>
           <h1 class="app-title">Lawn<span class="text-accent">Quote</span><span class="logo-dot">.</span></h1>
-          <p class="app-subtitle">Field Quoting for Lawn &amp; Landscaping Crews</p>
+          <p class="app-subtitle" data-i18n="appSubtitle">Field Quoting for Lawn &amp; Landscaping Crews</p>
         </div>
       </div>
 
-      <!-- Main Navigation Tabs (ONE Navigation System for Laptop & Phone) -->
-      <nav class="nav-tabs" role="tablist" aria-label="Main Navigation">
-        <button type="button" class="tab-btn" id="tab-pricesheet" data-target="screen-pricesheet" role="tab" aria-selected="false">
-          <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-          <span class="tab-label"><span class="tab-step-prefix">1. </span>Price Sheet</span>
-        </button>
-        <button type="button" class="tab-btn active" id="tab-newquote" data-target="screen-newquote" role="tab" aria-selected="true">
-          <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-          </svg>
-          <span class="tab-label"><span class="tab-step-prefix">2. </span>Yard &amp; Services</span>
-        </button>
-        <button type="button" class="tab-btn" id="tab-preview" data-target="screen-preview" role="tab" aria-selected="false">
-          <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-          <span class="tab-label"><span class="tab-step-prefix">3. </span>Quote Preview</span>
-        </button>
-        <button type="button" class="tab-btn tab-btn-saved" id="tab-saved" data-target="screen-saved" role="tab" aria-selected="false">
-          <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-          </svg>
-          <span class="tab-label">Saved</span>
-        </button>
-      </nav>
+      <!-- Header Right Actions: Language Switcher + Navigation -->
+      <div class="header-actions">
+        <!-- Language Switcher (English / Spanish) -->
+        <div class="lang-switch" role="group" aria-label="Language selection">
+          <button type="button" class="lang-btn active" id="btn-lang-en" data-lang="en" title="English">EN</button>
+          <button type="button" class="lang-btn" id="btn-lang-es" data-lang="es" title="Español">ES</button>
+        </div>
+
+        <!-- Main Navigation Tabs (Laptop Top Bar / Mobile Fixed Bottom Bar) -->
+        <nav class="nav-tabs" role="tablist" aria-label="Main Navigation">
+          <button type="button" class="tab-btn" id="tab-pricesheet" data-target="screen-pricesheet" role="tab" aria-selected="false">
+            <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span class="tab-label"><span class="tab-step-prefix">1. </span><span data-i18n="navPriceSheet">Price Sheet</span></span>
+          </button>
+          <button type="button" class="tab-btn active" id="tab-newquote" data-target="screen-newquote" role="tab" aria-selected="true">
+            <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span class="tab-label"><span class="tab-step-prefix">2. </span><span data-i18n="navYardServices">Yard &amp; Services</span></span>
+          </button>
+          <button type="button" class="tab-btn" id="tab-preview" data-target="screen-preview" role="tab" aria-selected="false">
+            <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span class="tab-label"><span class="tab-step-prefix">3. </span><span data-i18n="navPreview">Quote Preview</span></span>
+          </button>
+          <button type="button" class="tab-btn tab-btn-saved" id="tab-saved" data-target="screen-saved" role="tab" aria-selected="false">
+            <svg class="tab-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="tab-label" data-i18n="navSavedQuotes">Saved</span>
+            <span class="nav-badge" id="nav-saved-count" style="display: none;">0</span>
+          </button>
+        </nav>
+      </div>
     </div>
 
     <!-- 3-Step Interactive Progress Bar -->
@@ -68,17 +78,17 @@
       <div class="step-track">
         <button type="button" class="step-item" id="step-btn-1" data-target="screen-pricesheet">
           <span class="step-badge">1</span>
-          <span class="step-title">Price Sheet</span>
+          <span class="step-title" data-i18n="stepPriceSheet">Price Sheet</span>
         </button>
         <div class="step-connector" id="step-conn-1"></div>
         <button type="button" class="step-item active" id="step-btn-2" data-target="screen-newquote">
           <span class="step-badge">2</span>
-          <span class="step-title">Yard &amp; Services</span>
+          <span class="step-title" data-i18n="stepYardServices">Yard &amp; Services</span>
         </button>
         <div class="step-connector" id="step-conn-2"></div>
         <button type="button" class="step-item" id="step-btn-3" data-target="screen-preview">
           <span class="step-badge">3</span>
-          <span class="step-title">Quote Preview</span>
+          <span class="step-title" data-i18n="stepPreview">Quote Preview</span>
         </button>
       </div>
     </nav>
@@ -100,14 +110,14 @@
             <line x1="12" y1="8" x2="12.01" y2="8"></line>
           </svg>
         </div>
-        <div class="hint-content">
+        <div class="hint-content" data-i18n="pricesheetHint">
           <strong>Crew Pricing Setup:</strong> We've pre-filled realistic baseline rates ($12/1k mowing, $50 min charge). Update with your crew's actual pricing, then tap <strong>Save Settings</strong>.
         </div>
       </div>
 
       <div class="screen-header">
-        <h2 id="heading-pricesheet">Business Price Sheet &amp; Settings</h2>
-        <p class="screen-desc">Set your crew's rates and business details. Everything is saved locally on your phone.</p>
+        <h2 id="heading-pricesheet" data-i18n="priceSheetTitle">Business Price Sheet &amp; Settings</h2>
+        <p class="screen-desc" data-i18n="priceSheetDesc">Set your crew's rates and business details. Everything is saved locally on your phone.</p>
       </div>
 
       <form id="price-sheet-form" novalidate>
@@ -117,20 +127,20 @@
             <svg class="card-title-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
             </svg>
-            Business Information
+            <span data-i18n="bizInfoTitle">Business Information</span>
           </h3>
           <div class="form-group">
-            <label for="setting-business-name">Business Name *</label>
+            <label for="setting-business-name" data-i18n="lblBizName">Business Name *</label>
             <input type="text" id="setting-business-name" class="form-control" required placeholder="e.g. GreenThumb Lawn &amp; Landscape">
             <div id="error-setting-business-name" class="field-error" style="display: none;"></div>
           </div>
           <div class="form-row">
             <div class="form-group col-half">
-              <label for="setting-phone">Phone Number</label>
+              <label for="setting-phone" data-i18n="lblPhone">Phone Number</label>
               <input type="tel" id="setting-phone" class="form-control" placeholder="(555) 234-5678">
             </div>
             <div class="form-group col-half">
-              <label for="setting-email">Email Address</label>
+              <label for="setting-email" data-i18n="lblEmail">Email Address</label>
               <input type="email" id="setting-email" class="form-control" placeholder="quotes@greenthumb-example.com">
             </div>
           </div>
@@ -145,12 +155,12 @@
               <line x1="16" y1="13" x2="8" y2="13"></line>
               <line x1="16" y1="17" x2="8" y2="17"></line>
             </svg>
-            Minimum Charge &amp; Terms
+            <span data-i18n="minChargeTitle">Minimum Charge &amp; Terms</span>
           </h3>
           <div class="form-group">
             <label for="setting-min-charge">
-              Minimum Job Charge ($) *
-              <span class="hint">No job is billed below this baseline floor</span>
+              <span data-i18n="lblMinCharge">Minimum Job Charge ($) *</span>
+              <span class="hint" data-i18n="hintMinCharge">No job is billed below this baseline floor</span>
             </label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
@@ -159,7 +169,7 @@
             <div id="error-setting-min-charge" class="field-error" style="display: none;"></div>
           </div>
           <div class="form-group">
-            <label for="setting-terms">Quote Terms &amp; Conditions</label>
+            <label for="setting-terms" data-i18n="lblTerms">Quote Terms &amp; Conditions</label>
             <textarea id="setting-terms" class="form-control" rows="2" placeholder="e.g. Estimates valid for 14 days. Payment due upon completion."></textarea>
           </div>
         </div>
@@ -171,11 +181,11 @@
               <line x1="12" y1="1" x2="12" y2="23"></line>
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
             </svg>
-            Service Rates
+            <span data-i18n="ratesTitle">Service Rates</span>
           </h3>
           
           <div class="form-group">
-            <label for="setting-rate-mowing">Mowing Rate ($ per 1,000 sq ft) *</label>
+            <label for="setting-rate-mowing" data-i18n="lblRateMowing">Mowing Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-mowing" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
@@ -184,7 +194,7 @@
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-edging">Edging Rate ($ per 1,000 sq ft) *</label>
+            <label for="setting-rate-edging" data-i18n="lblRateEdging">Edging Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-edging" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
@@ -193,7 +203,7 @@
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-leaf">Leaf Cleanup Rate ($ per 1,000 sq ft) *</label>
+            <label for="setting-rate-leaf" data-i18n="lblRateLeaf">Leaf Cleanup Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-leaf" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
@@ -202,7 +212,7 @@
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-mulch">Mulch Rate ($ per cubic yard delivered &amp; spread) *</label>
+            <label for="setting-rate-mulch" data-i18n="lblRateMulch">Mulch Rate ($ per cubic yard delivered &amp; spread) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-mulch" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
@@ -211,7 +221,7 @@
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-hedge">Hedge Trimming Rate ($ per crew hour) *</label>
+            <label for="setting-rate-hedge" data-i18n="lblRateHedge">Hedge Trimming Rate ($ per crew hour) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-hedge" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
@@ -220,7 +230,7 @@
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-fertilizer">Fertilization Rate ($ per 1,000 sq ft) *</label>
+            <label for="setting-rate-fertilizer" data-i18n="lblRateFertilizer">Fertilization Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-fertilizer" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
@@ -229,7 +239,7 @@
           </div>
 
           <div class="form-group">
-            <label for="setting-rate-overseed">Overseeding &amp; Rye Grass Rate ($ per 1,000 sq ft) *</label>
+            <label for="setting-rate-overseed" data-i18n="lblRateOverseed">Overseeding &amp; Rye Grass Rate ($ per 1,000 sq ft) *</label>
             <div class="input-prefix-wrapper">
               <span class="input-prefix">$</span>
               <input type="number" id="setting-rate-overseed" class="form-control with-prefix" min="0" step="0.5" inputmode="decimal" required>
@@ -244,22 +254,22 @@
         <div class="form-actions">
           <button type="submit" id="btn-save-settings" class="btn btn-primary btn-block">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-            Save Settings
+            <span data-i18n="btnSaveSettings">Save Settings</span>
           </button>
           <div class="backup-actions-row">
             <button type="button" id="btn-export-backup" class="btn btn-outline col-half">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-              Export Backup
+              <span data-i18n="btnExportBackup">Export Backup</span>
             </button>
             <button type="button" id="btn-import-backup" class="btn btn-outline col-half">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              Import Backup
+              <span data-i18n="btnImportBackup">Import Backup</span>
             </button>
             <input type="file" id="backup-file-input" accept=".json,application/json" style="display: none;">
           </div>
           <button type="button" id="btn-reset-settings" class="btn btn-secondary btn-block">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-            Reset to Realistic Defaults
+            <span data-i18n="btnResetSettings">Reset to Realistic Defaults</span>
           </button>
         </div>
         <div id="settings-toast" class="toast" role="status" aria-live="polite"></div>
@@ -267,31 +277,31 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- SCREEN 2: NEW QUOTE                        -->
+    <!-- SCREEN 2: NEW QUOTE (YARD & SERVICES)      -->
     <!-- ========================================== -->
     <section id="screen-newquote" class="app-screen" aria-labelledby="heading-newquote">
       
       <!-- Active Business Identity Banner -->
       <div class="active-biz-strip" id="active-biz-banner">
         <div class="biz-strip-info">
-          <span class="biz-strip-label">Quoting as:</span>
+          <span class="biz-strip-label" data-i18n="quotingAs">Quoting as:</span>
           <strong id="quote-active-biz-name" class="biz-strip-name">GreenThumb Lawn &amp; Landscape</strong>
-          <span id="biz-strip-sample-badge" class="sample-badge">(Sample Profile)</span>
+          <span id="biz-strip-sample-badge" class="sample-badge" data-i18n="sampleProfileBadge">(Sample Profile)</span>
         </div>
         <button type="button" class="btn-link" id="btn-goto-pricesheet" title="Customize business profile and rates">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-          <span>Edit Rates</span>
+          <span data-i18n="btnEditRates">Edit Rates</span>
         </button>
       </div>
 
       <div class="screen-header flex-between">
         <div>
-          <h2 id="heading-newquote">Create New Quote</h2>
-          <p class="screen-desc">Price out a job in under a minute right from the curb.</p>
+          <h2 id="heading-newquote" data-i18n="newQuoteTitle">Create New Quote</h2>
+          <p class="screen-desc" data-i18n="newQuoteDesc">Price out a job in under a minute right from the curb.</p>
         </div>
         <button type="button" id="btn-fill-fake" class="btn btn-outline btn-quick-fill" title="Populate with sample fake customer data">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Fill Sample
+          <span data-i18n="btnFillFake">Fill Sample</span>
         </button>
       </div>
 
@@ -303,30 +313,30 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            Customer Information
+            <span data-i18n="custInfoTitle">Customer Information</span>
           </h3>
           
           <div class="form-group">
-            <label for="quote-cust-name">Customer Name *</label>
+            <label for="quote-cust-name" data-i18n="lblCustName">Customer Name *</label>
             <input type="text" id="quote-cust-name" class="form-control" placeholder="e.g. Jane Doe (Fake Customer)" required>
             <div id="error-quote-cust-name" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
-            <label for="quote-cust-address">Property / Service Address *</label>
+            <label for="quote-cust-address" data-i18n="lblCustAddress">Property / Service Address *</label>
             <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 742 Evergreen Terrace, Springfield, TX 75001" required>
             <div id="error-quote-cust-address" class="field-error" style="display: none;"></div>
           </div>
 
           <div class="form-group">
             <label for="quote-yard-size">
-              Lawn / Yard Size (sq ft) *
-              <span class="hint">Area rounded up to next 1,000 sq ft · 4,200 sq ft = 5 units</span>
+              <span data-i18n="lblYardSize">Lawn / Yard Size (sq ft) *</span>
+              <span class="hint" data-i18n="hintYardSize">Area rounded up to next 1,000 sq ft · 4,200 sq ft = 5 units</span>
             </label>
             <div class="yard-input-row">
               <div class="input-suffix-wrapper flex-1">
                 <input type="number" id="quote-yard-size" class="form-control with-suffix" min="1" step="1" inputmode="numeric" placeholder="e.g. 4200" required>
-                <span class="input-suffix">sq ft</span>
+                <span class="input-suffix" id="unit-yard-size" data-i18n="unitYardSize">sq ft</span>
               </div>
               <button type="button" id="btn-open-map" class="btn btn-secondary btn-measure-map" title="Trace property boundaries on aerial imagery">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -334,14 +344,14 @@
                   <line x1="8" y1="2" x2="8" y2="18"></line>
                   <line x1="16" y1="6" x2="16" y2="22"></line>
                 </svg>
-                <span>Measure on Aerial Map</span>
+                <span data-i18n="btnMeasureMap">Measure on Aerial Map</span>
               </button>
             </div>
             <div id="error-quote-yard-size" class="field-error" style="display: none;"></div>
-            <div class="yard-size-hint" style="margin-top: 6px; font-size: 0.8125rem; color: var(--color-text-secondary);">
+            <div class="yard-size-hint" data-i18n="yardSizeHintText" style="margin-top: 6px; font-size: 0.8125rem; color: var(--color-text-secondary);">
               Measure property boundaries from aerial photos, or type yard size by hand.
             </div>
-            <div id="aerial-measure-note" class="aerial-measure-note" style="display: none; margin-top: 6px; font-size: 0.8125rem; color: #166534; background-color: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 4px; padding: 6px 10px;">
+            <div id="aerial-measure-note" class="aerial-measure-note" data-i18n="aerialMeasureNote" style="display: none; margin-top: 6px; font-size: 0.8125rem; color: #166534; background-color: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 4px; padding: 6px 10px;">
               📷 Measured from aerial photo. Please double-check.
             </div>
           </div>
@@ -354,9 +364,9 @@
               <polyline points="9 11 12 14 22 4"></polyline>
               <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
             </svg>
-            Services to Include
+            <span data-i18n="servicesTitle">Services to Include</span>
           </h3>
-          <p class="card-subtitle">Select services for this quote. Rates apply automatically from your Price Sheet.</p>
+          <p class="card-subtitle" data-i18n="servicesDesc">Select services for this quote. Rates apply automatically from your Price Sheet.</p>
 
           <!-- Mowing -->
           <label class="service-item" for="svc-mowing">
@@ -371,7 +381,7 @@
                     <path d="M15 15h4a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"></path>
                   </svg>
                 </span>
-                Lawn Mowing
+                <span class="svc-title-text" data-i18n="svcNameMowing">Lawn Mowing</span>
               </span>
             </div>
             <span class="service-rate-badge tabular-num" id="badge-rate-mowing">$12 / 1k sq ft</span>
@@ -390,7 +400,7 @@
                     <line x1="19" y1="14" x2="23" y2="14"></line>
                   </svg>
                 </span>
-                Perimeter Edging
+                <span class="svc-title-text" data-i18n="svcNameEdging">Perimeter Edging</span>
               </span>
             </div>
             <span class="service-rate-badge tabular-num" id="badge-rate-edging">$4 / 1k sq ft</span>
@@ -407,7 +417,7 @@
                     <path d="M4 21l7-7"></path>
                   </svg>
                 </span>
-                Leaf Cleanup
+                <span class="svc-title-text" data-i18n="svcNameLeaf">Leaf Cleanup</span>
               </span>
             </div>
             <span class="service-rate-badge tabular-num" id="badge-rate-leaf">$8 / 1k sq ft</span>
@@ -427,20 +437,20 @@
                       <path d="M9 6h6"></path>
                     </svg>
                   </span>
-                  Mulch Delivery &amp; Install
+                  <span class="svc-title-text" data-i18n="svcNameMulch">Mulch Delivery &amp; Install</span>
                 </span>
               </div>
               <span class="service-rate-badge tabular-num" id="badge-rate-mulch">$85 / cu yd</span>
             </label>
             <div id="mulch-qty-container" class="service-qty-box" style="display: none;">
-              <label for="qty-mulch">Quantity (Cubic Yards) *</label>
+              <label for="qty-mulch" data-i18n="lblMulchQty">Quantity (Cubic Yards) *</label>
               <div class="stepper-input-wrapper">
-                <button type="button" class="stepper-btn" id="btn-mulch-minus" aria-label="Decrease mulch quantity by 0.5 cubic yards">−</button>
+                <button type="button" class="stepper-btn" id="btn-mulch-minus" aria-label="Decrease mulch quantity">−</button>
                 <div class="input-suffix-wrapper flex-1">
                   <input type="number" id="qty-mulch" class="form-control with-suffix text-center tabular-num" min="0.1" step="0.5" value="2" inputmode="decimal">
-                  <span class="input-suffix">cu yds</span>
+                  <span class="input-suffix" id="unit-mulch" data-i18n="unitMulch">cu yds</span>
                 </div>
-                <button type="button" class="stepper-btn" id="btn-mulch-plus" aria-label="Increase mulch quantity by 0.5 cubic yards">+</button>
+                <button type="button" class="stepper-btn" id="btn-mulch-plus" aria-label="Increase mulch quantity">+</button>
               </div>
               <div id="error-qty-mulch" class="field-error" style="display: none;"></div>
             </div>
@@ -460,20 +470,20 @@
                       <line x1="8.5" y1="16.5" x2="21" y2="6"></line>
                     </svg>
                   </span>
-                  Hedge Trimming
+                  <span class="svc-title-text" data-i18n="svcNameHedge">Hedge Trimming</span>
                 </span>
               </div>
               <span class="service-rate-badge tabular-num" id="badge-rate-hedge">$55 / hr</span>
             </label>
             <div id="hedge-qty-container" class="service-qty-box" style="display: none;">
-              <label for="qty-hedge">Estimated Crew Labor (Hours) *</label>
+              <label for="qty-hedge" data-i18n="lblHedgeQty">Estimated Crew Labor (Hours) *</label>
               <div class="stepper-input-wrapper">
-                <button type="button" class="stepper-btn" id="btn-hedge-minus" aria-label="Decrease hedge hours by 0.5 hours">−</button>
+                <button type="button" class="stepper-btn" id="btn-hedge-minus" aria-label="Decrease hedge hours">−</button>
                 <div class="input-suffix-wrapper flex-1">
                   <input type="number" id="qty-hedge" class="form-control with-suffix text-center" min="0.1" step="0.5" value="1.5" inputmode="decimal">
-                  <span class="input-suffix">hours</span>
+                  <span class="input-suffix" id="unit-hedge" data-i18n="unitHedge">hours</span>
                 </div>
-                <button type="button" class="stepper-btn" id="btn-hedge-plus" aria-label="Increase hedge hours by 0.5 hours">+</button>
+                <button type="button" class="stepper-btn" id="btn-hedge-plus" aria-label="Increase hedge hours">+</button>
               </div>
               <div id="error-qty-hedge" class="field-error" style="display: none;"></div>
             </div>
@@ -491,7 +501,7 @@
                     <path d="M9 9h6"></path>
                   </svg>
                 </span>
-                Turf Fertilization
+                <span class="svc-title-text" data-i18n="svcNameFertilizer">Turf Fertilization</span>
               </span>
             </div>
             <span class="service-rate-badge tabular-num" id="badge-rate-fertilizer">$9 / 1k sq ft</span>
@@ -511,13 +521,13 @@
                     <circle cx="16" cy="11" r="1.5"></circle>
                   </svg>
                 </span>
-                Overseeding &amp; Rye Grass
+                <span class="svc-title-text" data-i18n="svcNameOverseed">Overseeding &amp; Rye Grass</span>
               </span>
             </div>
             <span class="service-rate-badge tabular-num" id="badge-rate-overseed">$18 / 1k sq ft</span>
           </label>
 
-          <div id="svc-error" class="field-error" style="display: none; margin-top: 10px;">Please select at least one service.</div>
+          <div id="svc-error" class="field-error" data-i18n="svcError" style="display: none; margin-top: 10px;">Please select at least one service.</div>
         </div>
 
         <!-- Optional Photo Upload Card -->
@@ -527,9 +537,9 @@
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
               <circle cx="12" cy="13" r="4"></circle>
             </svg>
-            Job Site Photos (Optional)
+            <span data-i18n="photosTitle">Job Site Photos (Optional)</span>
           </h3>
-          <p class="card-subtitle">Take new photos or pick from your phone's photo library. Thumbnails are included on the quote.</p>
+          <p class="card-subtitle" data-i18n="photosDesc">Take new photos or pick from your phone's photo library. Thumbnails are included on the quote.</p>
           
           <div class="file-upload-wrap">
             <label for="photo-input" class="file-upload-btn">
@@ -538,7 +548,7 @@
                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
                 <polyline points="21 15 16 10 5 21"></polyline>
               </svg>
-              <span>Take Photo or Choose Files</span>
+              <span data-i18n="btnSnapPhoto">Take Photo or Choose Files</span>
               <input type="file" id="photo-input" accept="image/*" multiple>
             </label>
           </div>
@@ -549,8 +559,8 @@
         <!-- LIVE RUNNING TOTAL CHIP -->
         <div id="live-total-chip" class="live-estimate-chip" role="status" aria-live="polite">
           <div class="live-chip-details">
-            <span class="live-chip-label">Live Estimate</span>
-            <span class="live-chip-sub">Calculated live · Includes min floor &amp; $5 rounding</span>
+            <span class="live-chip-label" data-i18n="liveEstimateLabel">Live Estimate</span>
+            <span class="live-chip-sub" data-i18n="liveEstimateSub">Calculated live · Includes min floor &amp; $5 rounding</span>
           </div>
           <div class="live-chip-price-wrap">
             <span id="live-running-total" class="live-chip-amount">—</span>
@@ -560,7 +570,7 @@
         <!-- Form Submission -->
         <div class="form-actions">
           <button type="submit" id="btn-generate-quote" class="btn btn-primary btn-large btn-block">
-            <span>Generate Quote Preview</span>
+            <span data-i18n="btnGenerateQuote">Generate Quote Preview</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
         </div>
@@ -591,16 +601,16 @@
             <polyline points="10 9 9 9 8 9"></polyline>
           </svg>
         </div>
-        <h3 class="empty-state-title">No Active Quote Yet</h3>
-        <p class="empty-state-text">Enter property measurements and select services in Step 2 to generate a professional, print-ready quote in under 60 seconds.</p>
+        <h3 class="empty-state-title" data-i18n="emptyStateTitle">No Active Quote Yet</h3>
+        <p class="empty-state-text" data-i18n="emptyStateText">Enter property measurements and select services in Step 2 to generate a professional, print-ready quote in under 60 seconds.</p>
         <div class="empty-state-actions">
           <button type="button" id="btn-empty-start-quote" class="btn btn-primary btn-block">
-            <span>Create New Quote</span>
+            <span data-i18n="btnEmptyStart">Create New Quote</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
           <button type="button" id="btn-empty-sample-quote" class="btn btn-outline btn-block">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            <span>Load Reference Sample ($335.00)</span>
+            <span data-i18n="btnEmptySample">Load Reference Sample ($335.00)</span>
           </button>
         </div>
       </div>
@@ -628,17 +638,17 @@
             </div>
           </div>
           <div class="quote-meta">
-            <div class="quote-type-header">ESTIMATE</div>
+            <div class="quote-type-header" data-i18n="quoteTypeEstimate">ESTIMATE</div>
             <div class="quote-meta-row">
-              <span class="meta-label">Estimate #:</span>
+              <span class="meta-label" data-i18n="lblEstimateNum">Estimate #:</span>
               <span id="view-quote-id" class="meta-val tabular-num">#Q-1042</span>
             </div>
             <div class="quote-meta-row">
-              <span class="meta-label">Date:</span>
+              <span class="meta-label" data-i18n="lblDate">Date:</span>
               <span id="view-quote-date" class="meta-val tabular-num">Nov 12, 2026</span>
             </div>
             <div class="quote-meta-row quote-validity-row">
-              <span class="meta-label">Valid Through:</span>
+              <span class="meta-label" data-i18n="lblValidThrough">Valid Through:</span>
               <span id="view-quote-valid" class="meta-val tabular-num">14 days</span>
             </div>
           </div>
@@ -649,14 +659,14 @@
         <!-- SECTION 2: Customer Details -->
         <section class="quote-party-box" aria-label="Customer and Job Details">
           <div class="party-col">
-            <span class="party-label">PREPARED FOR</span>
+            <span class="party-label" data-i18n="lblPreparedFor">PREPARED FOR</span>
             <div id="view-cust-name" class="party-name">Jane Doe (Fake Customer)</div>
             <div id="view-cust-address" class="party-address">742 Evergreen Terrace, Springfield, TX 75001</div>
           </div>
           <div class="party-col party-col-right right-align">
-            <span class="party-label">PROPERTY &amp; SCOPE</span>
+            <span class="party-label" data-i18n="lblPropertyScope">PROPERTY &amp; SCOPE</span>
             <div class="party-meta">
-              <span class="scope-label">Measured Lawn Area:</span> <strong id="view-yard-size" class="tabular-num">4,200 sq ft</strong>
+              <span class="scope-label" data-i18n="lblMeasuredLawnArea">Measured Lawn Area:</span> <strong id="view-yard-size" class="tabular-num">4,200 sq ft</strong>
             </div>
           </div>
         </section>
@@ -666,10 +676,10 @@
           <table class="quote-table">
             <thead>
               <tr>
-                <th scope="col" class="th-service">Service Description</th>
-                <th scope="col" class="th-qty text-center">Quantity / Scope</th>
-                <th scope="col" class="th-rate text-right">Unit Rate</th>
-                <th scope="col" class="th-total text-right">Amount</th>
+                <th scope="col" class="th-service" data-i18n="thServiceDesc">Service Description</th>
+                <th scope="col" class="th-qty text-center" data-i18n="thQtyScope">Quantity / Scope</th>
+                <th scope="col" class="th-rate text-right" data-i18n="thUnitRate">Unit Rate</th>
+                <th scope="col" class="th-total text-right" data-i18n="thAmount">Amount</th>
               </tr>
             </thead>
             <tbody id="quote-line-items">
@@ -682,22 +692,22 @@
         <section class="quote-totals-section" aria-label="Financial Totals Breakdown">
           <div class="quote-totals-box">
             <div class="total-row">
-              <span class="total-label">Subtotal</span>
+              <span class="total-label" data-i18n="lblSubtotal">Subtotal</span>
               <span id="view-subtotal" class="total-value tabular-num">$332.50</span>
             </div>
             <div id="row-min-charge" class="total-row min-charge-applied" style="display: none;">
               <span class="total-label">
-                Minimum Job Floor Adjustment
+                <span data-i18n="lblMinFloorAdj">Minimum Job Floor Adjustment</span>
                 <small class="min-charge-note">(Minimum floor of $<span id="view-min-charge-floor">50</span> applied)</small>
               </span>
               <span id="view-min-charge-adj" class="total-value tabular-num">+$0.00</span>
             </div>
             <div class="total-row rounding-row">
-              <span class="total-label">Cash Rounding (Nearest $5)</span>
+              <span class="total-label" data-i18n="lblCashRounding">Cash Rounding (Nearest $5)</span>
               <span id="view-rounding-adj" class="total-value tabular-num">+$2.50</span>
             </div>
             <div class="total-row grand-total">
-              <span class="total-label">Total Estimate</span>
+              <span class="total-label" data-i18n="lblTotalEstimate">Total Estimate</span>
               <span id="view-final-total" class="total-value grand-total-amount tabular-num">$335.00</span>
             </div>
           </div>
@@ -706,22 +716,22 @@
 
         <!-- SECTION 5: Quote Terms & Conditions -->
         <section class="quote-terms-section" aria-label="Terms and Conditions">
-          <h4 class="terms-title">Terms &amp; Conditions</h4>
+          <h4 class="terms-title" data-i18n="termsTitle">Terms &amp; Conditions</h4>
           <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
         </section>
 
         <!-- SECTION 6: Site Photos -->
         <section id="quote-preview-photos" class="quote-photos-section" style="display: none;" aria-label="Job Site Photos">
-          <h4 class="photos-title">Job Site Property Photos</h4>
+          <h4 class="photos-title" data-i18n="photosTitlePreview">Job Site Property Photos</h4>
           <div id="quote-photos-gallery" class="preview-photos-grid"></div>
         </section>
 
         <!-- Acceptance / Sign-off Footer -->
         <footer class="quote-footer">
-          <p class="thank-you">Thank you for considering our lawn care &amp; landscaping crew!</p>
+          <p class="thank-you" data-i18n="thankYou">Thank you for considering our lawn care &amp; landscaping crew!</p>
           <div class="signature-line-wrap">
-            <div class="sig-line"><span>Authorized Signature</span></div>
-            <div class="sig-line"><span>Date</span></div>
+            <div class="sig-line"><span data-i18n="sigLine">Authorized Signature</span></div>
+            <div class="sig-line"><span data-i18n="sigDate">Date</span></div>
           </div>
         </footer>
 
@@ -731,19 +741,19 @@
       <div class="preview-actions no-print">
         <button type="button" id="btn-save-quote" class="btn btn-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-          Save Estimate
+          <span data-i18n="btnSaveEstimate">Save Estimate</span>
         </button>
         <button type="button" id="btn-print" class="btn btn-secondary btn-large btn-print-action">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          Print / Save as PDF
+          <span data-i18n="btnPrint">Print / Save as PDF</span>
         </button>
         <button type="button" id="btn-edit-quote" class="btn btn-secondary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-          Edit Quote
+          <span data-i18n="btnEditQuote">Edit Quote</span>
         </button>
         <button type="button" id="btn-new-quote" class="btn btn-outline">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Start Fresh
+          <span data-i18n="btnStartFresh">Start Fresh</span>
         </button>
       </div>
       <div id="quote-action-toast" class="toast no-print" role="status" aria-live="polite"></div>
@@ -755,24 +765,24 @@
     <!-- ========================================== -->
     <section id="screen-saved" class="app-screen" style="display: none;" aria-labelledby="heading-saved">
       <div class="screen-header">
-        <h2 id="heading-saved">Saved Estimates &amp; Pipeline</h2>
-        <p class="screen-desc">Track quotes, follow up with customers, and monitor your closing rate.</p>
+        <h2 id="heading-saved" data-i18n="savedQuotesTitle">Saved Estimates &amp; Pipeline</h2>
+        <p class="screen-desc" data-i18n="savedQuotesDesc">Track quotes, follow up with customers, and monitor your closing rate.</p>
       </div>
 
       <!-- Pipeline Summary Metrics -->
       <div class="pipeline-summary-grid" id="pipeline-summary-container">
         <div class="pipeline-metric-card metric-pending">
-          <div class="metric-label">Pending Quotes</div>
+          <div class="metric-label" data-i18n="statPending">Pending Quotes</div>
           <div class="metric-val" id="metric-pending-val">0</div>
           <div class="metric-sub" id="metric-pending-sub">$0.00 in pipeline</div>
         </div>
         <div class="pipeline-metric-card metric-won">
-          <div class="metric-label">Won Revenue</div>
+          <div class="metric-label" data-i18n="statWon">Won Revenue</div>
           <div class="metric-val" id="metric-won-val">$0.00</div>
           <div class="metric-sub" id="metric-won-sub">0 closed jobs</div>
         </div>
         <div class="pipeline-metric-card metric-winrate" id="metric-winrate-card" style="display: none;">
-          <div class="metric-label">Win Rate</div>
+          <div class="metric-label" data-i18n="statWinRate">Win Rate</div>
           <div class="metric-val" id="metric-winrate-val">0%</div>
           <div class="metric-sub" id="metric-winrate-sub">0 of 0 decided</div>
         </div>
@@ -781,16 +791,16 @@
       <!-- Pipeline Filter Pills -->
       <div class="saved-filters-bar no-print" role="tablist" aria-label="Filter saved estimates">
         <button type="button" class="filter-pill active" id="filter-btn-all" data-filter="all" role="tab" aria-selected="true">
-          All (<span id="count-filter-all">0</span>)
+          <span data-i18n="filterAll">All</span> (<span id="count-filter-all">0</span>)
         </button>
         <button type="button" class="filter-pill" id="filter-btn-pending" data-filter="pending" role="tab" aria-selected="false">
-          Pending (<span id="count-filter-pending">0</span>)
+          <span data-i18n="filterPending">Pending</span> (<span id="count-filter-pending">0</span>)
         </button>
         <button type="button" class="filter-pill" id="filter-btn-won" data-filter="won" role="tab" aria-selected="false">
-          Won (<span id="count-filter-won">0</span>)
+          <span data-i18n="filterWon">Won</span> (<span id="count-filter-won">0</span>)
         </button>
         <button type="button" class="filter-pill" id="filter-btn-lost" data-filter="lost" role="tab" aria-selected="false">
-          Lost (<span id="count-filter-lost">0</span>)
+          <span data-i18n="filterLost">Lost</span> (<span id="count-filter-lost">0</span>)
         </button>
       </div>
 
@@ -810,11 +820,11 @@
             <polyline points="10 9 9 9 8 9"></polyline>
           </svg>
         </div>
-        <h3 id="saved-empty-title">No Saved Estimates Yet</h3>
-        <p id="saved-empty-desc">Create an estimate in <strong>Yard &amp; Services</strong> and tap <strong>Save Estimate</strong> on Quote Preview to track your jobs here.</p>
+        <h3 id="saved-empty-title" data-i18n="emptySavedTitle">No Saved Estimates Yet</h3>
+        <p id="saved-empty-desc" data-i18n="emptySavedDesc">Create an estimate in <strong>Yard &amp; Services</strong> and tap <strong>Save Estimate</strong> on Quote Preview to track your jobs here.</p>
         <button type="button" id="btn-saved-create-new" class="btn btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Create First Quote
+          <span data-i18n="btnCreateFirstQuote">Create First Quote</span>
         </button>
       </div>
 
@@ -839,8 +849,8 @@
             <line x1="16" y1="6" x2="16" y2="22"></line>
           </svg>
           <div>
-            <h3 id="map-modal-title" class="map-header-title">Aerial Lot Measurement</h3>
-            <span class="map-header-sub">Trace property boundaries on USGS aerial photos (updated periodically; may be a few years old)</span>
+            <h3 id="map-modal-title" class="map-header-title" data-i18n="mapModalTitle">Aerial Lot Measurement</h3>
+            <span class="map-header-sub" data-i18n="mapModalSub">Trace property boundaries on USGS aerial photos (updated periodically; may be a few years old)</span>
           </div>
         </div>
         <button type="button" id="btn-close-map" class="map-close-btn" aria-label="Close Map">
@@ -861,7 +871,7 @@
           <input type="text" id="map-search-input" class="map-search-input" placeholder="Search property address..." autocomplete="street-address">
         </div>
         <button type="button" id="btn-map-search" class="btn btn-primary map-search-btn">
-          <span>Find</span>
+          <span data-i18n="mapBtnFind">Find</span>
         </button>
       </div>
       <div id="map-search-status" class="map-status-banner" style="display: none;" role="status"></div>
@@ -879,9 +889,9 @@
             <line x1="12" y1="20" x2="12.01" y2="20"></line>
           </svg>
         </div>
-        <h4>Aerial Map Unavailable Offline</h4>
-        <p>Aerial imagery requires an active internet connection. You can enter your yard size directly in the quote form without interrupting your quote.</p>
-        <button type="button" id="btn-map-offline-dismiss" class="btn btn-primary">Type Yard Size by Hand</button>
+        <h4 data-i18n="mapOfflineTitle">Aerial Map Unavailable Offline</h4>
+        <p data-i18n="mapOfflineDesc">Aerial imagery requires an active internet connection. You can enter your yard size directly in the quote form without interrupting your quote.</p>
+        <button type="button" id="btn-map-offline-dismiss" class="btn btn-primary" data-i18n="mapOfflineBtn">Type Yard Size by Hand</button>
       </div>
 
       <!-- Leaflet Map Viewport -->
@@ -895,21 +905,21 @@
               <polyline points="1 4 1 10 7 10"></polyline>
               <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
             </svg>
-            <span>Undo Point</span>
+            <span data-i18n="mapBtnUndo">Undo Point</span>
           </button>
           <button type="button" id="btn-map-new-area" class="map-tool-btn" title="Finish current area and trace another (e.g. front vs back yard)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            <span>Finish / Next Area</span>
+            <span data-i18n="mapBtnNextArea">Finish / Next Area</span>
           </button>
           <button type="button" id="btn-map-clear" class="map-tool-btn map-tool-danger" title="Clear all traced points">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="3 6 5 6 21 6"></polyline>
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
             </svg>
-            <span>Clear</span>
+            <span data-i18n="mapBtnClear">Clear</span>
           </button>
         </div>
       </div>
@@ -918,11 +928,11 @@
       <div class="map-bottom-bar">
         <div class="map-area-summary">
           <div class="map-area-val-wrap">
-            <span class="map-area-label">Traced Lawn Area:</span>
+            <span class="map-area-label" data-i18n="mapTracedArea">Traced Lawn Area:</span>
             <strong id="map-area-display" class="map-area-value tabular-num">0 sq ft</strong>
             <span id="map-area-breakdown" class="map-area-breakdown">0 areas</span>
           </div>
-          <p class="map-disclaimer-note">
+          <p class="map-disclaimer-note" data-i18n="mapDisclaimer">
             ⚠️ <strong>Estimate Note:</strong> Aerial measurements are estimates (photos may be a few years old). Exclude the house, driveway, and beds, and verify the number before quoting.
           </p>
         </div>
@@ -931,7 +941,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            <span>Use this area</span>
+            <span data-i18n="mapUseArea">Use this area</span>
           </button>
         </div>
       </div>
