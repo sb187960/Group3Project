@@ -20,6 +20,7 @@ Owners of small lawn care and landscaping crews write quotes by hand at night af
 4. **Bilingual English / Spanish:** Switch instantly between English and Spanish with complete translation of all screens, placeholders, modals, toasts, and customer estimates.
 5. **Send to customer from the curb:** Open pre-populated SMS text messages, emails, or copy plain-text estimates directly to your clipboard, or print/save as a clean, single-page PDF.
 6. **Saved estimates & sales pipeline:** Track quote statuses across Pending, Won, and Lost stages with 3-day follow-up reminder alerts and real-time closing rate metrics.
+7. **Optional in-browser AI writing helper:** Draft curbside customer messages and polish rough crew notes using WebLLM and an on-device Qwen model. Runs 100% locally in the browser with zero server communication, on-page download consent, and strict anti-hallucination price validation.
 
 ---
 
@@ -61,6 +62,7 @@ All rates come from the owner's price sheet:
 * **Hosting:** Static GitHub Pages. Everything executes in the user's browser.
 * **Persistence:** Browser `localStorage` with defensive `try/catch` handling and in-memory fallback.
 * **Canvas Photo Compression:** Downscales and compresses photo attachments to prevent local storage quota limits.
+* **On-Device AI (Optional):** In-browser inference powered by WebLLM and Qwen2.5-0.5B-Instruct running on WebGPU. No backend server, no API keys, and no customer data leaves the device.
 * **Mapping:** OpenStreetMap and USGS aerial photo imagery with Turf.js polygon geospatial math.
 * **Antigravity Customization:** Governed by our shared team skill in `.agents/skills/quote-rules/SKILL.md`.
 
@@ -92,4 +94,4 @@ The app uses synthetic (made-up) data only. Sample customers have obviously fake
 
 ## KNOWN LIMITATIONS
 
-Yard size can be typed by hand or traced on USGS aerial photos (updated periodically). Data is saved locally per device and browser (localStorage), so quotes made on a phone will not appear on a laptop.
+Yard size can be typed by hand or traced on USGS aerial photos (updated periodically). Data is saved locally per device and browser (localStorage), so quotes made on a phone will not appear on a laptop. In-browser AI features require WebGPU support (available in modern Chrome, Edge, and Safari); on unsupported browsers, AI buttons hide gracefully and core quoting remains fully operational.

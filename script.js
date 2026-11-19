@@ -293,6 +293,33 @@
       methodSms: 'text',
       methodEmail: 'email',
       methodCopy: 'clipboard',
+
+      // AI Features & Crew Notes (English)
+      lblCrewNotes: 'Crew Notes',
+      hintCrewNotes: '(Optional notes on site access, hazards, or scope)',
+      placeholderCrewNotes: 'e.g. Back gate has latch lock; watch for sprinklers near flower bed; low oak branches need trimming over walkway.',
+      btnAiPolishNotes: 'AI: Polish notes',
+      btnAiWriteMessage: 'AI: Write customer message',
+      aiDraftLabel: 'AI draft. Review before sending.',
+      aiModalTitle: 'Download In-Browser AI Model',
+      aiConsentNotice: 'This downloads an AI model (about 350 MB) that runs on your device. Nothing is sent to a server.',
+      aiConsentSub: 'Once downloaded, the model is cached in your browser so you can use it offline without downloading again.',
+      btnDownloadModel: 'Download & Continue',
+      aiStatusDownloading: 'Downloading model... Please wait.',
+      aiProgressHint: 'This may take 30–60 seconds depending on your connection.',
+      aiUnsupportedNote: 'In-browser AI features require WebGPU support (available in modern Chrome, Edge, and Safari).',
+      btnSendTextDraft: 'Send via Text',
+      btnSendEmailDraft: 'Send via Email',
+      btnCopyDraft: 'Copy Text',
+      btnApplyNotes: 'Apply to Notes',
+      btnDiscardDraft: 'Discard',
+      aiMsgDiscardedPrice: 'AI draft contained an unexpected price figure and was discarded for safety. Please review or write manually.',
+      aiMsgDiscardedNotes: 'AI polished notes contained a price figure and was discarded for safety. Please write notes manually.',
+      aiMsgLoadingError: 'Failed to load the AI model. Quoting remains fully functional.',
+      lblScopeNotes: 'Scope Notes:',
+      notesAppliedToast: 'Polished crew notes applied!',
+      notesDraftEmpty: 'Please enter rough crew notes first.',
+      aiDraftCopiedToast: 'AI draft copied to clipboard!',
     },
     es: {
       appTitle: 'LawnQuote',
@@ -543,6 +570,33 @@
       methodSms: 'mensaje',
       methodEmail: 'correo',
       methodCopy: 'copia',
+
+      // AI Features & Crew Notes (Spanish)
+      lblCrewNotes: 'Notas de la Cuadrilla',
+      hintCrewNotes: '(Notas opcionales sobre acceso al terreno, peligros o alcance)',
+      placeholderCrewNotes: 'ej. El portón trasero tiene cerrojo trabado; cuidado con aspersores junto al cantero; podar ramas bajas de roble sobre la acera.',
+      btnAiPolishNotes: 'IA: Pulir notas',
+      btnAiWriteMessage: 'IA: Redactar mensaje para cliente',
+      aiDraftLabel: 'Borrador de IA. Revise antes de enviar.',
+      aiModalTitle: 'Descargar Modelo de IA en el Navegador',
+      aiConsentNotice: 'Esto descarga un modelo de IA (aprox. 350 MB) que se ejecuta en su dispositivo. No se envía nada a ningún servidor.',
+      aiConsentSub: 'Una vez descargado, el modelo se guarda en la memoria del navegador para usarlo sin conexión y sin volver a descargarlo.',
+      btnDownloadModel: 'Descargar y continuar',
+      aiStatusDownloading: 'Descargando modelo... Por favor espere.',
+      aiProgressHint: 'Esto puede tardar de 30 a 60 segundos según su conexión.',
+      aiUnsupportedNote: 'Las funciones de IA en el navegador requieren compatibilidad con WebGPU (disponible en Chrome, Edge y Safari modernos).',
+      btnSendTextDraft: 'Enviar por Mensaje',
+      btnSendEmailDraft: 'Enviar por Correo',
+      btnCopyDraft: 'Copiar Texto',
+      btnApplyNotes: 'Aplicar a Notas',
+      btnDiscardDraft: 'Descartar',
+      aiMsgDiscardedPrice: 'El borrador de IA contenía un precio no válido y fue descartado por seguridad. Por favor revise o escriba manualmente.',
+      aiMsgDiscardedNotes: 'Las notas pulidas contenían un monto en dinero y fueron descartadas por seguridad. Por favor escriba las notas manualmente.',
+      aiMsgLoadingError: 'Error al cargar el modelo de IA. La cotización sigue funcionando con normalidad.',
+      lblScopeNotes: 'Notas de Alcance:',
+      notesAppliedToast: '¡Notas pulidas aplicadas!',
+      notesDraftEmpty: 'Por favor ingrese primero notas preliminares.',
+      aiDraftCopiedToast: '¡Borrador copiado al portapapeles!',
     }
   };
 
@@ -661,6 +715,7 @@
       custAddress: document.getElementById('quote-cust-address'),
       custPhone: document.getElementById('quote-cust-phone'),
       custEmail: document.getElementById('quote-cust-email'),
+      crewNotes: document.getElementById('quote-crew-notes'),
       yardSize: document.getElementById('quote-yard-size'),
       svcMowing: document.getElementById('svc-mowing'),
       svcEdging: document.getElementById('svc-edging'),
@@ -735,6 +790,8 @@
       sendEmailBtn: document.getElementById('btn-send-email'),
       copyEstimateBtn: document.getElementById('btn-copy-estimate'),
       custContact: document.getElementById('view-cust-contact'),
+      crewNotesWrap: document.getElementById('view-crew-notes-wrap'),
+      crewNotesView: document.getElementById('view-crew-notes'),
       highValueWarning: document.getElementById('preview-high-value-warning')
     },
     saved: {
@@ -759,6 +816,35 @@
       emptyDesc: document.getElementById('saved-empty-desc'),
       createNewBtn: document.getElementById('btn-saved-create-new'),
       toast: document.getElementById('saved-action-toast')
+    },
+
+    ai: {
+      btnPolishNotes: document.getElementById('btn-ai-polish-notes'),
+      btnWriteMessage: document.getElementById('btn-ai-write-message'),
+      notesDraftBox: document.getElementById('ai-notes-draft-box'),
+      notesDraftText: document.getElementById('ai-notes-draft-text'),
+      btnApplyNotes: document.getElementById('btn-apply-polished-notes'),
+      btnDiscardNotes: document.getElementById('btn-discard-polished-notes'),
+      notesMsg: document.getElementById('ai-notes-msg'),
+      messageDraftBox: document.getElementById('ai-message-draft-box'),
+      messageDraftText: document.getElementById('ai-message-draft-text'),
+      btnSendSmsDraft: document.getElementById('btn-ai-send-sms'),
+      btnSendEmailDraft: document.getElementById('btn-ai-send-email'),
+      btnCopyDraft: document.getElementById('btn-ai-copy-draft'),
+      btnDiscardMessageDraft: document.getElementById('btn-discard-message-draft'),
+      messageMsg: document.getElementById('ai-message-msg'),
+      unsupportedQuote: document.getElementById('ai-unsupported-note-quote'),
+      unsupportedPreview: document.getElementById('ai-unsupported-note-preview'),
+      modal: document.getElementById('ai-download-modal'),
+      modalCloseBtn: document.getElementById('btn-close-ai-modal'),
+      consentView: document.getElementById('ai-consent-view'),
+      progressView: document.getElementById('ai-progress-view'),
+      cancelBtn: document.getElementById('btn-ai-cancel-download'),
+      confirmBtn: document.getElementById('btn-ai-confirm-download'),
+      progressStatus: document.getElementById('ai-progress-status'),
+      progressBarFill: document.getElementById('ai-progress-bar-fill'),
+      progressPercent: document.getElementById('ai-progress-percent'),
+      featureBtns: document.querySelectorAll('.ai-feature-btn')
     },
     map: {
       btnOpen: document.getElementById('btn-open-map'),
@@ -1314,6 +1400,9 @@
     return {
       custName: nameVal,
       custAddress: addressVal,
+      custPhone: q.custPhone ? q.custPhone.value.trim() : '',
+      custEmail: q.custEmail ? q.custEmail.value.trim() : '',
+      crewNotes: q.crewNotes ? q.crewNotes.value.trim() : '',
       yardSize: yardSizeVal,
       services: {
         mowing: q.svcMowing.checked,
@@ -1563,6 +1652,16 @@
     p.custName.textContent = quote.custName;
     p.custAddress.textContent = quote.custAddress;
     p.yardSize.textContent = `${quote.yardSize.toLocaleString()} ${t('unitYardSize')}`;
+
+    if (p.crewNotesWrap && p.crewNotesView) {
+      if (quote.crewNotes && quote.crewNotes.trim()) {
+        p.crewNotesWrap.style.display = 'block';
+        p.crewNotesView.textContent = quote.crewNotes.trim();
+      } else {
+        p.crewNotesWrap.style.display = 'none';
+        p.crewNotesView.textContent = '';
+      }
+    }
 
     // SECTION 3: Itemized Table
     p.lineItems.innerHTML = '';
@@ -2005,6 +2104,9 @@
       validThrough: valid.toLocaleDateString(currentLanguage === 'es' ? 'es-US' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       custName: formData.custName,
       custAddress: formData.custAddress,
+      custPhone: formData.custPhone,
+      custEmail: formData.custEmail,
+      crewNotes: formData.crewNotes,
       yardSize: formData.yardSize,
       measuredOnMap: Boolean(yardMeasuredOnMap),
       serviceSelections: {
@@ -2064,6 +2166,8 @@
     t('btnStartFresh'),
     () => {
       q.form.reset();
+      if (DOM.ai && DOM.ai.notesDraftBox) DOM.ai.notesDraftBox.style.display = 'none';
+      if (DOM.ai && DOM.ai.messageDraftBox) DOM.ai.messageDraftBox.style.display = 'none';
       attachedPhotos = [];
       renderThumbnails();
       currentQuoteData = null;
@@ -2224,6 +2328,461 @@
           showQuotePreviewToast(t('toastEstimateCopyFailed'));
         }
       );
+    });
+  }
+
+
+  // ---------------------------------------------------------------------------
+  // 10B. In-Browser AI Writing Helper (WebLLM + Qwen)
+  // ---------------------------------------------------------------------------
+
+  let isWebGPUSupported = false;
+  let webllmEngine = null;
+  let isModelDownloading = false;
+  let pendingAiTask = null; // 'write-message' | 'polish-notes'
+
+  /**
+   * Check for WebGPU hardware acceleration in modern browser
+   */
+  async function checkWebGPUSupport() {
+    if (typeof navigator === 'undefined' || !navigator.gpu) {
+      return false;
+    }
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      return !!adapter;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Initialize WebGPU status and show/hide UI buttons gracefully
+   */
+  async function initWebGPUStatus() {
+    isWebGPUSupported = await checkWebGPUSupport();
+    if (!isWebGPUSupported) {
+      if (DOM.ai && DOM.ai.featureBtns) {
+        DOM.ai.featureBtns.forEach(btn => btn.style.display = 'none');
+      }
+      if (DOM.ai && DOM.ai.unsupportedQuote) DOM.ai.unsupportedQuote.style.display = 'block';
+      if (DOM.ai && DOM.ai.unsupportedPreview) DOM.ai.unsupportedPreview.style.display = 'block';
+    } else {
+      if (DOM.ai && DOM.ai.unsupportedQuote) DOM.ai.unsupportedQuote.style.display = 'none';
+      if (DOM.ai && DOM.ai.unsupportedPreview) DOM.ai.unsupportedPreview.style.display = 'none';
+    }
+  }
+
+  /**
+   * Dynamically loads WebLLM module from window or CDN
+   */
+  async function loadWebLLMModule() {
+    if (window.webllm && window.webllm.CreateMLCEngine) {
+      return window.webllm;
+    }
+    try {
+      const mod = await import('https://esm.run/@mlc-ai/web-llm');
+      window.webllm = mod;
+      return mod;
+    } catch (e1) {
+      try {
+        const mod2 = await import('https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm/+esm');
+        window.webllm = mod2;
+        return mod2;
+      } catch (e2) {
+        throw new Error('Failed to load WebLLM module: ' + (e2.message || e2));
+      }
+    }
+  }
+
+  /**
+   * Initializes MLC engine with smallest Qwen instruct model
+   */
+  async function initAiEngine(onProgress) {
+    if (webllmEngine) return webllmEngine;
+
+    const webllm = await loadWebLLMModule();
+
+    // Smallest Qwen instruct model in WebLLM: Qwen2.5-0.5B-Instruct-q4f16_1-MLC
+    let modelId = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      if (adapter && !adapter.features.has('shader-f16')) {
+        modelId = 'Qwen2.5-0.5B-Instruct-q4f32_1-MLC';
+      }
+    } catch (e) {
+      console.warn('shader-f16 check fallback:', e);
+    }
+
+    webllmEngine = await webllm.CreateMLCEngine(modelId, {
+      initProgressCallback: (report) => {
+        if (typeof onProgress === 'function') {
+          onProgress(report);
+        }
+      }
+    });
+
+    window._webllmEngine = webllmEngine;
+    return webllmEngine;
+  }
+
+  /**
+   * Anti-hallucination Number Validator
+   * If expectedTotalStr is null (crew notes): NO dollar figures allowed.
+   * If expectedTotalStr is provided (customer message): ANY dollar figure must exactly match.
+   */
+  function validateAiOutputNumbers(aiText, expectedTotalStr) {
+    if (!aiText) return false;
+
+    // Currency pattern matching
+    const dollarRegex = /\$\s*(\d+(?:,\d{3})*(?:\.\d{2})?)/g;
+    const matches = [...aiText.matchAll(dollarRegex)];
+
+    // Word dollar pattern: e.g. 50 dollars, 50 USD, 50 dólares
+    const wordDollarRegex = /\b(\d+(?:\.\d{2})?)\s*(?:dollars?|dólares|usd)\b/gi;
+    const wordMatches = [...aiText.matchAll(wordDollarRegex)];
+
+    if (expectedTotalStr === null) {
+      // Case A: Crew Notes - strictly zero dollar amounts allowed
+      if (matches.length > 0 || wordMatches.length > 0) {
+        return false;
+      }
+      return true;
+    }
+
+    // Case B: Customer Message - all dollar amounts must match the exact total
+    const cleanExpected = expectedTotalStr.replace(/\s+/g, '');
+    const cleanExpectedNoCents = cleanExpected.replace(/\.00$/, '');
+
+    for (const m of matches) {
+      const found = '$' + m[1].replace(/,/g, '');
+      if (found !== cleanExpected && found !== cleanExpectedNoCents) {
+        return false;
+      }
+    }
+
+    for (const wm of wordMatches) {
+      const found = '$' + wm[1];
+      if (found !== cleanExpected && found !== cleanExpectedNoCents) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function openAiDownloadModal(taskName) {
+    if (!DOM.ai || !DOM.ai.modal) return;
+    pendingAiTask = taskName;
+    DOM.ai.consentView.style.display = 'block';
+    DOM.ai.progressView.style.display = 'none';
+    DOM.ai.progressBarFill.style.width = '0%';
+    DOM.ai.progressPercent.textContent = '0%';
+    DOM.ai.modal.style.display = 'flex';
+  }
+
+  function closeAiDownloadModal() {
+    if (!DOM.ai || !DOM.ai.modal) return;
+    if (isModelDownloading) return; // Prevent closing while downloading
+    DOM.ai.modal.style.display = 'none';
+    pendingAiTask = null;
+  }
+
+  async function handleAiConsentDownload() {
+    if (!DOM.ai) return;
+    DOM.ai.consentView.style.display = 'none';
+    DOM.ai.progressView.style.display = 'block';
+    DOM.ai.progressStatus.textContent = t('aiStatusDownloading');
+    isModelDownloading = true;
+
+    try {
+      await initAiEngine((report) => {
+        const pct = Math.round((report.progress || 0) * 100);
+        DOM.ai.progressBarFill.style.width = pct + '%';
+        DOM.ai.progressPercent.textContent = pct + '%';
+        if (report.text) {
+          DOM.ai.progressStatus.textContent = report.text;
+        }
+      });
+
+      isModelDownloading = false;
+      DOM.ai.modal.style.display = 'none';
+
+      // Execute queued task
+      if (pendingAiTask === 'write-message') {
+        runAiWriteCustomerMessage();
+      } else if (pendingAiTask === 'polish-notes') {
+        runAiPolishNotes();
+      }
+      pendingAiTask = null;
+    } catch (err) {
+      console.error('AI Model initialization failed:', err);
+      isModelDownloading = false;
+      DOM.ai.progressStatus.textContent = t('aiMsgLoadingError');
+      DOM.ai.progressBarFill.style.backgroundColor = '#DC2626';
+      setTimeout(() => {
+        DOM.ai.modal.style.display = 'none';
+        if (DOM.ai.featureBtns) {
+          DOM.ai.featureBtns.forEach(btn => btn.style.display = 'none');
+        }
+        if (DOM.ai.unsupportedQuote) DOM.ai.unsupportedQuote.style.display = 'block';
+        if (DOM.ai.unsupportedPreview) DOM.ai.unsupportedPreview.style.display = 'block';
+      }, 2500);
+    }
+  }
+
+  /**
+   * AI Task 1: Draft customer message on Quote Preview
+   */
+  async function runAiWriteCustomerMessage() {
+    if (!currentQuoteData) return;
+    if (!webllmEngine) {
+      openAiDownloadModal('write-message');
+      return;
+    }
+
+    const btn = DOM.ai.btnWriteMessage;
+    const origHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span>' + (currentLanguage === 'es' ? 'Redactando mensaje...' : 'Drafting message...') + '</span>';
+
+    const isEs = currentLanguage === 'es';
+    const bizName = currentSettings.businessName || 'GreenThumb Lawn & Landscape';
+    const custName = (currentQuoteData.custName || '').trim();
+    const firstName = custName.split(' ')[0].replace(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]/g, '') || (isEs ? 'Cliente' : 'Customer');
+    const servicesList = (currentQuoteData.lineItems || []).map(i => i.name).join(', ');
+    const totalStr = '$' + (currentQuoteData.finalTotal !== undefined ? currentQuoteData.finalTotal.toFixed(2) : '0.00');
+    const validStr = currentQuoteData.validThrough || '14 days';
+
+    const systemPrompt = isEs
+      ? "Eres un asistente profesional para un negocio de cuidado del césped y jardinería. Redactas mensajes cortos y cordiales para enviar a clientes desde la acera. NUNCA inventes, calcules ni modifiques precios o medidas. Responde ÚNICAMENTE con el texto del mensaje sin comillas ni comentarios introductorios."
+      : "You are a professional assistant for a lawn care and landscaping business. You write short, friendly curbside customer messages. You NEVER invent, calculate, or alter prices or measurements. Output ONLY the message text without quotes, markdown formatting, or introductory commentary.";
+
+    const userPrompt = isEs
+      ? 'Redacta un mensaje cordial y profesional para ' + firstName + ' de parte de ' + bizName + ' para los siguientes servicios: ' + servicesList + '.\nPresupuesto total: ' + totalStr + '.\nVálido hasta: ' + validStr + '.\nReglas:\n- Máximo 2 a 3 oraciones amables.\n- Menciona únicamente el total exacto de ' + totalStr + '. NO menciones ningún otro monto ni calcules nada.\n- Menciona los servicios y la validez del presupuesto.\n- Responde ÚNICAMENTE con el texto del mensaje en español.'
+      : 'Draft a warm, professional curbside message to ' + firstName + ' from ' + bizName + ' for the following services: ' + servicesList + '.\nTotal estimate: ' + totalStr + '.\nValid through: ' + validStr + '.\nRules:\n- Keep it to 2-3 friendly sentences.\n- Mention only the exact total of ' + totalStr + '. Do NOT mention any other dollar amounts, discounts, or calculations.\n- Mention the services and estimate validity.\n- Output ONLY the plain message text.';
+
+    try {
+      const response = await webllmEngine.chat.completions.create({
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.3,
+        max_tokens: 160
+      });
+
+      const rawOutput = (response.choices[0].message.content || '').trim().replace(/^["']|["']$/g, '');
+
+      // Strict price validation
+      const isValid = validateAiOutputNumbers(rawOutput, totalStr);
+
+      DOM.ai.messageDraftBox.style.display = 'block';
+      if (!isValid) {
+        DOM.ai.messageDraftText.value = '';
+        DOM.ai.messageMsg.className = 'ai-feedback-msg error';
+        DOM.ai.messageMsg.textContent = t('aiMsgDiscardedPrice');
+        DOM.ai.messageMsg.style.display = 'block';
+      } else {
+        DOM.ai.messageDraftText.value = rawOutput;
+        DOM.ai.messageMsg.style.display = 'none';
+      }
+    } catch (err) {
+      console.error('Error generating AI customer message:', err);
+      DOM.ai.messageDraftBox.style.display = 'block';
+      DOM.ai.messageMsg.className = 'ai-feedback-msg error';
+      DOM.ai.messageMsg.textContent = t('aiMsgLoadingError');
+      DOM.ai.messageMsg.style.display = 'block';
+    } finally {
+      btn.innerHTML = origHtml;
+      btn.disabled = false;
+    }
+  }
+
+  /**
+   * AI Task 2: Polish crew notes on New Quote Screen
+   */
+  async function runAiPolishNotes() {
+    const roughNotes = DOM.newQuote.crewNotes ? DOM.newQuote.crewNotes.value.trim() : '';
+    if (!roughNotes) {
+      DOM.ai.notesDraftBox.style.display = 'block';
+      DOM.ai.notesMsg.className = 'ai-feedback-msg error';
+      DOM.ai.notesMsg.textContent = t('notesDraftEmpty');
+      DOM.ai.notesMsg.style.display = 'block';
+      return;
+    }
+
+    if (!webllmEngine) {
+      openAiDownloadModal('polish-notes');
+      return;
+    }
+
+    const btn = DOM.ai.btnPolishNotes;
+    const origHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span>' + (currentLanguage === 'es' ? 'Puliendo notas...' : 'Polishing notes...') + '</span>';
+
+    const isEs = currentLanguage === 'es';
+    const systemPrompt = isEs
+      ? "Eres un asistente profesional para un negocio de cuidado del césped. Pules notas rápidas de la cuadrilla en 1 o 2 oraciones profesionales para la sección de alcance del presupuesto. NUNCA incluyas precios, presupuestos ni montos en dinero. Responde ÚNICAMENTE con las notas pulidas."
+      : "You are a professional assistant for a lawn care business. You polish rough crew notes into 1-2 professional sentences for the estimate's property scope section. You NEVER include prices, estimates, or dollar amounts. Output ONLY the polished notes.";
+
+    const userPrompt = isEs
+      ? 'Convierte estas notas preliminares de la cuadrilla en 1 o 2 oraciones profesionales para la sección de alcance del presupuesto:\n"' + roughNotes + '"\nReglas:\n- Mantén la exactitud de las instrucciones sobre portones, peligros o estado del terreno.\n- NO incluyas ningún monto en dinero, precios ni tarifas.\n- Responde ÚNICAMENTE con las oraciones pulidas en español sin comillas ni explicaciones.'
+      : "Turn these rough crew notes into 1 or 2 professional sentences for the estimate's scope section:\n\"" + roughNotes + "\"\nRules:\n- Keep the original facts, gate access, and hazard instructions accurate.\n- Do NOT include any dollar amounts, prices, or rates.\n- Output ONLY the polished sentences without quotes or conversational filler.";
+
+    try {
+      const response = await webllmEngine.chat.completions.create({
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.3,
+        max_tokens: 130
+      });
+
+      const rawOutput = (response.choices[0].message.content || '').trim().replace(/^["']|["']$/g, '');
+
+      // Strict validation: zero dollar amounts allowed in scope notes
+      const isValid = validateAiOutputNumbers(rawOutput, null);
+
+      DOM.ai.notesDraftBox.style.display = 'block';
+      if (!isValid) {
+        DOM.ai.notesDraftText.value = '';
+        DOM.ai.notesMsg.className = 'ai-feedback-msg error';
+        DOM.ai.notesMsg.textContent = t('aiMsgDiscardedNotes');
+        DOM.ai.notesMsg.style.display = 'block';
+      } else {
+        DOM.ai.notesDraftText.value = rawOutput;
+        DOM.ai.notesMsg.style.display = 'none';
+      }
+    } catch (err) {
+      console.error('Error polishing crew notes:', err);
+      DOM.ai.notesDraftBox.style.display = 'block';
+      DOM.ai.notesMsg.className = 'ai-feedback-msg error';
+      DOM.ai.notesMsg.textContent = t('aiMsgLoadingError');
+      DOM.ai.notesMsg.style.display = 'block';
+    } finally {
+      btn.innerHTML = origHtml;
+      btn.disabled = false;
+    }
+  }
+
+  // Wire AI Trigger Buttons
+  if (DOM.ai.btnWriteMessage) {
+    DOM.ai.btnWriteMessage.addEventListener('click', () => {
+      runAiWriteCustomerMessage();
+    });
+  }
+
+  if (DOM.ai.btnPolishNotes) {
+    DOM.ai.btnPolishNotes.addEventListener('click', () => {
+      runAiPolishNotes();
+    });
+  }
+
+  // Wire AI Consent Modal Buttons
+  if (DOM.ai.confirmBtn) {
+    DOM.ai.confirmBtn.addEventListener('click', () => {
+      handleAiConsentDownload();
+    });
+  }
+
+  if (DOM.ai.cancelBtn) {
+    DOM.ai.cancelBtn.addEventListener('click', () => {
+      closeAiDownloadModal();
+    });
+  }
+
+  if (DOM.ai.modalCloseBtn) {
+    DOM.ai.modalCloseBtn.addEventListener('click', () => {
+      closeAiDownloadModal();
+    });
+  }
+
+  // Wire Crew Notes Draft Box Actions
+  if (DOM.ai.btnApplyNotes) {
+    DOM.ai.btnApplyNotes.addEventListener('click', () => {
+      const text = DOM.ai.notesDraftText.value.trim();
+      if (text && DOM.newQuote.crewNotes) {
+        DOM.newQuote.crewNotes.value = text;
+      }
+      DOM.ai.notesDraftBox.style.display = 'none';
+      const toast = DOM.priceSheet.toast || DOM.preview.toast;
+      if (toast) {
+        toast.textContent = t('notesAppliedToast');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2500);
+      }
+    });
+  }
+
+  if (DOM.ai.btnDiscardNotes) {
+    DOM.ai.btnDiscardNotes.addEventListener('click', () => {
+      DOM.ai.notesDraftBox.style.display = 'none';
+      DOM.ai.notesDraftText.value = '';
+      if (DOM.ai.notesMsg) DOM.ai.notesMsg.style.display = 'none';
+    });
+  }
+
+  // Wire Customer Message Draft Box Actions
+  if (DOM.ai.btnSendSmsDraft) {
+    DOM.ai.btnSendSmsDraft.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+      const text = DOM.ai.messageDraftText.value.trim();
+      if (!text) return;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const phoneDigits = (currentQuoteData.custPhone || '').replace(/[^0-9+]/g, '');
+      const separator = isIOS ? '&' : '?';
+      const smsUrl = phoneDigits
+        ? 'sms:' + phoneDigits + separator + 'body=' + encodeURIComponent(text)
+        : 'sms:' + separator + 'body=' + encodeURIComponent(text);
+
+      recordEstimateSent(currentQuoteData.quoteId, 'sms');
+      window.location.href = smsUrl;
+    });
+  }
+
+  if (DOM.ai.btnSendEmailDraft) {
+    DOM.ai.btnSendEmailDraft.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+      const text = DOM.ai.messageDraftText.value.trim();
+      if (!text) return;
+      const bizName = currentSettings.businessName || 'GreenThumb Lawn & Landscape';
+      const subject = (currentLanguage === 'es')
+        ? 'Su cotización de ' + bizName + ' – #' + currentQuoteData.quoteId
+        : 'Your estimate from ' + bizName + ' – #' + currentQuoteData.quoteId;
+      const emailTo = (currentQuoteData.custEmail || '').trim();
+      const mailtoUrl = 'mailto:' + encodeURIComponent(emailTo) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+
+      recordEstimateSent(currentQuoteData.quoteId, 'email');
+      window.location.href = mailtoUrl;
+    });
+  }
+
+  if (DOM.ai.btnCopyDraft) {
+    DOM.ai.btnCopyDraft.addEventListener('click', () => {
+      if (!currentQuoteData) return;
+      const text = DOM.ai.messageDraftText.value.trim();
+      if (!text) return;
+      copyTextToClipboard(
+        text,
+        () => {
+          recordEstimateSent(currentQuoteData.quoteId, 'copy');
+          showQuotePreviewToast(t('aiDraftCopiedToast'));
+        },
+        () => {
+          showQuotePreviewToast(t('toastEstimateCopyFailed'));
+        }
+      );
+    });
+  }
+
+  if (DOM.ai.btnDiscardMessageDraft) {
+    DOM.ai.btnDiscardMessageDraft.addEventListener('click', () => {
+      DOM.ai.messageDraftBox.style.display = 'none';
+      DOM.ai.messageDraftText.value = '';
+      if (DOM.ai.messageMsg) DOM.ai.messageMsg.style.display = 'none';
     });
   }
 
@@ -2585,6 +3144,12 @@
     if (!found) return;
 
     currentQuoteData = JSON.parse(JSON.stringify(found));
+    if (q.custName) q.custName.value = found.custName || '';
+    if (q.custAddress) q.custAddress.value = found.custAddress || '';
+    if (q.custPhone) q.custPhone.value = found.custPhone || '';
+    if (q.custEmail) q.custEmail.value = found.custEmail || '';
+    if (q.crewNotes) q.crewNotes.value = found.crewNotes || '';
+    if (q.yardSize) q.yardSize.value = found.yardSize || '';
     renderQuotePreview(currentQuoteData);
     showScreen('screen-preview');
   }
@@ -2610,6 +3175,9 @@
     // Populate form with customer info and measurements
     q.custName.value = source.custName || '';
     q.custAddress.value = source.custAddress || '';
+    if (q.custPhone) q.custPhone.value = source.custPhone || '';
+    if (q.custEmail) q.custEmail.value = source.custEmail || '';
+    if (q.crewNotes) q.crewNotes.value = source.crewNotes || '';
     q.yardSize.value = source.yardSize || '';
 
     // Service selections
@@ -3001,5 +3569,6 @@
   updateNavBadge();
   showScreen('screen-newquote');
   updateLiveRunningTotal();
+  initWebGPUStatus();
 
 })();

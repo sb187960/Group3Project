@@ -2364,3 +2364,248 @@ textarea.form-control {
   min-height: 44px;
   min-width: 44px;
 }
+
+
+/* ==========================================================================
+   In-Browser AI Writing Helper (WebLLM + Qwen) Styles
+   ========================================================================== */
+
+.btn-ai-action {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ai-draft-box {
+  background-color: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ai-draft-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.ai-draft-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #166534;
+  background-color: #DCFCE7;
+  border: 1px solid #BBF7D0;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.ai-draft-textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text-main);
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.ai-draft-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.15);
+}
+
+.ai-draft-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ai-draft-actions .btn-sm {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-unsupported-note {
+  font-size: 0.8125rem;
+  color: #475569;
+  background-color: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  padding: 8px 12px;
+  line-height: 1.4;
+}
+
+.ai-feedback-msg {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+.ai-feedback-msg.error {
+  color: #991B1B;
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+}
+
+.ai-feedback-msg.success {
+  color: #166534;
+  background-color: #F0FDF4;
+  border: 1px solid #BBF7D0;
+}
+
+.party-scope-notes {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.scope-notes-text {
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+/* Modal styles for AI download dialog */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.modal-dialog {
+  background: #FFFFFF;
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--color-text-main);
+  font-weight: 700;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close:hover {
+  color: var(--color-text-main);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.ai-consent-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-main);
+  margin-bottom: 8px;
+}
+
+.ai-consent-sub {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+.progress-bar-wrap {
+  width: 100%;
+  height: 12px;
+  background-color: #E2E8F0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #0D5C3A;
+  transition: width 0.2s ease;
+}
+
+.progress-percent-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.ai-progress-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+  margin-bottom: 0;
+}

@@ -354,6 +354,42 @@
               📷 Measured from aerial photo. Please double-check.
             </div>
           </div>
+
+          <!-- Optional Crew Notes & AI Polishing -->
+          <div class="form-group" id="crew-notes-group">
+            <label for="quote-crew-notes">
+              <span data-i18n="lblCrewNotes">Crew Notes</span>
+              <span class="hint" data-i18n="hintCrewNotes">(Optional notes on site access, hazards, or scope)</span>
+            </label>
+            <textarea id="quote-crew-notes" class="form-control" rows="2" placeholder="e.g. Back gate has latch lock; watch for sprinklers near flower bed; low oak branches need trimming over walkway." data-i18n-placeholder="placeholderCrewNotes"></textarea>
+            
+            <div class="ai-trigger-row" style="margin-top: 8px;">
+              <button type="button" id="btn-ai-polish-notes" class="btn btn-secondary btn-ai-action ai-feature-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+                <span data-i18n="btnAiPolishNotes">AI: Polish notes</span>
+              </button>
+            </div>
+            <div id="ai-unsupported-note-quote" class="ai-unsupported-note" style="display: none; margin-top: 8px;" data-i18n="aiUnsupportedNote">In-browser AI features require WebGPU support (available in modern Chrome, Edge, and Safari).</div>
+
+            <!-- Editable AI Draft Box for Crew Notes -->
+            <div id="ai-notes-draft-box" class="ai-draft-box" style="display: none; margin-top: 10px;">
+              <div class="ai-draft-header">
+                <span class="ai-draft-badge" data-i18n="aiDraftLabel">AI draft. Review before sending.</span>
+              </div>
+              <textarea id="ai-notes-draft-text" class="form-control ai-draft-textarea" rows="2"></textarea>
+              <div class="ai-draft-actions" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" id="btn-apply-polished-notes" class="btn btn-sm btn-primary">
+                  <span data-i18n="btnApplyNotes">Apply to Notes</span>
+                </button>
+                <button type="button" id="btn-discard-polished-notes" class="btn btn-sm btn-outline">
+                  <span data-i18n="btnDiscardDraft">Discard</span>
+                </button>
+              </div>
+              <div id="ai-notes-msg" class="ai-feedback-msg" style="display: none; margin-top: 6px;"></div>
+            </div>
+          </div>
         </div>
 
         <!-- Services Selection Card -->
@@ -668,6 +704,10 @@
             <div class="party-meta">
               <span class="scope-label" data-i18n="lblMeasuredLawnArea">Measured Lawn Area:</span> <strong id="view-yard-size" class="tabular-num">4,200 sq ft</strong>
             </div>
+            <div id="view-crew-notes-wrap" class="party-scope-notes" style="display: none; margin-top: 6px;">
+              <span class="scope-label" data-i18n="lblScopeNotes">Scope Notes:</span>
+              <span id="view-crew-notes" class="scope-notes-text"></span>
+            </div>
           </div>
         </section>
 
@@ -768,6 +808,42 @@
             </svg>
             <span data-i18n="btnCopyEstimate">Copy Estimate</span>
           </button>
+        </div>
+
+        <!-- Optional AI Customer Message Drafting -->
+        <div class="ai-send-group" style="margin-top: 14px; border-top: 1px solid var(--color-border); padding-top: 12px;">
+          <div class="ai-trigger-row">
+            <button type="button" id="btn-ai-write-message" class="btn btn-secondary btn-ai-action ai-feature-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+              <span data-i18n="btnAiWriteMessage">AI: Write customer message</span>
+            </button>
+          </div>
+          <div id="ai-unsupported-note-preview" class="ai-unsupported-note" style="display: none; margin-top: 8px;" data-i18n="aiUnsupportedNote">In-browser AI features require WebGPU support (available in modern Chrome, Edge, and Safari).</div>
+          
+          <!-- Editable AI Draft Box for Customer Message -->
+          <div id="ai-message-draft-box" class="ai-draft-box" style="display: none; margin-top: 10px;">
+            <div class="ai-draft-header">
+              <span class="ai-draft-badge" data-i18n="aiDraftLabel">AI draft. Review before sending.</span>
+            </div>
+            <textarea id="ai-message-draft-text" class="form-control ai-draft-textarea" rows="4"></textarea>
+            <div class="ai-draft-actions" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" id="btn-ai-send-sms" class="btn btn-sm btn-primary">
+                <span data-i18n="btnSendTextDraft">Send via Text</span>
+              </button>
+              <button type="button" id="btn-ai-send-email" class="btn btn-sm btn-secondary">
+                <span data-i18n="btnSendEmailDraft">Send via Email</span>
+              </button>
+              <button type="button" id="btn-ai-copy-draft" class="btn btn-sm btn-outline">
+                <span data-i18n="btnCopyDraft">Copy Text</span>
+              </button>
+              <button type="button" id="btn-discard-message-draft" class="btn btn-sm btn-outline">
+                <span data-i18n="btnDiscardDraft">Discard</span>
+              </button>
+            </div>
+            <div id="ai-message-msg" class="ai-feedback-msg" style="display: none; margin-top: 6px;"></div>
+          </div>
         </div>
       </div>
 
@@ -981,6 +1057,50 @@
 
     </div>
   </div>
+
+  <!-- AI Model Download Consent & Progress Modal -->
+  <div id="ai-download-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="ai-modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="ai-modal-title" data-i18n="aiModalTitle">Download In-Browser AI Model</h3>
+        <button type="button" class="btn-close" id="btn-close-ai-modal" aria-label="Close" data-i18n-aria-label="ariaCloseModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="ai-consent-view">
+          <p class="ai-consent-text" data-i18n="aiConsentNotice" style="font-weight: 500; color: var(--color-text-main); margin-bottom: 8px;">
+            This downloads an AI model (about 350 MB) that runs on your device. Nothing is sent to a server.
+          </p>
+          <p class="ai-consent-sub" data-i18n="aiConsentSub" style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 16px;">
+            Once downloaded, the model is cached in your browser so you can use it offline without downloading again.
+          </p>
+          <div class="modal-actions" style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" id="btn-ai-cancel-download" class="btn btn-outline" data-i18n="btnCancel">Cancel</button>
+            <button type="button" id="btn-ai-confirm-download" class="btn btn-primary" data-i18n="btnDownloadModel">Download &amp; Continue</button>
+          </div>
+        </div>
+
+        <div id="ai-progress-view" style="display: none;">
+          <p id="ai-progress-status" class="ai-progress-status" data-i18n="aiStatusDownloading" style="font-weight: 500; margin-bottom: 8px;">Downloading model... Please wait.</p>
+          <div class="progress-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ai-progress-bar-aria" style="height: 12px; background: #E2E8F0; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
+            <div id="ai-progress-bar-fill" class="progress-bar-fill" style="width: 0%; height: 100%; background: var(--color-primary); transition: width 0.2s ease;"></div>
+          </div>
+          <div class="progress-percent-label" id="ai-progress-percent" style="font-size: 0.875rem; font-weight: 600; text-align: right; color: var(--color-text-secondary);">0%</div>
+          <p class="ai-progress-hint" data-i18n="aiProgressHint" style="font-size: 0.8125rem; color: var(--color-text-secondary); margin-top: 10px;">This may take 30–60 seconds depending on your connection.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Browser AI via WebLLM Script Tag (Optional Client-Side Module) -->
+  <script type="module">
+    try {
+      const webllm = await import("https://esm.run/@mlc-ai/web-llm");
+      window.webllm = webllm;
+      window.dispatchEvent(new CustomEvent('webllm-ready'));
+    } catch (e) {
+      console.warn("WebLLM preload deferred or offline:", e);
+    }
+  </script>
 
   <!-- Local Vendor Libraries (Offline-Ready) -->
   <script src="./vendor/leaflet/leaflet.js"></script>
