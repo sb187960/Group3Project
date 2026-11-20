@@ -124,6 +124,21 @@
             <input type="text" id="setting-business-name" class="form-control" required placeholder="e.g. GreenThumb Lawn &amp; Landscape" data-i18n-placeholder="placeholderBizName">
             <div id="error-setting-business-name" class="field-error" style="display: none;"></div>
           </div>
+          <!-- Optional Business Logo Upload (max 300px wide) -->
+          <div class="form-group">
+            <label for="setting-logo-input">
+              <span data-i18n="lblLogo">Business Logo (Optional)</span>
+              <span class="hint" data-i18n="hintLogo">PNG or JPG (auto-resized to max 300px wide)</span>
+            </label>
+            <div class="logo-upload-wrap">
+              <input type="file" id="setting-logo-input" accept="image/png, image/jpeg" class="logo-file-input">
+              <div id="logo-preview-box" class="logo-preview-box" style="display: none;">
+                <img id="logo-preview-img" class="logo-preview-img" alt="Logo preview">
+                <button type="button" id="btn-remove-logo" class="btn btn-sm btn-outline btn-remove-logo" data-i18n="btnRemoveLogo">✕ Remove Logo</button>
+              </div>
+            </div>
+            <div id="logo-error" class="field-error" style="display: none;"></div>
+          </div>
           <div class="form-row">
             <div class="form-group col-half">
               <label for="setting-phone" data-i18n="lblPhone">Phone Number</label>
@@ -157,6 +172,14 @@
               <input type="number" id="setting-min-charge" class="form-control with-prefix" min="0" step="1" inputmode="decimal" required>
             </div>
             <div id="error-setting-min-charge" class="field-error" style="display: none;"></div>
+          </div>
+          <div class="form-group">
+            <label for="setting-valid-days">
+              <span data-i18n="lblValidDays">Quote Valid For (Days) *</span>
+              <span class="hint" data-i18n="hintValidDays">Number of days before quote expires</span>
+            </label>
+            <input type="number" id="setting-valid-days" class="form-control" min="1" max="365" step="1" value="14" required>
+            <div id="error-setting-valid-days" class="field-error" style="display: none;"></div>
           </div>
           <div class="form-group">
             <label for="setting-terms" data-i18n="lblTerms">Quote Terms &amp; Conditions</label>
@@ -246,6 +269,10 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
             <span data-i18n="btnSaveSettings">Save Settings</span>
           </button>
+          <button type="button" id="btn-demo-business" class="btn btn-outline btn-block">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <span data-i18n="btnDemoBusiness">🏢 Load Demo Business</span>
+          </button>
           <div class="backup-actions-row">
             <button type="button" id="btn-export-backup" class="btn btn-outline col-half">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -261,6 +288,19 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
             <span data-i18n="btnResetSettings">Reset to Realistic Defaults</span>
           </button>
+          <button type="button" id="btn-clear-all" class="btn btn-outline-danger btn-block">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span data-i18n="btnClearAll">🗑️ Clear All Data</span>
+          </button>
+
+          <!-- In-Page Confirmation for Clear All Data -->
+          <div id="clear-all-confirm-box" class="inline-confirm-box" style="display: none;">
+            <p class="inline-confirm-msg" data-i18n="clearConfirmMsg">⚠️ Are you sure you want to clear all quotes, settings, and logo? This cannot be undone.</p>
+            <div class="inline-confirm-actions">
+              <button type="button" id="btn-confirm-clear" class="btn btn-danger btn-sm" data-i18n="btnConfirmClear">Yes, Clear All Data</button>
+              <button type="button" id="btn-cancel-clear" class="btn btn-secondary btn-sm" data-i18n="btnCancelClear">Cancel</button>
+            </div>
+          </div>
         </div>
         <div id="settings-toast" class="toast" role="status" aria-live="polite"></div>
       </form>
@@ -317,32 +357,14 @@
             <input type="text" id="quote-cust-address" class="form-control" placeholder="e.g. 742 Evergreen Terrace, Springfield, TX 75001" data-i18n-placeholder="placeholderCustAddress" required>
             <div id="error-quote-cust-address" class="field-error" style="display: none;"></div>
           </div>
-<<<<<<< HEAD
-          <div class="form-row">
-            <div class="form-group col-half">
-              <label for="quote-cust-phone">
-                Customer Phone <span class="hint">(optional)</span>
-              </label>
-              <input type="tel" id="quote-cust-phone" class="form-control" placeholder="e.g. (817) 555-0142" inputmode="tel">
-              <div id="phone-feedback" class="gentle-tip" style="display: none;"></div>
-            </div>
-            <div class="form-group col-half">
-              <label for="quote-cust-email">
-                Customer Email <span class="hint">(optional)</span>
-              </label>
-              <input type="email" id="quote-cust-email" class="form-control" placeholder="e.g. sample@example.com" inputmode="email">
-              <div id="email-feedback" class="gentle-tip" style="display: none;"></div>
-            </div>
-          </div>
-=======
-
           <div class="form-row">
             <div class="form-group col-half">
               <label for="quote-cust-phone">
                 <span data-i18n="lblCustPhone">Customer Phone</span>
                 <span class="hint" data-i18n="hintOptional">(Optional for texting quote)</span>
               </label>
-              <input type="tel" id="quote-cust-phone" class="form-control" placeholder="e.g. 555-0100" data-i18n-placeholder="placeholderCustPhone">
+              <input type="tel" id="quote-cust-phone" class="form-control" placeholder="e.g. 555-0100" data-i18n-placeholder="placeholderCustPhone" inputmode="tel">
+              <div id="phone-feedback" class="gentle-tip" style="display: none;"></div>
               <div id="error-quote-cust-phone" class="field-error" style="display: none;"></div>
             </div>
             <div class="form-group col-half">
@@ -350,12 +372,11 @@
                 <span data-i18n="lblCustEmail">Customer Email</span>
                 <span class="hint" data-i18n="hintOptionalEmail">(Optional for emailing quote)</span>
               </label>
-              <input type="email" id="quote-cust-email" class="form-control" placeholder="e.g. sample@example.com" data-i18n-placeholder="placeholderCustEmail">
+              <input type="email" id="quote-cust-email" class="form-control" placeholder="e.g. sample@example.com" data-i18n-placeholder="placeholderCustEmail" inputmode="email">
+              <div id="email-feedback" class="gentle-tip" style="display: none;"></div>
               <div id="error-quote-cust-email" class="field-error" style="display: none;"></div>
             </div>
           </div>
-
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
           <div class="form-group">
             <label for="quote-yard-size">
               <span data-i18n="lblYardSize">Lawn / Yard Size (sq ft) *</span>
@@ -686,12 +707,8 @@
         <header class="quote-header">
           <div class="quote-branding">
             <div class="quote-letterhead-identity">
-              <svg class="quote-letterhead-logo" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                <rect width="32" height="32" rx="6" fill="#166534"/>
-                <path d="M7 23L15 8L18 15L12 23H7Z" fill="#22C55E"/>
-                <path d="M13 23L19 12L23 19L20 23H13Z" fill="#86EFAC"/>
-              </svg>
-              <div>
+              <img id="view-biz-logo" class="quote-biz-logo" alt="Business Logo" style="display: none;">
+              <div class="quote-brand-text">
                 <h2 id="view-biz-name" class="quote-biz-name">GreenThumb Lawn &amp; Landscape</h2>
                 <div class="quote-biz-contact">
                   <span id="view-biz-phone" class="biz-contact-item">(555) 234-5678</span>
@@ -704,16 +721,16 @@
           <div class="quote-meta">
             <div class="quote-type-header" data-i18n="quoteTypeEstimate">ESTIMATE</div>
             <div class="quote-meta-row">
-              <span class="meta-label" data-i18n="lblEstimateNum">Estimate #:</span>
-              <span id="view-quote-id" class="meta-val tabular-num">#Q-1042</span>
+              <span class="meta-label" data-i18n="lblEstimateNum">Quote #:</span>
+              <span id="view-quote-id" class="meta-val tabular-num">#Q-0001</span>
             </div>
             <div class="quote-meta-row">
-              <span class="meta-label" data-i18n="lblDate">Date:</span>
-              <span id="view-quote-date" class="meta-val tabular-num">Nov 12, 2026</span>
+              <span class="meta-label" data-i18n="lblDateIssued">Date Issued:</span>
+              <span id="view-quote-date" class="meta-val tabular-num">November 19, 2026</span>
             </div>
             <div class="quote-meta-row quote-validity-row">
-              <span class="meta-label" data-i18n="lblValidThrough">Valid Through:</span>
-              <span id="view-quote-valid" class="meta-val tabular-num">14 days</span>
+              <span class="meta-label" data-i18n="lblValidUntil">Valid Until:</span>
+              <span id="view-quote-valid" class="meta-val tabular-num">December 3, 2026</span>
             </div>
           </div>
         </header>
@@ -725,11 +742,7 @@
           <div class="party-col">
             <span class="party-label" data-i18n="lblPreparedFor">PREPARED FOR</span>
             <div id="view-cust-name" class="party-name">Jane Doe (Fake Customer)</div>
-<<<<<<< HEAD
             <div id="view-cust-address" class="party-address">123 Maple Street, Sampleville, TX 75001</div>
-=======
-            <div id="view-cust-address" class="party-address">742 Evergreen Terrace, Springfield, TX 75001</div>
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
             <div id="view-cust-contact" class="party-contact" style="display: none;"></div>
           </div>
           <div class="party-col party-col-right right-align">
@@ -787,104 +800,34 @@
           <div id="preview-high-value-warning" class="banner-warning no-print" style="display: none;" role="alert"></div>
         </section>
 
-        <!-- SECTION 5: Quote Terms & Conditions -->
-        <section class="quote-terms-section" aria-label="Terms and Conditions" data-i18n-aria-label="ariaTerms">
-          <h4 class="terms-title" data-i18n="termsTitle">Terms &amp; Conditions</h4>
-          <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
-        </section>
-
-        <!-- SECTION 6: Site Photos -->
+        <!-- SECTION 5: Site Photos -->
         <section id="quote-preview-photos" class="quote-photos-section" style="display: none;" aria-label="Job Site Photos" data-i18n-aria-label="ariaPhotos">
           <h4 class="photos-title" data-i18n="photosTitlePreview">Job Site Property Photos</h4>
           <div id="quote-photos-gallery" class="preview-photos-grid"></div>
         </section>
 
-        <!-- Acceptance / Sign-off Footer -->
+        <!-- SECTION 6: Quote Terms & Conditions -->
+        <section class="quote-terms-section" aria-label="Terms and Conditions" data-i18n-aria-label="ariaTerms">
+          <h4 class="terms-title" data-i18n="termsTitle">Terms &amp; Conditions</h4>
+          <p id="view-quote-terms">Estimates valid for 14 days. Payment due upon completion of services.</p>
+        </section>
+
+        <!-- Customer Approval Line -->
+        <div class="quote-approval-line">
+          <div class="sig-line-item sig-acceptance" data-i18n="sigAcceptance">Accepted by: ____________________________________</div>
+          <div class="sig-line-item sig-date" data-i18n="sigDateLine">Date: ________________________</div>
+        </div>
+
+        <!-- Footer -->
         <footer class="quote-footer">
-          <p class="thank-you" data-i18n="thankYou">Thank you for considering our lawn care &amp; landscaping crew!</p>
-          <div class="signature-line-wrap">
-            <div class="sig-line"><span data-i18n="sigLine">Authorized Signature</span></div>
-            <div class="sig-line"><span data-i18n="sigDate">Date</span></div>
+          <p class="thank-you" data-i18n="thankYou">Thank you for your business!</p>
+          <div class="footer-contact" id="view-footer-contact">
+            GreenThumb Lawn &amp; Landscape · (555) 234-5678 · quotes@greenthumb-example.com
           </div>
         </footer>
 
       </article>
 
-<<<<<<< HEAD
-      <!-- Send to Customer Section (Hidden when printing) -->
-      <section id="section-send-quote" class="send-quote-section no-print">
-        <div class="card send-card">
-          <div class="send-card-header">
-            <h3 class="send-card-title">📤 Send to Customer</h3>
-            <p class="send-card-subtitle">Send this quote right from the curb in two taps.</p>
-          </div>
-
-          <!-- Send Action Buttons -->
-          <div class="send-buttons-grid">
-            <a id="btn-send-sms" class="btn btn-send btn-send-sms" role="button" href="#">
-              <span class="send-icon">💬</span>
-              <span class="send-text-wrap">
-                <span class="send-btn-title">Text Quote</span>
-                <span class="send-btn-desc" id="label-sms-target">Opens Messages</span>
-              </span>
-            </a>
-            <a id="btn-send-email" class="btn btn-send btn-send-email" role="button" href="#">
-              <span class="send-icon">✉️</span>
-              <span class="send-text-wrap">
-                <span class="send-btn-title">Email Quote</span>
-                <span class="send-btn-desc" id="label-email-target">Opens Mail App</span>
-              </span>
-            </a>
-            <button type="button" id="btn-copy-quote" class="btn btn-send btn-send-copy">
-              <span class="send-icon">📋</span>
-              <span class="send-text-wrap">
-                <span class="send-btn-title">Copy Quote</span>
-                <span class="send-btn-desc">Copies full text</span>
-              </span>
-            </button>
-          </div>
-
-          <!-- On-Page Copy Confirmation Toast / Messages -->
-          <div id="copy-confirmation-toast" class="send-toast send-toast-success" style="display: none;" role="status" aria-live="polite">
-            ✓ Copied quote to clipboard!
-          </div>
-          <div id="copy-error-toast" class="send-toast send-toast-error" style="display: none;" role="alert">
-            Unable to access clipboard automatically. Please copy the text directly from the preview below.
-          </div>
-
-          <!-- Message Sent History / Status Badge -->
-          <div id="send-status-badge" class="send-status-badge" style="display: none;"></div>
-
-          <!-- Message Preview Toggle & Box -->
-          <div class="message-preview-wrapper">
-            <button type="button" id="btn-toggle-msg-preview" class="btn-preview-toggle" aria-expanded="false">
-              <span class="preview-toggle-text">👁️ Preview message</span>
-              <span id="preview-toggle-arrow" class="preview-toggle-arrow">▼</span>
-            </button>
-            <div id="msg-preview-container" class="msg-preview-box" style="display: none;">
-              <div class="preview-tabs-bar" role="tablist">
-                <button type="button" id="tab-btn-sms" class="preview-tab active" role="tab" aria-selected="true">
-                  💬 Text (SMS)
-                </button>
-                <button type="button" id="tab-btn-email" class="preview-tab" role="tab" aria-selected="false">
-                  ✉️ Email / Full Quote
-                </button>
-              </div>
-              <div id="preview-panel-sms" class="preview-panel" role="tabpanel">
-                <div class="preview-meta-line" id="preview-sms-recipient"></div>
-                <pre id="preview-sms-content" class="preview-pre"></pre>
-              </div>
-              <div id="preview-panel-email" class="preview-panel" role="tabpanel" style="display: none;">
-                <div class="preview-meta-line" id="preview-email-recipient"></div>
-                <div class="preview-meta-line" id="preview-email-subject"></div>
-                <pre id="preview-email-content" class="preview-pre"></pre>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-=======
       <!-- SECTION 7: Actions Toolbar -->
       <!-- Send to Customer Action Group (no-print) -->
       <div class="send-actions-card no-print" id="quote-send-card" style="display: none;" role="group" aria-label="Send estimate to customer" data-i18n-aria-label="ariaSendEstimateGroup">
@@ -1057,7 +1000,6 @@
 
       <!-- Toast for Saved Actions -->
       <div id="saved-action-toast" class="toast no-print" role="status" aria-live="polite"></div>
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
     </section>
 
   </main>

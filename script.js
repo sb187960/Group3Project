@@ -33,6 +33,7 @@
     businessName: 'GreenThumb Lawn & Landscape',
     phone: '(555) 234-5678',
     email: 'quotes@greenthumb-example.com',
+    validDays: 14,
     minJobCharge: 50.0,
     quoteTerms: 'Estimates valid for 14 days. Payment due upon completion of services.',
     rates: {
@@ -43,7 +44,27 @@
       overseed: 18.0,    // $ per 1,000 sq ft
       mulch: 85.0,       // $ per cubic yard
       hedge: 55.0        // $ per crew hour
-    }
+    },
+    logo: ''
+  };
+
+  const DEMO_BUSINESS = {
+    businessName: 'Green Edge Lawn Co.',
+    phone: '(555) 345-6789',
+    email: 'quotes@greenedge-fake.com',
+    validDays: 14,
+    minJobCharge: 50.0,
+    quoteTerms: 'Estimates valid for 14 days. Payment due upon completion of services.',
+    rates: {
+      mowing: 12.0,
+      edging: 4.0,
+      leaf: 8.0,
+      fertilizer: 9.0,
+      overseed: 18.0,
+      mulch: 85.0,
+      hedge: 55.0
+    },
+    logo: ''
   };
 
   const STORAGE_KEY = 'lawnquote_crew_settings_v1';
@@ -91,6 +112,24 @@
       lblRateHedge: 'Hedge Trimming Rate ($ per crew hour) *',
       lblRateFertilizer: 'Fertilization Rate ($ per 1,000 sq ft) *',
       lblRateOverseed: 'Overseeding & Rye Grass Rate ($ per 1,000 sq ft) *',
+      lblLogo: 'Business Logo (Optional)',
+      hintLogo: 'PNG or JPG (auto-resized to max 300px wide)',
+      btnRemoveLogo: '✕ Remove Logo',
+      logoTooLargeError: 'Logo is too large to save. Try a smaller image.',
+      lblValidDays: 'Quote Valid For (Days)',
+      hintValidDays: 'Number of days before this quote expires',
+      lblDateIssued: 'Date Issued:',
+      lblValidUntil: 'Valid Until:',
+      btnDemoBusiness: '🏢 Load Demo Business',
+      toastDemoLoaded: 'Demo business loaded! Rates and name are ready for your demo.',
+      btnClearAll: '🗑️ Clear All Data',
+      clearConfirmMsg: '⚠️ Are you sure you want to clear all quotes, settings, and logo? This cannot be undone.',
+      btnConfirmClear: 'Yes, Clear All Data',
+      btnCancelClear: 'Cancel',
+      toastAllCleared: 'All data cleared. App reset to defaults.',
+      sigAcceptance: 'Accepted by: ____________________________________',
+      sigDateLine: 'Date: ________________________',
+      thankYouFooter: 'Thank you for your business!',
       btnSaveSettings: 'Save Settings',
       btnExportBackup: 'Export Backup',
       btnImportBackup: 'Import Backup',
@@ -373,6 +412,24 @@
       lblRateHedge: 'Tarifa de Poda de Setos ($ por hora de cuadrilla) *',
       lblRateFertilizer: 'Tarifa de Fertilización ($ por 1,000 pies²) *',
       lblRateOverseed: 'Tarifa de Resiembra y Rye ($ por 1,000 pies²) *',
+      lblLogo: 'Logo del Negocio (Opcional)',
+      hintLogo: 'PNG o JPG (redimensionado automáticamente a máx. 300px de ancho)',
+      btnRemoveLogo: '✕ Eliminar Logo',
+      logoTooLargeError: 'El logo es demasiado grande para guardar. Intente con una imagen más pequeña.',
+      lblValidDays: 'Cotización Válida Por (Días)',
+      hintValidDays: 'Número de días antes de que esta cotización expire',
+      lblDateIssued: 'Fecha de Emisión:',
+      lblValidUntil: 'Válida Hasta:',
+      btnDemoBusiness: '🏢 Cargar Negocio Demo',
+      toastDemoLoaded: '¡Negocio demo cargado! Tarifas y nombre listos para su demo.',
+      btnClearAll: '🗑️ Borrar Todos los Datos',
+      clearConfirmMsg: '⚠️ ¿Está seguro de que desea borrar todas las cotizaciones, configuraciones y logo? Esta acción no se puede deshacer.',
+      btnConfirmClear: 'Sí, Borrar Todo',
+      btnCancelClear: 'Cancelar',
+      toastAllCleared: 'Todos los datos borrados. La aplicación se restableció a los valores predeterminados.',
+      sigAcceptance: 'Aceptado por: ____________________________________',
+      sigDateLine: 'Fecha: ________________________',
+      thankYouFooter: '¡Gracias por su preferencia!',
       btnSaveSettings: 'Guardar Configuración',
       btnExportBackup: 'Exportar Respaldo',
       btnImportBackup: 'Importar Respaldo',
@@ -698,9 +755,15 @@
     priceSheet: {
       form: document.getElementById('price-sheet-form'),
       bizName: document.getElementById('setting-business-name'),
+      logoInput: document.getElementById('setting-logo-input'),
+      logoPreviewBox: document.getElementById('logo-preview-box'),
+      logoPreviewImg: document.getElementById('logo-preview-img'),
+      removeLogoBtn: document.getElementById('btn-remove-logo'),
+      logoError: document.getElementById('logo-error'),
       phone: document.getElementById('setting-phone'),
       email: document.getElementById('setting-email'),
       minCharge: document.getElementById('setting-min-charge'),
+      validDays: document.getElementById('setting-valid-days'),
       terms: document.getElementById('setting-terms'),
       rateMowing: document.getElementById('setting-rate-mowing'),
       rateEdging: document.getElementById('setting-rate-edging'),
@@ -710,6 +773,11 @@
       rateMulch: document.getElementById('setting-rate-mulch'),
       rateHedge: document.getElementById('setting-rate-hedge'),
       resetBtn: document.getElementById('btn-reset-settings'),
+      demoBizBtn: document.getElementById('btn-demo-business'),
+      clearAllBtn: document.getElementById('btn-clear-all'),
+      clearAllConfirmBox: document.getElementById('clear-all-confirm-box'),
+      confirmClearBtn: document.getElementById('btn-confirm-clear'),
+      cancelClearBtn: document.getElementById('btn-cancel-clear'),
       toast: document.getElementById('settings-toast'),
       warningBanner: document.getElementById('pricesheet-warning'),
       hintBanner: document.getElementById('pricesheet-hint-banner'),
@@ -719,6 +787,7 @@
       errors: {
         bizName: document.getElementById('error-setting-business-name'),
         minCharge: document.getElementById('error-setting-min-charge'),
+        validDays: document.getElementById('error-setting-valid-days'),
         rateMowing: document.getElementById('error-setting-rate-mowing'),
         rateEdging: document.getElementById('error-setting-rate-edging'),
         rateLeaf: document.getElementById('error-setting-rate-leaf'),
@@ -790,10 +859,13 @@
       emptyStartBtn: document.getElementById('btn-empty-start-quote'),
       emptySampleBtn: document.getElementById('btn-empty-sample-quote'),
       bizName: document.getElementById('view-biz-name'),
+      bizLogo: document.getElementById('view-biz-logo'),
       bizPhone: document.getElementById('view-biz-phone'),
       bizEmail: document.getElementById('view-biz-email'),
       quoteDate: document.getElementById('view-quote-date'),
       quoteId: document.getElementById('view-quote-id'),
+      quoteValid: document.getElementById('view-quote-valid'),
+      footerContact: document.getElementById('view-footer-contact'),
       custName: document.getElementById('view-cust-name'),
       custAddress: document.getElementById('view-cust-address'),
       yardSize: document.getElementById('view-yard-size'),
@@ -887,103 +959,6 @@
     }
   };
 
-<<<<<<< HEAD
-  // DOM Elements - Screen 1: Price Sheet
-  const priceSheetForm = document.getElementById('price-sheet-form');
-  const inputBizName = document.getElementById('setting-business-name');
-  const inputBizPhone = document.getElementById('setting-phone');
-  const inputBizEmail = document.getElementById('setting-email');
-  const inputMinCharge = document.getElementById('setting-min-charge');
-  const inputTerms = document.getElementById('setting-terms');
-  const inputRateMowing = document.getElementById('setting-rate-mowing');
-  const inputRateEdging = document.getElementById('setting-rate-edging');
-  const inputRateLeaf = document.getElementById('setting-rate-leaf');
-  const inputRateMulch = document.getElementById('setting-rate-mulch');
-  const inputRateHedge = document.getElementById('setting-rate-hedge');
-  const btnResetSettings = document.getElementById('btn-reset-settings');
-  const settingsToast = document.getElementById('settings-toast');
-
-  // DOM Elements - Screen 2: New Quote Form
-  const newQuoteForm = document.getElementById('new-quote-form');
-  const btnFillFake = document.getElementById('btn-fill-fake');
-  const inputCustName = document.getElementById('quote-cust-name');
-  const inputCustAddress = document.getElementById('quote-cust-address');
-  const inputCustPhone = document.getElementById('quote-cust-phone');
-  const inputCustEmail = document.getElementById('quote-cust-email');
-  const phoneFeedback = document.getElementById('phone-feedback');
-  const emailFeedback = document.getElementById('email-feedback');
-  const inputYardSize = document.getElementById('quote-yard-size');
-  
-  const svcMowing = document.getElementById('svc-mowing');
-  const svcEdging = document.getElementById('svc-edging');
-  const svcLeaf = document.getElementById('svc-leaf');
-  const svcMulch = document.getElementById('svc-mulch');
-  const svcHedge = document.getElementById('svc-hedge');
-
-  const mulchQtyContainer = document.getElementById('mulch-qty-container');
-  const hedgeQtyContainer = document.getElementById('hedge-qty-container');
-  const inputQtyMulch = document.getElementById('qty-mulch');
-  const inputQtyHedge = document.getElementById('qty-hedge');
-  const svcError = document.getElementById('svc-error');
-
-  const photoInput = document.getElementById('photo-input');
-  const photoThumbnails = document.getElementById('photo-thumbnails');
-
-  // Service Rate Badges in Screen 2
-  const badgeMowing = document.getElementById('badge-rate-mowing');
-  const badgeEdging = document.getElementById('badge-rate-edging');
-  const badgeLeaf = document.getElementById('badge-rate-leaf');
-  const badgeMulch = document.getElementById('badge-rate-mulch');
-  const badgeHedge = document.getElementById('badge-rate-hedge');
-
-  // DOM Elements - Screen 3: Quote Preview
-  const btnPrint = document.getElementById('btn-print');
-  const btnEditQuote = document.getElementById('btn-edit-quote');
-  const btnNewQuote = document.getElementById('btn-new-quote');
-
-  const viewBizName = document.getElementById('view-biz-name');
-  const viewBizPhone = document.getElementById('view-biz-phone');
-  const viewBizEmail = document.getElementById('view-biz-email');
-  const viewQuoteDate = document.getElementById('view-quote-date');
-  const viewQuoteId = document.getElementById('view-quote-id');
-  const viewCustName = document.getElementById('view-cust-name');
-  const viewCustAddress = document.getElementById('view-cust-address');
-  const viewCustContact = document.getElementById('view-cust-contact');
-  const viewYardSize = document.getElementById('view-yard-size');
-  const quoteLineItems = document.getElementById('quote-line-items');
-  const viewQuoteTerms = document.getElementById('view-quote-terms');
-  const viewSubtotal = document.getElementById('view-subtotal');
-  const rowMinCharge = document.getElementById('row-min-charge');
-  const viewMinChargeFloor = document.getElementById('view-min-charge-floor');
-  const viewMinChargeAdj = document.getElementById('view-min-charge-adj');
-  const viewRoundingAdj = document.getElementById('view-rounding-adj');
-  const viewFinalTotal = document.getElementById('view-final-total');
-  const quotePreviewPhotos = document.getElementById('quote-preview-photos');
-  const quotePhotosGallery = document.getElementById('quote-photos-gallery');
-
-  // DOM Elements - Screen 3: Send to Customer
-  const btnSendSms = document.getElementById('btn-send-sms');
-  const btnSendEmail = document.getElementById('btn-send-email');
-  const btnCopyQuote = document.getElementById('btn-copy-quote');
-  const labelSmsTarget = document.getElementById('label-sms-target');
-  const labelEmailTarget = document.getElementById('label-email-target');
-  const copyConfirmToast = document.getElementById('copy-confirmation-toast');
-  const copyErrorToast = document.getElementById('copy-error-toast');
-  const sendStatusBadge = document.getElementById('send-status-badge');
-  const btnToggleMsgPreview = document.getElementById('btn-toggle-msg-preview');
-  const msgPreviewContainer = document.getElementById('msg-preview-container');
-  const tabBtnSms = document.getElementById('tab-btn-sms');
-  const tabBtnEmail = document.getElementById('tab-btn-email');
-  const previewPanelSms = document.getElementById('preview-panel-sms');
-  const previewPanelEmail = document.getElementById('preview-panel-email');
-  const previewSmsRecipient = document.getElementById('preview-sms-recipient');
-  const previewSmsContent = document.getElementById('preview-sms-content');
-  const previewEmailRecipient = document.getElementById('preview-email-recipient');
-  const previewEmailSubject = document.getElementById('preview-email-subject');
-  const previewEmailContent = document.getElementById('preview-email-content');
-
-=======
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
   // ---------------------------------------------------------------------------
   // 3. UI Helpers: Translations, Error Messaging, Formatting, Steppers & Confirmations
   // ---------------------------------------------------------------------------
@@ -1331,7 +1306,9 @@
           phone: parsed.phone !== undefined ? parsed.phone : DEFAULT_SETTINGS.phone,
           email: parsed.email !== undefined ? parsed.email : DEFAULT_SETTINGS.email,
           minJobCharge: (typeof parsed.minJobCharge === 'number' && parsed.minJobCharge >= 0) ? parsed.minJobCharge : DEFAULT_SETTINGS.minJobCharge,
+          validDays: (typeof parsed.validDays === 'number' && parsed.validDays >= 1) ? parsed.validDays : DEFAULT_SETTINGS.validDays,
           quoteTerms: parsed.quoteTerms || DEFAULT_SETTINGS.quoteTerms,
+          logo: parsed.logo || '',
           rates: {
             mowing: (parsed.rates && typeof parsed.rates.mowing === 'number') ? parsed.rates.mowing : DEFAULT_SETTINGS.rates.mowing,
             edging: (parsed.rates && typeof parsed.rates.edging === 'number') ? parsed.rates.edging : DEFAULT_SETTINGS.rates.edging,
@@ -1371,6 +1348,7 @@
     s.phone.value = data.phone || '';
     s.email.value = data.email || '';
     s.minCharge.value = data.minJobCharge;
+    if (s.validDays) s.validDays.value = data.validDays !== undefined ? data.validDays : 14;
     s.terms.value = data.quoteTerms;
     s.rateMowing.value = data.rates.mowing;
     s.rateEdging.value = data.rates.edging;
@@ -1379,6 +1357,18 @@
     s.rateOverseed.value = data.rates.overseed;
     s.rateMulch.value = data.rates.mulch;
     s.rateHedge.value = data.rates.hedge;
+
+    // Logo preview
+    if (s.logoPreviewBox && s.logoPreviewImg) {
+      if (data.logo) {
+        s.logoPreviewImg.src = data.logo;
+        s.logoPreviewBox.style.display = 'flex';
+      } else {
+        s.logoPreviewImg.src = '';
+        s.logoPreviewBox.style.display = 'none';
+      }
+    }
+    if (s.logoError) s.logoError.style.display = 'none';
   }
 
   function updateScreenBadges() {
@@ -1453,12 +1443,16 @@
 
     if (!valid) return null;
 
+    const validDaysVal = s.validDays ? (parseInt(s.validDays.value, 10) || 14) : 14;
+
     return {
       businessName: s.bizName.value.trim(),
       phone: s.phone.value.trim(),
       email: s.email.value.trim(),
       minJobCharge: minChargeVal,
+      validDays: validDaysVal,
       quoteTerms: s.terms.value.trim(),
+      logo: (currentSettings && currentSettings.logo) ? currentSettings.logo : '',
       rates
     };
   }
@@ -1765,29 +1759,43 @@
     p.bizName.textContent = currentSettings.businessName;
     p.bizPhone.textContent = currentSettings.phone ? currentSettings.phone : '';
     p.bizEmail.textContent = currentSettings.email ? currentSettings.email : '';
-    
-    // Format date in current language
+
+    // Logo: show if set, else hide and colour biz name in skill dark green
+    if (p.bizLogo) {
+      const logo = currentSettings.logo || '';
+      if (logo) {
+        p.bizLogo.src = logo;
+        p.bizLogo.style.display = 'block';
+        p.bizName.style.color = '';
+      } else {
+        p.bizLogo.src = '';
+        p.bizLogo.style.display = 'none';
+        p.bizName.style.color = '#2E5E3A';
+      }
+    }
+
+    // Format date using long-form written dates: "November 19, 2026"
+    const longDateLocale = currentLanguage === 'es' ? 'es-US' : 'en-US';
+    const longDateOpts = { month: 'long', day: 'numeric', year: 'numeric' };
     const quoteDateObj = quote.createdAt ? new Date(quote.createdAt) : new Date();
-    p.quoteDate.textContent = quoteDateObj.toLocaleDateString(currentLanguage === 'es' ? 'es-US' : 'en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
+
+    // Use stored dateFormatted if already a long-form date, otherwise reformat
+    if (quote.dateFormatted) {
+      p.quoteDate.textContent = quote.dateFormatted;
+    } else {
+      p.quoteDate.textContent = quoteDateObj.toLocaleDateString(longDateLocale, longDateOpts);
+    }
 
     p.quoteId.textContent = `#${quote.quoteId}`;
 
-    const validElem = document.getElementById('view-quote-valid');
-    if (validElem) {
+    if (p.quoteValid) {
       if (quote.validThrough) {
-        validElem.textContent = quote.validThrough;
+        p.quoteValid.textContent = quote.validThrough;
       } else {
+        const validDays = (currentSettings && currentSettings.validDays) ? currentSettings.validDays : 14;
         const d = new Date(quoteDateObj.getTime());
-        d.setDate(d.getDate() + 14);
-        validElem.textContent = d.toLocaleDateString(currentLanguage === 'es' ? 'es-US' : 'en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric'
-        });
+        d.setDate(d.getDate() + validDays);
+        p.quoteValid.textContent = d.toLocaleDateString(longDateLocale, longDateOpts);
       }
     }
 
@@ -1908,11 +1916,176 @@
     if (saveBtnLabel) {
       saveBtnLabel.textContent = isSaved ? t('btnUpdateEstimate') : t('btnSaveEstimate');
     }
+
+    // Footer contact info
+    if (p.footerContact) {
+      const parts = [currentSettings.businessName];
+      if (currentSettings.phone) parts.push(currentSettings.phone);
+      if (currentSettings.email) parts.push(currentSettings.email);
+      p.footerContact.textContent = parts.join(' · ');
+    }
   }
 
   // ---------------------------------------------------------------------------
   // 10. Event Listeners & Binding
   // ---------------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------------
+  // Logo Upload Handler
+  // ---------------------------------------------------------------------------
+  function resizeImageToMax300(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) return reject(new Error('No file provided'));
+      const type = file.type || '';
+      if (!type.includes('png') && !type.includes('jpeg') && !type.includes('jpg')) {
+        return reject(new Error('Please upload a PNG or JPG image.'));
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Could not read image file.'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Could not process image.'));
+        img.onload = () => {
+          let tw = img.width;
+          let th = img.height;
+          if (tw > 300) {
+            const ratio = 300 / tw;
+            tw = 300;
+            th = Math.round(th * ratio);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = tw;
+          canvas.height = th;
+          canvas.getContext('2d').drawImage(img, 0, 0, tw, th);
+          const fmt = type.includes('png') ? 'image/png' : 'image/jpeg';
+          resolve(canvas.toDataURL(fmt, 0.85));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const logoInput = DOM.priceSheet.logoInput;
+  const logoPreviewBox = DOM.priceSheet.logoPreviewBox;
+  const logoPreviewImg = DOM.priceSheet.logoPreviewImg;
+  const removeLogoBtn = DOM.priceSheet.removeLogoBtn;
+  const logoError = DOM.priceSheet.logoError;
+
+  if (logoInput) {
+    logoInput.addEventListener('change', async () => {
+      const file = logoInput.files && logoInput.files[0];
+      if (!file) return;
+      if (logoError) logoError.style.display = 'none';
+      try {
+        const dataUrl = await resizeImageToMax300(file);
+        try {
+          currentSettings.logo = dataUrl;
+          saveSettingsToStorage();
+        } catch (storageErr) {
+          if (logoError) {
+            logoError.textContent = t('logoTooLargeError');
+            logoError.style.display = 'block';
+          }
+          currentSettings.logo = dataUrl; // keep in memory even if storage fails
+        }
+        if (logoPreviewImg) logoPreviewImg.src = dataUrl;
+        if (logoPreviewBox) logoPreviewBox.style.display = 'flex';
+      } catch (err) {
+        if (logoError) {
+          logoError.textContent = err.message || t('logoTooLargeError');
+          logoError.style.display = 'block';
+        }
+      }
+      logoInput.value = '';
+    });
+  }
+
+  if (removeLogoBtn) {
+    removeLogoBtn.addEventListener('click', () => {
+      currentSettings.logo = '';
+      saveSettingsToStorage();
+      if (logoPreviewImg) logoPreviewImg.src = '';
+      if (logoPreviewBox) logoPreviewBox.style.display = 'none';
+      if (logoError) logoError.style.display = 'none';
+      if (logoInput) logoInput.value = '';
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Load Demo Business Handler
+  // ---------------------------------------------------------------------------
+  const demoBizBtn = DOM.priceSheet.demoBizBtn;
+  if (demoBizBtn) {
+    demoBizBtn.addEventListener('click', () => {
+      currentSettings = Object.assign({}, DEFAULT_SETTINGS, DEMO_BUSINESS, {
+        rates: Object.assign({}, DEFAULT_SETTINGS.rates, DEMO_BUSINESS.rates)
+      });
+      saveSettingsToStorage();
+      populateSettingsForm();
+      updateScreenBadges();
+      if (DOM.newQuote.activeBizName) DOM.newQuote.activeBizName.textContent = currentSettings.businessName;
+      if (DOM.newQuote.sampleBadge) DOM.newQuote.sampleBadge.style.display = 'inline-block';
+      const toast = DOM.priceSheet.toast;
+      if (toast) {
+        toast.textContent = t('toastDemoLoaded');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+      }
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Clear All Data Handler (in-page confirm, no native dialog)
+  // ---------------------------------------------------------------------------
+  const clearAllBtn = DOM.priceSheet.clearAllBtn;
+  const clearAllConfirmBox = DOM.priceSheet.clearAllConfirmBox;
+  const confirmClearBtn = DOM.priceSheet.confirmClearBtn;
+  const cancelClearBtn = DOM.priceSheet.cancelClearBtn;
+
+  if (clearAllBtn && clearAllConfirmBox) {
+    clearAllBtn.addEventListener('click', () => {
+      clearAllConfirmBox.style.display = 'block';
+      clearAllBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  if (cancelClearBtn && clearAllConfirmBox) {
+    cancelClearBtn.addEventListener('click', () => {
+      clearAllConfirmBox.style.display = 'none';
+    });
+  }
+
+  if (confirmClearBtn && clearAllConfirmBox) {
+    confirmClearBtn.addEventListener('click', () => {
+      // Clear all localStorage keys
+      try { window.localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+      try { window.localStorage.removeItem(SAVED_ESTIMATES_KEY); } catch (e) { /* ignore */ }
+      try { window.localStorage.removeItem(ESTIMATE_COUNTER_KEY); } catch (e) { /* ignore */ }
+      try { window.localStorage.removeItem(LEGACY_SAVED_QUOTES_KEY); } catch (e) { /* ignore */ }
+
+      // Reset in-memory state
+      currentSettings = Object.assign({}, DEFAULT_SETTINGS, { rates: Object.assign({}, DEFAULT_SETTINGS.rates) });
+      currentQuoteData = null;
+      attachedPhotos = [];
+
+      // Repopulate form and UI
+      populateSettingsForm();
+      updateScreenBadges();
+
+      if (DOM.newQuote.activeBizName) DOM.newQuote.activeBizName.textContent = currentSettings.businessName;
+      if (DOM.newQuote.sampleBadge) DOM.newQuote.sampleBadge.style.display = 'inline-block';
+
+      clearAllConfirmBox.style.display = 'none';
+
+      const toast = DOM.priceSheet.toast;
+      if (toast) {
+        toast.textContent = t('toastAllCleared');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+      }
+    });
+  }
 
   // Auto-clear validation errors as user types & update live running total
   const q = DOM.newQuote;
@@ -2044,12 +2217,13 @@
     });
   }
 
-<<<<<<< HEAD
-  // ---------------------------------------------------------------------------
   // Customer Contact Validation (Gentle on-page messages, non-blocking)
-  // ---------------------------------------------------------------------------
+  const phoneFeedback = document.getElementById('phone-feedback');
+  const emailFeedback = document.getElementById('email-feedback');
+
   function validateCustomerPhone() {
-    const val = inputCustPhone.value.trim();
+    if (!q.custPhone || !phoneFeedback) return;
+    const val = q.custPhone.value.trim();
     if (!val) {
       phoneFeedback.style.display = 'none';
       phoneFeedback.textContent = '';
@@ -2067,7 +2241,8 @@
   }
 
   function validateCustomerEmail() {
-    const val = inputCustEmail.value.trim();
+    if (!q.custEmail || !emailFeedback) return;
+    const val = q.custEmail.value.trim();
     if (!val) {
       emailFeedback.style.display = 'none';
       emailFeedback.textContent = '';
@@ -2083,24 +2258,15 @@
     }
   }
 
-  inputCustPhone.addEventListener('input', validateCustomerPhone);
-  inputCustPhone.addEventListener('blur', validateCustomerPhone);
-  inputCustEmail.addEventListener('input', validateCustomerEmail);
-  inputCustEmail.addEventListener('blur', validateCustomerEmail);
+  if (q.custPhone) {
+    q.custPhone.addEventListener('input', validateCustomerPhone);
+    q.custPhone.addEventListener('blur', validateCustomerPhone);
+  }
+  if (q.custEmail) {
+    q.custEmail.addEventListener('input', validateCustomerEmail);
+    q.custEmail.addEventListener('blur', validateCustomerEmail);
+  }
 
-  // ---------------------------------------------------------------------------
-  // Quick-Fill Fake Sample Data (Instant testing under 1 minute)
-  // ---------------------------------------------------------------------------
-  btnFillFake.addEventListener('click', () => {
-    inputCustName.value = 'Jane Doe (Fake Sample Customer)';
-    inputCustAddress.value = '742 Evergreen Terrace, Springfield, TX 75001';
-    inputCustPhone.value = '(817) 555-0100';
-    inputCustEmail.value = 'sample@example.com';
-    inputYardSize.value = 5000;
-
-    validateCustomerPhone();
-    validateCustomerEmail();
-=======
   // Quick-Fill Sample Button (Reference Example from Skill)
   q.quickFillBtn.addEventListener('click', () => {
     q.custName.value = (currentLanguage === 'es')
@@ -2110,7 +2276,6 @@
     if (q.custPhone) q.custPhone.value = '555-0100';
     if (q.custEmail) q.custEmail.value = 'sample@example.com';
     q.yardSize.value = 4200;
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
 
     clearFieldError(q.custName, q.errors.custName);
     clearFieldError(q.custAddress, q.errors.custAddress);
@@ -2142,54 +2307,6 @@
     const validated = validatePriceSheetForm();
     if (!validated) return;
 
-<<<<<<< HEAD
-    // Validations
-    const custName = inputCustName.value.trim();
-    const custAddress = inputCustAddress.value.trim();
-    const custPhone = inputCustPhone.value.trim();
-    const custEmail = inputCustEmail.value.trim();
-    const yardSize = parseFloat(inputYardSize.value);
-
-    if (!custName) {
-      alert('Please enter a customer name.');
-      inputCustName.focus();
-      return;
-    }
-
-    if (!custAddress) {
-      alert('Please enter the service property address.');
-      inputCustAddress.focus();
-      return;
-    }
-
-    if (!yardSize || yardSize <= 0) {
-      alert('Please enter a valid yard size in square feet.');
-      inputYardSize.focus();
-      return;
-    }
-
-    const hasService = svcMowing.checked || svcEdging.checked || svcLeaf.checked || svcMulch.checked || svcHedge.checked;
-    if (!hasService) {
-      svcError.style.display = 'block';
-      return;
-    }
-    svcError.style.display = 'none';
-
-    // Pricing Calculation according to quote-rules skill:
-    const areaUnits = yardSize / 1000.0;
-    const lineItems = [];
-
-    // 1. Mowing (per 1,000 sq ft)
-    if (svcMowing.checked) {
-      const rate = currentSettings.rates.mowing;
-      const amount = areaUnits * rate;
-      lineItems.push({
-        name: 'Lawn Mowing',
-        description: 'Mowing maintained turf areas with clippings blown clean',
-        qty: `${yardSize.toLocaleString()} sq ft (${areaUnits.toFixed(2)}k units)`,
-        rate: `$${rate.toFixed(2)} / 1k sq ft`,
-        amount: amount
-=======
     // Check for extreme rate outliers (e.g. $120 vs $12)
     if (!pendingRateWarning) {
       const warnings = [];
@@ -2203,7 +2320,6 @@
         if (rateVal < bench.min || rateVal > bench.max) {
           warnings.push(`${bench.label} rate ($${rateVal}) is outside typical range (${bench.typical})`);
         }
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
       });
 
       if (warnings.length > 0) {
@@ -2229,7 +2345,10 @@
     if (DOM.priceSheet.warningBanner) DOM.priceSheet.warningBanner.style.display = 'none';
     if (DOM.priceSheet.hintBanner) DOM.priceSheet.hintBanner.style.display = 'none';
 
-    currentSettings = validated;
+    currentSettings = Object.assign({}, validated, {
+      validDays: validated.validDays !== undefined ? validated.validDays : ((currentSettings && currentSettings.validDays) ? currentSettings.validDays : 14),
+      logo: validated.logo !== undefined ? validated.logo : ((currentSettings && currentSettings.logo) ? currentSettings.logo : '')
+    });
     const saved = saveSettingsToStorage();
     updateScreenBadges();
     updateLiveRunningTotal();
@@ -2267,24 +2386,6 @@
     });
   }
 
-<<<<<<< HEAD
-    currentQuoteData = {
-      quoteId,
-      dateFormatted,
-      custName,
-      custAddress,
-      custPhone,
-      custEmail,
-      yardSize,
-      lineItems,
-      subtotal,
-      minCharge,
-      minChargeAdj,
-      roundingAdj,
-      finalTotal,
-      photos: [...attachedPhotos],
-      sentHistory: []
-=======
   if (DOM.priceSheet.importBtn && DOM.priceSheet.importFileInput) {
     DOM.priceSheet.importBtn.addEventListener('click', () => {
       DOM.priceSheet.importFileInput.click();
@@ -2363,14 +2464,18 @@
     );
 
     const today = new Date();
+    const validDays = (currentSettings && currentSettings.validDays) ? currentSettings.validDays : 14;
     const valid = new Date();
-    valid.setDate(valid.getDate() + 14);
+    valid.setDate(valid.getDate() + validDays);
+
+    const longDateLocale = currentLanguage === 'es' ? 'es-US' : 'en-US';
+    const longDateOpts = { month: 'long', day: 'numeric', year: 'numeric' };
 
     const quoteData = {
       quoteId: getNextQuoteNumber(),
       createdAt: Date.now(),
-      dateFormatted: today.toLocaleDateString(currentLanguage === 'es' ? 'es-US' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      validThrough: valid.toLocaleDateString(currentLanguage === 'es' ? 'es-US' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      dateFormatted: today.toLocaleDateString(longDateLocale, longDateOpts),
+      validThrough: valid.toLocaleDateString(longDateLocale, longDateOpts),
       custName: formData.custName,
       custAddress: formData.custAddress,
       custPhone: formData.custPhone,
@@ -2398,7 +2503,6 @@
       terms: currentSettings.quoteTerms,
       photos: [...attachedPhotos],
       status: 'pending'
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
     };
 
     currentQuoteData = quoteData;
@@ -2406,408 +2510,6 @@
     showScreen('screen-preview');
   });
 
-<<<<<<< HEAD
-  // ---------------------------------------------------------------------------
-  // Screen 3: Render Quote Preview
-  // ---------------------------------------------------------------------------
-  function renderQuotePreview(quote) {
-    viewBizName.textContent = currentSettings.businessName;
-    viewBizPhone.textContent = currentSettings.phone ? `📞 ${currentSettings.phone}` : '';
-    viewBizEmail.textContent = currentSettings.email ? `✉️ ${currentSettings.email}` : '';
-    viewQuoteDate.textContent = quote.dateFormatted;
-    viewQuoteId.textContent = `#${quote.quoteId}`;
-
-    viewCustName.textContent = quote.custName;
-    viewCustAddress.textContent = quote.custAddress;
-    viewYardSize.textContent = `${quote.yardSize.toLocaleString()} sq ft`;
-
-    // Customer Contact (if provided)
-    if (quote.custPhone || quote.custEmail) {
-      viewCustContact.style.display = 'block';
-      const parts = [];
-      if (quote.custPhone) parts.push(`📞 ${escapeHtml(quote.custPhone)}`);
-      if (quote.custEmail) parts.push(`✉️ ${escapeHtml(quote.custEmail)}`);
-      viewCustContact.innerHTML = parts.join(' <span class="divider">·</span> ');
-    } else {
-      viewCustContact.style.display = 'none';
-      viewCustContact.innerHTML = '';
-    }
-
-    viewQuoteTerms.textContent = currentSettings.quoteTerms || 'Standard terms apply.';
-
-    // Populate Table Line Items
-    quoteLineItems.innerHTML = '';
-    quote.lineItems.forEach(item => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>
-          <div class="item-service-title">${escapeHtml(item.name)}</div>
-          <div class="item-service-desc">${escapeHtml(item.description)}</div>
-        </td>
-        <td class="text-center">${escapeHtml(item.qty)}</td>
-        <td class="text-right">${escapeHtml(item.rate)}</td>
-        <td class="text-right"><strong>$${item.amount.toFixed(2)}</strong></td>
-      `;
-      quoteLineItems.appendChild(tr);
-    });
-
-    // Subtotal
-    viewSubtotal.textContent = `$${quote.subtotal.toFixed(2)}`;
-
-    // Minimum Job Charge Row
-    if (quote.minChargeAdj > 0) {
-      rowMinCharge.style.display = 'flex';
-      viewMinChargeFloor.textContent = quote.minCharge.toFixed(0);
-      viewMinChargeAdj.textContent = `+$${quote.minChargeAdj.toFixed(2)}`;
-    } else {
-      rowMinCharge.style.display = 'none';
-    }
-
-    // Rounding adjustment row
-    const roundingSign = quote.roundingAdj >= 0 ? '+' : '-';
-    viewRoundingAdj.textContent = `${roundingSign}$${Math.abs(quote.roundingAdj).toFixed(2)}`;
-
-    // Final Total (Rounded to nearest $5)
-    viewFinalTotal.textContent = `$${quote.finalTotal.toFixed(2)}`;
-
-    // Render Preview Photos
-    if (quote.photos && quote.photos.length > 0) {
-      quotePreviewPhotos.style.display = 'block';
-      quotePhotosGallery.innerHTML = '';
-      quote.photos.forEach((dataUrl, idx) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'preview-photo-wrap';
-        const img = document.createElement('img');
-        img.src = dataUrl;
-        img.alt = `Site reference photo ${idx + 1}`;
-        wrap.appendChild(img);
-        quotePhotosGallery.appendChild(wrap);
-      });
-    } else {
-      quotePreviewPhotos.style.display = 'none';
-      quotePhotosGallery.innerHTML = '';
-    }
-
-    // Refresh Send to Customer buttons & preview messages
-    updateSendSection(quote);
-  }
-
-  // ---------------------------------------------------------------------------
-  // Message Generation & Send Helpers
-  // ---------------------------------------------------------------------------
-  function getCustomerFirstName(fullName) {
-    if (!fullName) return 'there';
-    const trimmed = fullName.trim();
-    // Strip parenthetical suffixes (e.g., "(Fake Sample Customer)")
-    const clean = trimmed.replace(/\s*\([^)]*\)/g, '').trim();
-    const first = clean.split(/\s+/)[0];
-    return first || trimmed;
-  }
-
-  function formatMoneyShort(amount) {
-    const num = Number(amount) || 0;
-    return num % 1 === 0 ? `$${num.toFixed(0)}` : `$${num.toFixed(2)}`;
-  }
-
-  function generateSmsMessage(quote, settings) {
-    const firstName = getCustomerFirstName(quote.custName);
-    const bizName = settings.businessName || 'our crew';
-    const phone = settings.phone || '';
-
-    // Extract validity days from quote terms, default to 14
-    const daysMatch = settings.quoteTerms ? settings.quoteTerms.match(/(\d+)\s*days?/i) : null;
-    const validityDays = daysMatch ? daysMatch[1] : '14';
-
-    const lines = [
-      `Hi ${firstName}, here's your quote from ${bizName}:`
-    ];
-
-    quote.lineItems.forEach(item => {
-      let label = item.name;
-      if (/mowing/i.test(item.name)) {
-        label = 'Mowing';
-      } else if (/edging/i.test(item.name)) {
-        label = 'Edging';
-      } else if (/leaf/i.test(item.name)) {
-        label = 'Leaf cleanup';
-      } else if (/mulch/i.test(item.name)) {
-        const yards = item.qty.replace(/[^0-9.]/g, '');
-        label = `Mulch (${yards} cu yd)`;
-      } else if (/hedge/i.test(item.name)) {
-        const hours = item.qty.replace(/[^0-9.]/g, '');
-        label = `Hedge trimming (${hours} hr)`;
-      }
-      lines.push(`- ${label}: ${formatMoneyShort(item.amount)}`);
-    });
-
-    if (quote.minChargeAdj > 0) {
-      lines.push(`- Minimum job charge floor: $${quote.minCharge.toFixed(0)} applied (+${formatMoneyShort(quote.minChargeAdj)})`);
-    }
-
-    lines.push(`Total: ${formatMoneyShort(quote.finalTotal)}`);
-    lines.push(`Quote #${quote.quoteId}, valid for ${validityDays} days.`);
-
-    if (phone) {
-      lines.push(`Questions? Call ${phone}.`);
-    } else if (settings.email) {
-      lines.push(`Questions? Email ${settings.email}.`);
-    } else {
-      lines.push(`Questions? Let us know!`);
-    }
-
-    return lines.join('\n');
-  }
-
-  function generateEmailQuote(quote, settings) {
-    const firstName = getCustomerFirstName(quote.custName);
-    const bizName = settings.businessName || 'Our Lawn Care & Landscaping Crew';
-    const bizPhone = settings.phone || '';
-    const bizEmail = settings.email || '';
-    const terms = settings.quoteTerms || 'Estimates valid for 14 days. Payment due upon completion of services.';
-
-    const subject = `Your quote from ${bizName} – #${quote.quoteId}`;
-
-    const lines = [
-      `Hi ${firstName},`,
-      '',
-      `Thank you for the opportunity to quote lawn care and landscaping services for your property at ${quote.custAddress}.`,
-      '',
-      `QUOTE DETAILS (Ref: #${quote.quoteId} · Date: ${quote.dateFormatted})`,
-      '--------------------------------------------------',
-    ];
-
-    quote.lineItems.forEach(item => {
-      lines.push(`- ${item.name}: $${item.amount.toFixed(2)}`);
-      lines.push(`  Scope: ${item.qty} @ ${item.rate}`);
-    });
-
-    lines.push('--------------------------------------------------');
-    lines.push(`Subtotal: $${quote.subtotal.toFixed(2)}`);
-
-    if (quote.minChargeAdj > 0) {
-      lines.push(`Minimum Job Charge Adjustment: +$${quote.minChargeAdj.toFixed(2)} (Minimum job charge floor of $${quote.minCharge.toFixed(0)} applied)`);
-    }
-
-    const roundSign = quote.roundingAdj >= 0 ? '+' : '-';
-    lines.push(`Nearest $5 Rounding Adjustment: ${roundSign}$${Math.abs(quote.roundingAdj).toFixed(2)}`);
-    lines.push(`Total Quote: $${quote.finalTotal.toFixed(2)}`);
-    lines.push('');
-    lines.push('TERMS & CONDITIONS:');
-    lines.push(terms);
-    lines.push('');
-    lines.push('If you have any questions or would like to approve this quote, please call or reply directly to this email!');
-    lines.push('');
-    lines.push('Best regards,');
-    lines.push(bizName);
-    if (bizPhone) lines.push(`Phone: ${bizPhone}`);
-    if (bizEmail) lines.push(`Email: ${bizEmail}`);
-
-    const body = lines.join('\n');
-    return { subject, body };
-  }
-
-  function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  }
-
-  function buildSmsUrl(phone, text) {
-    const cleanPhone = phone ? phone.replace(/[^\d+]/g, '') : '';
-    // Encode properly for URL query parameters; encode single quote to %27
-    const encodedBody = encodeURIComponent(text).replace(/'/g, '%27');
-
-    if (isIOS()) {
-      return cleanPhone ? `sms:${cleanPhone}&body=${encodedBody}` : `sms:&body=${encodedBody}`;
-    } else {
-      return cleanPhone ? `sms:${cleanPhone}?body=${encodedBody}` : `sms:?body=${encodedBody}`;
-    }
-  }
-
-  function buildMailtoUrl(email, subject, body) {
-    const cleanEmail = email ? email.trim() : '';
-    const encodedSub = encodeURIComponent(subject).replace(/'/g, '%27');
-    const encodedBody = encodeURIComponent(body).replace(/'/g, '%27');
-    return `mailto:${cleanEmail}?subject=${encodedSub}&body=${encodedBody}`;
-  }
-
-  function copyToClipboard(text, onSuccess, onError) {
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text)
-        .then(onSuccess)
-        .catch(() => fallbackClipboardCopy(text, onSuccess, onError));
-    } else {
-      fallbackClipboardCopy(text, onSuccess, onError);
-    }
-  }
-
-  function fallbackClipboardCopy(text, onSuccess, onError) {
-    try {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.top = '-9999px';
-      textarea.style.left = '-9999px';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      textarea.setSelectionRange(0, textarea.value.length);
-      const successful = document.execCommand('copy');
-      document.body.removeChild(textarea);
-      if (successful) {
-        onSuccess();
-      } else {
-        onError(new Error('execCommand copy returned false'));
-      }
-    } catch (err) {
-      onError(err);
-    }
-  }
-
-  function recordQuoteSent(channel) {
-    if (!currentQuoteData) return;
-    const now = new Date();
-    const timeFormatted = now.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    }) + ' at ' + now.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit'
-    });
-
-    const entry = {
-      channel,
-      timestamp: now.toISOString(),
-      displayDate: timeFormatted
-    };
-
-    if (!currentQuoteData.sentHistory) {
-      currentQuoteData.sentHistory = [];
-    }
-    currentQuoteData.sentHistory.push(entry);
-
-    const channelLabel = channel === 'text' ? 'text' : channel === 'email' ? 'email' : 'copy';
-    sendStatusBadge.textContent = `✓ Sent on ${timeFormatted} by ${channelLabel}`;
-    sendStatusBadge.style.display = 'inline-block';
-  }
-
-  function updateSendSection(quote) {
-    const smsText = generateSmsMessage(quote, currentSettings);
-    const emailData = generateEmailQuote(quote, currentSettings);
-
-    btnSendSms.href = buildSmsUrl(quote.custPhone, smsText);
-    if (quote.custPhone) {
-      labelSmsTarget.textContent = `To: ${quote.custPhone}`;
-    } else {
-      labelSmsTarget.textContent = 'Pick contact in app';
-    }
-
-    btnSendEmail.href = buildMailtoUrl(quote.custEmail, emailData.subject, emailData.body);
-    if (quote.custEmail) {
-      labelEmailTarget.textContent = `To: ${quote.custEmail}`;
-    } else {
-      labelEmailTarget.textContent = 'Pick recipient in app';
-    }
-
-    previewSmsRecipient.innerHTML = `<strong>Recipient:</strong> ${quote.custPhone ? escapeHtml(quote.custPhone) : '<em>(None specified – select in messaging app)</em>'}`;
-    previewSmsContent.textContent = smsText;
-
-    previewEmailRecipient.innerHTML = `<strong>To:</strong> ${quote.custEmail ? escapeHtml(quote.custEmail) : '<em>(None specified – select in email app)</em>'}`;
-    previewEmailSubject.innerHTML = `<strong>Subject:</strong> ${escapeHtml(emailData.subject)}`;
-    previewEmailContent.textContent = emailData.body;
-
-    if (quote.sentHistory && quote.sentHistory.length > 0) {
-      const last = quote.sentHistory[quote.sentHistory.length - 1];
-      const channelLabel = last.channel === 'text' ? 'text' : last.channel === 'email' ? 'email' : 'copy';
-      sendStatusBadge.textContent = `✓ Sent on ${last.displayDate} by ${channelLabel}`;
-      sendStatusBadge.style.display = 'inline-block';
-    } else {
-      sendStatusBadge.style.display = 'none';
-      sendStatusBadge.textContent = '';
-    }
-
-    copyConfirmToast.style.display = 'none';
-    copyErrorToast.style.display = 'none';
-  }
-
-  // Send action listeners
-  btnSendSms.addEventListener('click', () => {
-    recordQuoteSent('text');
-  });
-
-  btnSendEmail.addEventListener('click', () => {
-    recordQuoteSent('email');
-  });
-
-  let copyToastTimeout = null;
-  btnCopyQuote.addEventListener('click', () => {
-    if (!currentQuoteData) return;
-    const { body } = generateEmailQuote(currentQuoteData, currentSettings);
-    copyToClipboard(
-      body,
-      () => {
-        recordQuoteSent('copy');
-        copyErrorToast.style.display = 'none';
-        copyConfirmToast.style.display = 'block';
-        if (copyToastTimeout) clearTimeout(copyToastTimeout);
-        copyToastTimeout = setTimeout(() => {
-          copyConfirmToast.style.display = 'none';
-        }, 2000);
-      },
-      (err) => {
-        console.warn('Clipboard write failed:', err);
-        copyConfirmToast.style.display = 'none';
-        copyErrorToast.style.display = 'block';
-        showMsgPreview();
-      }
-    );
-  });
-
-  // Message preview toggle & tabs
-  function showMsgPreview() {
-    msgPreviewContainer.style.display = 'block';
-    btnToggleMsgPreview.setAttribute('aria-expanded', 'true');
-  }
-
-  function hideMsgPreview() {
-    msgPreviewContainer.style.display = 'none';
-    btnToggleMsgPreview.setAttribute('aria-expanded', 'false');
-  }
-
-  btnToggleMsgPreview.addEventListener('click', () => {
-    const isExpanded = btnToggleMsgPreview.getAttribute('aria-expanded') === 'true';
-    if (isExpanded) {
-      hideMsgPreview();
-    } else {
-      showMsgPreview();
-    }
-  });
-
-  tabBtnSms.addEventListener('click', () => {
-    tabBtnSms.classList.add('active');
-    tabBtnSms.setAttribute('aria-selected', 'true');
-    tabBtnEmail.classList.remove('active');
-    tabBtnEmail.setAttribute('aria-selected', 'false');
-    previewPanelSms.style.display = 'block';
-    previewPanelEmail.style.display = 'none';
-  });
-
-  tabBtnEmail.addEventListener('click', () => {
-    tabBtnEmail.classList.add('active');
-    tabBtnEmail.setAttribute('aria-selected', 'true');
-    tabBtnSms.classList.remove('active');
-    tabBtnSms.setAttribute('aria-selected', 'false');
-    previewPanelEmail.style.display = 'block';
-    previewPanelSms.style.display = 'none';
-  });
-
-  // ---------------------------------------------------------------------------
-  // Screen 3 Actions: Print, Edit, Start Fresh
-  // ---------------------------------------------------------------------------
-  btnPrint.addEventListener('click', () => {
-=======
   // Empty State Action Buttons in Screen 3
   if (DOM.preview.emptyStartBtn) {
     DOM.preview.emptyStartBtn.addEventListener('click', () => {
@@ -2824,7 +2526,6 @@
 
   // Quote Preview Actions (Print, Edit, Start Fresh)
   DOM.preview.printBtn.addEventListener('click', () => {
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
     window.print();
   });
 
@@ -2832,19 +2533,6 @@
     showScreen('screen-newquote');
   });
 
-<<<<<<< HEAD
-  btnNewQuote.addEventListener('click', () => {
-    if (confirm('Start a fresh new quote?')) {
-      newQuoteForm.reset();
-      inputCustPhone.value = '';
-      inputCustEmail.value = '';
-      phoneFeedback.style.display = 'none';
-      emailFeedback.style.display = 'none';
-      sendStatusBadge.style.display = 'none';
-      copyConfirmToast.style.display = 'none';
-      copyErrorToast.style.display = 'none';
-      hideMsgPreview();
-=======
   // Start Fresh (Two-Tap Confirmation)
   bindTwoStepConfirm(
     DOM.preview.newQuoteBtn,
@@ -2854,7 +2542,6 @@
       q.form.reset();
       if (DOM.ai && DOM.ai.notesDraftBox) DOM.ai.notesDraftBox.style.display = 'none';
       if (DOM.ai && DOM.ai.messageDraftBox) DOM.ai.messageDraftBox.style.display = 'none';
->>>>>>> 8808da5c2567ab67704d937448e05f24da722a1f
       attachedPhotos = [];
       renderThumbnails();
       currentQuoteData = null;
